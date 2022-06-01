@@ -1,0 +1,166 @@
+using UnityEngine;
+using System.Collections.Generic;
+using System;
+using System.Linq;
+using UnityEngine.UI;
+using TMPro;
+using System.IO;
+using Newtonsoft.Json;
+public class CityData
+{
+    public string name;
+    public int size;
+}
+public class ProvinceData
+{
+    public string name;
+    public CityData capital;
+    public string country;
+}
+public class Province : MonoBehaviour
+{
+    public TextMeshProUGUI ime, drzava, kapital;
+    // Assign your quad's collider here.
+    public BoxCollider2D mapShape;
+    public Camera main_cam;
+    public Vector2 map_size;
+    // Assign your colour-coded territory map here.
+    public Texture2D colourMap;
+    public Texture2D fakeMap;
+    Texture2D fakeMap_dum;
+    public RawImage map_mask;
+    public Color highlight;
+    Rect map_rect;
+    Vector2 side_size;
+    float scale_factor;
+    bool reset_highlight;
+    string last_zup = "";
+    Color last_zup_clr;
+    Dictionary<Color, List<Vector2Int>> pixels_zup;
+    Dictionary<Color, ProvinceData> provinces;
+    // We'll use this to quickly find a territory by its colour
+    void reset_fake_dum()
+    {
+        for (int x = 0; x < fakeMap.width; x++)
+        {
+            for (int y = 0; y < fakeMap.height; y++)
+            {
+                fakeMap_dum.SetPixel(x, y, fakeMap.GetPixel(x, y));
+            }
+        }
+    }
+    void erase_last_zup()
+    {
+        List<Vector2Int> pix_data = pixels_zup[last_zup_clr];
+        foreach (Vector2Int vector2Int in pix_data)
+        {
+            fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, Color.clear);
+        }
+        fakeMap_dum.Apply();
+    }
+    private void Start()
+    {
+        pixels_zup = new Dictionary<Color, List<Vector2Int>>();
+        provinces = new Dictionary<Color, ProvinceData>();
+        fakeMap_dum = new Texture2D(fakeMap.width, fakeMap.height);
+        reset_fake_dum();
+        fakeMap_dum.Apply();
+        // Fetch the pixel data of the texture as a big block we can iterate through quickly.
+        scale_factor = 1920 / Screen.width;
+        int size_x = Mathf.RoundToInt(
+            (
+                (Screen.width * scale_factor)
+                    - 
+                (map_size.x * scale_factor)
+            ) 
+            / 2);
+        int size_y = Mathf.RoundToInt(
+                (
+                    (Screen.height * scale_factor) 
+                        - 
+                    (map_size.y * scale_factor)
+                ) 
+            / 2);
+        side_size = new Vector2 (size_x, size_y);
+        map_rect = new Rect(side_size, map_size);
+
+        string json = File.ReadAllText("Assets/provinces/provinces.json");
+        dynamic provinces_json = JsonConvert.DeserializeObject(json);
+        foreach (dynamic country in provinces_json.podaci)
+        {
+            foreach (dynamic province in country.podaci)
+            {
+                Color clr;
+                ColorUtility.TryParseHtmlString(Convert.ToString(province.boja), out clr);
+
+                ProvinceData data = new ProvinceData();
+                data.name = province.ime;
+                data.country = country.ime;
+
+                CityData cityData = new CityData();
+                int k = Convert.ToInt32(province.kapital);
+                dynamic city_entry = province.gradovi[k];
+                cityData.size = city_entry.velicina;
+                cityData.name = city_entry.ime;
+                data.capital = cityData;
+                provinces.Add(clr, data);
+            }
+        }
+        foreach (Color p in provinces.Keys)
+        {
+            List<Vector2Int> pix_c = new List<Vector2Int>();
+            for (int x = 0; x < colourMap.width; x++)
+            {
+                for (int y = 0; y < colourMap.height; y++)
+                {
+                    if (p == colourMap.GetPixel(x, y))
+                    {
+                        pix_c.Add(new Vector2Int(x, y));
+                    }
+                }
+
+            }
+            pixels_zup.Add(p, pix_c);
+        }
+    }
+
+    void Update()
+    {
+        // If no click this frame, abort. Nothing to do.
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mouse_pos = Input.mousePosition;
+            if (map_rect.Contains(mouse_pos))
+            {
+                    //print(new Vector2((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y));
+                Color target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
+                //print(target);
+                if (provinces.ContainsKey(target))
+                {
+                    ProvinceData data = provinces[target];
+
+                    ime.text = data.name;
+                    if (last_zup != "" && last_zup != ime.text)
+                    {
+                        erase_last_zup();
+                        map_mask.texture = fakeMap;
+                    }
+
+                    last_zup = ime.text;
+                    last_zup_clr = target;
+                    drzava.text = data.country;
+                    kapital.text = data.capital.name;
+
+                    List<Vector2Int> pix_data = pixels_zup[target];
+                    foreach (Vector2Int vector2Int in pix_data)
+                    {
+                        fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, highlight);
+                    }
+                    fakeMap_dum.Apply();
+                    map_mask.texture = fakeMap_dum;
+                }
+            }
+        }
+    }
+}

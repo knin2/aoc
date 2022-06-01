@@ -1,0 +1,123 @@
+{
+  "podaci": [
+    {
+      "ime": "Hrvatska",
+      "podaci": [
+        {
+          "ime": "Požeško-Slavonska",
+          "boja": "#FF0000",
+          "kapital": 1,
+          "gradovi": [
+            {
+              "ime": "Pakrac",
+              "velicina": 1
+            },
+            {
+              "ime": "Požega",
+              "velicina": 3
+            },
+            {
+              "ime": "Kutjevo",
+              "velicina": 1
+            }
+          ]
+        },
+        {
+          "ime": "Brodsko-Posavska",
+          "boja": "#00FF00",
+          "kapital": 2,
+          "gradovi": [
+            {
+              "ime": "Okučani",
+              "velicina": 0
+            },
+            {
+              "ime": "Nova Gradiška",
+              "velicina": 2
+            },
+            {
+              "ime": "Slavonski Brod",
+              "velicina": 4
+            }
+          ]
+        },
+        {
+          "ime": "Bjelovarsko-Bilogorska",
+          "boja": "#0000FF",
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Bjelovar",
+              "velicina": 3
+            },
+            {
+              "ime": "Čazma",
+              "velicina": 1
+            },
+            {
+              "ime": "Daruvar",
+              "velicina": 1
+            }
+          ]
+        },
+        {
+          "ime": "Virovitičko-Podravska",
+          "boja": "#FFFF00",
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Virovitica",
+              "velicina": 3
+            },
+            {
+              "ime": "Slatina",
+              "velicina": 2
+            },
+            {
+              "ime": "Voćin",
+              "velicina": 1
+            }
+          ]
+        },
+        {
+          "ime": "Osječko-Baranjska",
+          "boja": "#FFFFFF",
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Osijek",
+              "velicina": 4
+            },
+            {
+              "ime": "Đakovo",
+              "velicina": 3
+            },
+            {
+              "ime": "Našice",
+              "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Vukovarsko-Srijemska",
+          "boja": "#00FFFF",
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Vukovar",
+              "velicina": 3
+            },
+            {
+              "ime": "Vinkovci",
+              "velicina": 3
+            },
+            {
+              "ime": "Županja",
+              "velicina": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
