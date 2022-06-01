@@ -10,6 +10,7 @@ public class CityData
 {
     public string name;
     public int size;
+    public ProvinceData parent;
 }
 public class ProvinceData
 {
@@ -36,6 +37,7 @@ public class Province : MonoBehaviour
     bool reset_highlight;
     string last_zup = "";
     Color last_zup_clr;
+    Dictionary<Color, CityData> cities;
     Dictionary<Color, List<Vector2Int>> pixels_zup;
     Dictionary<Color, ProvinceData> provinces;
     // We'll use this to quickly find a territory by its colour
@@ -60,6 +62,7 @@ public class Province : MonoBehaviour
     }
     private void Start()
     {
+        cities = new Dictionary<Color, CityData>();
         pixels_zup = new Dictionary<Color, List<Vector2Int>>();
         provinces = new Dictionary<Color, ProvinceData>();
         fakeMap_dum = new Texture2D(fakeMap.width, fakeMap.height);
@@ -70,18 +73,18 @@ public class Province : MonoBehaviour
         int size_x = Mathf.RoundToInt(
             (
                 (Screen.width * scale_factor)
-                    - 
+                    -
                 (map_size.x * scale_factor)
-            ) 
+            )
             / 2);
         int size_y = Mathf.RoundToInt(
                 (
-                    (Screen.height * scale_factor) 
-                        - 
+                    (Screen.height * scale_factor)
+                        -
                     (map_size.y * scale_factor)
-                ) 
+                )
             / 2);
-        side_size = new Vector2 (size_x, size_y);
+        side_size = new Vector2(size_x, size_y);
         map_rect = new Rect(side_size, map_size);
 
         string json = File.ReadAllText("Assets/provinces/provinces.json");
@@ -100,8 +103,11 @@ public class Province : MonoBehaviour
                 CityData cityData = new CityData();
                 int k = Convert.ToInt32(province.kapital);
                 dynamic city_entry = province.gradovi[k];
+
                 cityData.size = city_entry.velicina;
                 cityData.name = city_entry.ime;
+                cityData.parent = data;
+
                 data.capital = cityData;
                 provinces.Add(clr, data);
             }
@@ -122,6 +128,18 @@ public class Province : MonoBehaviour
             }
             pixels_zup.Add(p, pix_c);
         }
+        for (int x = 0; x < colourMap.width; x++)
+        {
+            for (int y = 0; y < colourMap.height; y++)
+            {
+                Color c = colourMap.GetPixel(x, y);
+                if (cities.ContainsKey(c))
+                {
+                    CityData city = cities[c];
+                    
+                }
+            }
+        }
     }
 
     void Update()
@@ -133,7 +151,7 @@ public class Province : MonoBehaviour
             Vector2 mouse_pos = Input.mousePosition;
             if (map_rect.Contains(mouse_pos))
             {
-                    //print(new Vector2((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y));
+                //print(new Vector2((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y));
                 Color target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
                 //print(target);
                 if (provinces.ContainsKey(target))
