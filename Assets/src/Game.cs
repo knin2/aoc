@@ -235,6 +235,10 @@ public class Game : MonoBehaviour
                 //}
                 //print(new Vector2((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y));
                 Color target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
+                if (target == Color.black)
+                {
+                    mouse_pos += new Vector2(10, 10);
+                }
                 //print(target);
                 if (provinces.ContainsKey(target))
                 {
