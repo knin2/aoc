@@ -7,8 +7,10 @@
       "populacija": "3888529",
       "etnicka_struktura": {
         "Hrvati": 0.9042,
-        "Srbi": 0.
-      }
+        "Srbi": 0.0436,
+        "Bošnjaci": 0.01,
+        "Talijani": 0.0042
+      },
       "podaci": [
         {
           "ime": "Požeško-Slavonska",
