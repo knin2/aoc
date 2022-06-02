@@ -2,6 +2,13 @@
   "podaci": [
     {
       "ime": "Hrvatska",
+      "prezident": "Franjo Tuđman",
+      "kapital": "Zagreb",
+      "populacija": "3888529",
+      "etnicka_struktura": {
+        "Hrvati": 0.9042,
+        "Srbi": 0.
+      }
       "podaci": [
         {
           "ime": "Požeško-Slavonska",
