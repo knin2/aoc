@@ -19,11 +19,20 @@ public class ProvinceData
     public CityData capital;
     public string country;
 }
+public class EthnicData
+{
+    public int size;
+    public string drzava;
+    public List<string> ljudi;
+    public List<float> postotci;
+    public List<int> stanovnici;
+}
 public class Game : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI ime;
     public TextMeshProUGUI drzava;
+    public TextMeshProUGUI ime_zupanije;
     public TextMeshProUGUI kapital;
     public RawImage map_mask;
     public Texture2D colourMap;
@@ -36,8 +45,9 @@ public class Game : MonoBehaviour
     [Header("Vektori")]
     public Vector2 map_size;
 
-    [Header("Klase")]
     [Header("Objekti")]
+    public Transform ime_holder;
+    public Transform ime_holder_zup;
     public GameObject template;
 
     // Assign your colour-coded territory map here.
@@ -51,7 +61,8 @@ public class Game : MonoBehaviour
     Dictionary<Color, CityData> cities;
     Dictionary<Color, List<Vector2Int>> pixels_zup;
     Dictionary<Color, ProvinceData> provinces;
-    Dictionary<string, Dictionary<string, float>> ethnic_data;
+    Dictionary<string, EthnicData> ethnic_data;
+    Dictionary<string, EthnicData> ethnic_data_zup;
     // We'll use this to quickly find a territory by its colour
     void reset_fake_dum()
     {
@@ -79,7 +90,8 @@ public class Game : MonoBehaviour
         pixels_zup = new Dictionary<Color, List<Vector2Int>>();
         provinces = new Dictionary<Color, ProvinceData>();
         fakeMap_dum = new Texture2D(fakeMap.width, fakeMap.height);
-        ethnic_data = new Dictionary<string, Dictionary<string, float>>();
+        ethnic_data = new Dictionary<string, EthnicData>();
+        ethnic_data_zup = new Dictionary<string, EthnicData>();
         #endregion
         #region province
         reset_fake_dum();
@@ -126,6 +138,26 @@ public class Game : MonoBehaviour
 
                 data.capital = cityData;
                 provinces.Add(clr, data);
+
+                EthnicData eth_data = new EthnicData();
+                eth_data.drzava = data.country;
+                dynamic demo = province.demografija;
+                eth_data.size = Convert.ToInt32(demo.etnicka_struktura_velicina);
+                eth_data.stanovnici = new List<int>();
+                eth_data.postotci = new List<float>();
+                eth_data.ljudi = new List<string>();
+
+                int zup_populacija = Convert.ToInt32(demo.populacija);
+                for (int i = 0; i < eth_data.size; i++)
+                {
+                    float f = float.Parse(Convert.ToString(demo.etnicka_struktura_float[i]));
+                    string s = Convert.ToString(demo.etnicka_struktura_str[i]);
+                    eth_data.postotci.Add(f);
+                    eth_data.ljudi.Add(s);
+                    eth_data.stanovnici.Add(Mathf.RoundToInt(f * zup_populacija));
+                }
+
+                ethnic_data_zup.Add(data.name, eth_data);
             }
         }
         foreach (Color p in provinces.Keys)
@@ -161,18 +193,25 @@ public class Game : MonoBehaviour
         foreach (dynamic drzava in provinces_json.podaci)
         {
             string drz = Convert.ToString(drzava.ime);
-            float sum = 0;
-            Dictionary<string, float> TValue = new Dictionary<string, float>();
-            bool r = true;
-            for (int i = 0; i < Convert.ToInt32(drzava.etnicka_struktura_velicina); i++)
+            int pop = Convert.ToInt32(drzava.demografija.populacija);
+            print(pop);
+            EthnicData data = new EthnicData();
+            data.postotci = new List<float>();
+            data.ljudi = new List<string>();
+            data.stanovnici = new List<int>();
+
+            for (int i = 0; i < Convert.ToInt32(drzava.demografija.etnicka_struktura_velicina); i++)
             {
-                float f = float.Parse(Convert.ToString(drzava.etnicka_struktura_float[i]));
-                TValue[Convert.ToString(drzava.etnicka_struktura_str[i])] = 1f - sum;
-                sum += f;
-                r = false;
+                float f = float.Parse(Convert.ToString(drzava.demografija.etnicka_struktura_float[i]));
+                string s = Convert.ToString(drzava.demografija.etnicka_struktura_str[i]);
+                data.postotci.Add(f);
+                data.ljudi.Add(s);
+                data.stanovnici.Add(Mathf.RoundToInt(f * pop));
             }
             //TValue["Ostali"]  = 1f - sum;
-            ethnic_data.Add(drz, TValue);
+            data.size = data.postotci.Count;
+            data.drzava = drz;
+            ethnic_data.Add(drz, data);
         }
         #endregion
     }
@@ -213,6 +252,7 @@ public class Game : MonoBehaviour
                     last_zup_clr = target;
                     drzava.text = data.country;
                     kapital.text = data.capital.name;
+                    ime_zupanije.text = data.name;
 
                     List<Vector2Int> pix_data = pixels_zup[target];
                     foreach (Vector2Int vector2Int in pix_data)
@@ -221,16 +261,13 @@ public class Game : MonoBehaviour
                     }
                     fakeMap_dum.Apply();
                     map_mask.texture = fakeMap_dum;
-
-                    //PieChart ethnic = new PieChart(template, prefered_colors);
-                    //Dictionary<string, float> KV_pair = ethnic_data[data.country];
-                    //bool first = true;
-                    //foreach (string key in KV_pair.Keys)
-                    //{
-                    //    float val = KV_pair[key];
-                    //    ethnic.AddEntry(key, val, first);
-                    //    first = false;
-                    //}
+                    EthnicData data_eth = ethnic_data[data.country];
+                    EthnicData data_eth_zup = ethnic_data_zup[data.name];
+                    for (int idxi = 0; idxi < data_eth.size; idxi++)
+                    {
+                        ime_holder.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth.ljudi[idxi], data_eth.postotci[idxi] * 100f, data_eth.stanovnici[idxi]);
+                        ime_holder_zup.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth_zup.ljudi[idxi], data_eth_zup.postotci[idxi] * 100f, data_eth_zup.stanovnici[idxi]);
+                    }
                 }
             }
         }

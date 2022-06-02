@@ -4,24 +4,44 @@
       "ime": "Hrvatska",
       "prezident": "Franjo Tuđman",
       "kapital": "Zagreb",
-      "populacija": "3888529",
-      "etnicka_struktura_velicina": 4,
-      "etnicka_struktura_str": [
-        "Hrvati",
-        "Srbi",
-        "Bošnjaci",
-        "Talijani"
-      ],
-      "etnicka_struktura_float": [
-        0.9042,
-        0.0436,
-        0.01,
-        0.0042
-      ],
+      "demografija": {
+        "populacija": 3888529,
+        "etnicka_struktura_velicina": 4,
+        "etnicka_struktura_str": [
+          "Hrvati",
+          "Srbi",
+          "Bošnjaci",
+          "Talijani"
+        ],
+        "etnicka_struktura_float": [
+          0.9042,
+          0.0436,
+          0.01,
+          0.0042
+        ]
+      },
       "podaci": [
         {
           "ime": "Požeško-Slavonska",
           "boja": "#FF0000",
+          "demografija": {
+            "populacija": 64420,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Talijani",
+              "Mađari",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.887,
+              0.065,
+              0.01,
+              0.009,
+              0.029
+            ]
+          },
           "kapital": 1,
           "gradovi": [
             {
@@ -42,6 +62,24 @@
           "ime": "Brodsko-Posavska",
           "boja": "#00FF00",
           "kapital": 2,
+          "demografija": {
+            "populacija": 130782,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Romi",
+              "Bošnjaci",
+              "Ostalo"
+            ],
+            "etnicka_struktura_float": [
+              0.9398,
+              0.0302,
+              0.0033,
+              0.0021,
+              0.0246
+            ]
+          },
           "gradovi": [
             {
               "ime": "Okučani",
@@ -61,6 +99,24 @@
           "ime": "Bjelovarsko-Bilogorska",
           "boja": "#0000FF",
           "kapital": 0,
+          "demografija": {
+            "populacija": 102295,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Česi",
+              "Mađari",
+              "Ostalo"
+            ],
+            "etnicka_struktura_float": [
+              0.826,
+              0.071,
+              0.053,
+              0.009,
+              0.041
+            ]
+          },
           "gradovi": [
             {
               "ime": "Bjelovar",
@@ -80,6 +136,22 @@
           "ime": "Virovitičko-Podravska",
           "boja": "#FFFF00",
           "kapital": 0,
+          "demografija": {
+            "populacija": 70660,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Mađari",
+              "Ostalo"
+            ],
+            "etnicka_struktura_float": [
+              0.895,
+              0.071,
+              0.003,
+              0.031
+            ]
+          },
           "gradovi": [
             {
               "ime": "Virovitica",
@@ -99,6 +171,22 @@
           "ime": "Osječko-Baranjska",
           "boja": "#FFFFFF",
           "kapital": 0,
+          "demografija": {
+            "populacija": 259481,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Mađari",
+              "Ostalo"
+            ],
+            "etnicka_struktura_float": [
+              0.8589,
+              0.0776,
+              0.0270,
+              0.0365
+            ]
+          },
           "gradovi": [
             {
               "ime": "Osijek",
@@ -118,6 +206,24 @@
           "ime": "Vukovarsko-Srijemska",
           "boja": "#00FFFF",
           "kapital": 0,
+          "demografija": {
+            "populacija": 144438,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Mađari",
+              "Rusini",
+              "Ostalo"
+            ],
+            "etnicka_struktura_float": [
+              0.783,
+              0.155,
+              0.01,
+              0.009,
+              0.043
+            ]
+          },
           "gradovi": [
             {
               "ime": "Vukovar",
@@ -130,6 +236,150 @@
             {
               "ime": "Županja",
               "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Sisačko-Moslavačka",
+          "boja": "#FF00FF",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 140549,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Bošnjaci",
+              "Ostalo"
+            ],
+            "etnicka_struktura_float": [
+              0.8239,
+              0.1218,
+              0.0143,
+              0.04
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Sisak",
+              "velicina": 3
+            },
+            {
+              "ime": "Kutina",
+              "velicina": 2
+            },
+            {
+              "ime": "Petrinja",
+              "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Zagrebačka",
+          "boja": "#AE0145",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 301206,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Bošnjaci",
+              "Ostalo"
+            ],
+            "etnicka_struktura_float": [
+              0.962,
+              0.009,
+              0.003,
+              0.026
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Velika Gorica",
+              "velicina": 4
+            },
+            {
+              "ime": "Samobor",
+              "velicina": 3
+            },
+            {
+              "ime": "Zaprešić",
+              "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Koprivničko-križevačka",
+          "boja": "#51FEBA",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 101661,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Slovenci",
+              "Romi",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.960,
+              0.019,
+              0.001,
+              0.001,
+              0.019
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Koprivnica",
+              "velicina": 3
+            },
+            {
+              "ime": "Križevci",
+              "velicina": 2
+            },
+            {
+              "ime": "Đurđevac",
+              "velicina": 1
+            }
+          ]
+        },
+        {
+          "ime": "Varaždinska",
+          "boja": "#330AE4",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 160264,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Slovenci",
+              "Romi",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.977,
+              0.004,
+              0.003,
+              0.002,
+              0.014
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Varaždin",
+              "velicina": 3
+            },
+            {
+              "ime": "Novi Marof",
+              "velicina": 0
+            },
+            {
+              "ime": "Ludbreg",
+              "velicina": 1
             }
           ]
         }
