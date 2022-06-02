@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine.UI;
+using System.Web;
 using TMPro;
 using System.IO;
 using Newtonsoft.Json;
@@ -18,19 +19,29 @@ public class ProvinceData
     public CityData capital;
     public string country;
 }
-public class Province : MonoBehaviour
+public class Game : MonoBehaviour
 {
-    public TextMeshProUGUI ime, drzava, kapital;
-    // Assign your quad's collider here.
-    public BoxCollider2D mapShape;
-    public Camera main_cam;
-    public Vector2 map_size;
-    // Assign your colour-coded territory map here.
+    [Header("UI")]
+    public TextMeshProUGUI ime;
+    public TextMeshProUGUI drzava;
+    public TextMeshProUGUI kapital;
+    public RawImage map_mask;
     public Texture2D colourMap;
     public Texture2D fakeMap;
-    Texture2D fakeMap_dum;
-    public RawImage map_mask;
+
+    [Header("Boja")]
+    public List<Color> prefered_colors;
     public Color highlight;
+
+    [Header("Vektori")]
+    public Vector2 map_size;
+
+    [Header("Klase")]
+    [Header("Objekti")]
+    public GameObject template;
+
+    // Assign your colour-coded territory map here.
+    Texture2D fakeMap_dum;
     Rect map_rect;
     Vector2 side_size;
     float scale_factor;
@@ -40,6 +51,7 @@ public class Province : MonoBehaviour
     Dictionary<Color, CityData> cities;
     Dictionary<Color, List<Vector2Int>> pixels_zup;
     Dictionary<Color, ProvinceData> provinces;
+    Dictionary<string, Dictionary<string, float>> ethnic_data;
     // We'll use this to quickly find a territory by its colour
     void reset_fake_dum()
     {
@@ -62,10 +74,14 @@ public class Province : MonoBehaviour
     }
     private void Start()
     {
+        #region init
         cities = new Dictionary<Color, CityData>();
         pixels_zup = new Dictionary<Color, List<Vector2Int>>();
         provinces = new Dictionary<Color, ProvinceData>();
         fakeMap_dum = new Texture2D(fakeMap.width, fakeMap.height);
+        ethnic_data = new Dictionary<string, Dictionary<string, float>>();
+        #endregion
+        #region province
         reset_fake_dum();
         fakeMap_dum.Apply();
         // Fetch the pixel data of the texture as a big block we can iterate through quickly.
@@ -140,6 +156,25 @@ public class Province : MonoBehaviour
                 }
             }
         }
+        #endregion
+        #region ethnic
+        foreach (dynamic drzava in provinces_json.podaci)
+        {
+            string drz = Convert.ToString(drzava.ime);
+            float sum = 0;
+            Dictionary<string, float> TValue = new Dictionary<string, float>();
+            bool r = true;
+            for (int i = 0; i < Convert.ToInt32(drzava.etnicka_struktura_velicina); i++)
+            {
+                float f = float.Parse(Convert.ToString(drzava.etnicka_struktura_float[i]));
+                TValue[Convert.ToString(drzava.etnicka_struktura_str[i])] = 1f - sum;
+                sum += f;
+                r = false;
+            }
+            TValue["Ostali"]  = 1f - sum;
+            ethnic_data.Add(drz, TValue);
+        }
+        #endregion
     }
 
     void Update()
@@ -163,6 +198,14 @@ public class Province : MonoBehaviour
                     {
                         erase_last_zup();
                         map_mask.texture = fakeMap;
+                        for (int i = 0; i < template.transform.parent.childCount; i++)
+                        {
+                            Transform child = template.transform.parent.GetChild(i);
+                            if (child.name != template.name)
+                            {
+                                Destroy(child.gameObject);
+                            }
+                        }
                     }
 
                     last_zup = ime.text;
@@ -177,6 +220,16 @@ public class Province : MonoBehaviour
                     }
                     fakeMap_dum.Apply();
                     map_mask.texture = fakeMap_dum;
+
+                    PieChart ethnic = new PieChart(template, prefered_colors);
+                    Dictionary<string, float> KV_pair = ethnic_data[data.country];
+                    bool first = true;
+                    foreach (string key in KV_pair.Keys)
+                    {
+                        float val = KV_pair[key];
+                        ethnic.AddEntry(key, val, first);
+                        first = false;
+                    }
                 }
             }
         }

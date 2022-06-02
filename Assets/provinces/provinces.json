@@ -5,12 +5,19 @@
       "prezident": "Franjo Tuđman",
       "kapital": "Zagreb",
       "populacija": "3888529",
-      "etnicka_struktura": {
-        "Hrvati": 0.9042,
-        "Srbi": 0.0436,
-        "Bošnjaci": 0.01,
-        "Talijani": 0.0042
-      },
+      "etnicka_struktura_velicina": 4,
+      "etnicka_struktura_str": [
+        "Hrvati",
+        "Srbi",
+        "Bošnjaci",
+        "Talijani"
+      ],
+      "etnicka_struktura_float": [
+        0.9042,
+        0.0436,
+        0.01,
+        0.0042
+      ],
       "podaci": [
         {
           "ime": "Požeško-Slavonska",
