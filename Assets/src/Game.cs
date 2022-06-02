@@ -152,7 +152,7 @@ public class Game : MonoBehaviour
                 if (cities.ContainsKey(c))
                 {
                     CityData city = cities[c];
-                    
+
                 }
             }
         }
@@ -171,7 +171,7 @@ public class Game : MonoBehaviour
                 sum += f;
                 r = false;
             }
-            TValue["Ostali"]  = 1f - sum;
+            //TValue["Ostali"]  = 1f - sum;
             ethnic_data.Add(drz, TValue);
         }
         #endregion
@@ -186,6 +186,14 @@ public class Game : MonoBehaviour
             Vector2 mouse_pos = Input.mousePosition;
             if (map_rect.Contains(mouse_pos))
             {
+                //for (int i = 0; i < template.transform.parent.childCount; i++)
+                //{
+                //    Transform child = template.transform.parent.GetChild(i);
+                //    if (child.name != template.name)
+                //    {
+                //        Destroy(child.gameObject);
+                //    }
+                //}
                 //print(new Vector2((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y));
                 Color target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
                 //print(target);
@@ -198,14 +206,7 @@ public class Game : MonoBehaviour
                     {
                         erase_last_zup();
                         map_mask.texture = fakeMap;
-                        for (int i = 0; i < template.transform.parent.childCount; i++)
-                        {
-                            Transform child = template.transform.parent.GetChild(i);
-                            if (child.name != template.name)
-                            {
-                                Destroy(child.gameObject);
-                            }
-                        }
+
                     }
 
                     last_zup = ime.text;
@@ -221,15 +222,15 @@ public class Game : MonoBehaviour
                     fakeMap_dum.Apply();
                     map_mask.texture = fakeMap_dum;
 
-                    PieChart ethnic = new PieChart(template, prefered_colors);
-                    Dictionary<string, float> KV_pair = ethnic_data[data.country];
-                    bool first = true;
-                    foreach (string key in KV_pair.Keys)
-                    {
-                        float val = KV_pair[key];
-                        ethnic.AddEntry(key, val, first);
-                        first = false;
-                    }
+                    //PieChart ethnic = new PieChart(template, prefered_colors);
+                    //Dictionary<string, float> KV_pair = ethnic_data[data.country];
+                    //bool first = true;
+                    //foreach (string key in KV_pair.Keys)
+                    //{
+                    //    float val = KV_pair[key];
+                    //    ethnic.AddEntry(key, val, first);
+                    //    first = false;
+                    //}
                 }
             }
         }
