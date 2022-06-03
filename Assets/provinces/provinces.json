@@ -2,7 +2,7 @@
   "podaci": [
     {
       "ime": "Hrvatska",
-      "prezident": "Franjo Tuđman",
+      "prezident": "Franjo Tudjman",
       "kapital": "Zagreb",
       "demografija": {
         "populacija": 3888529,
@@ -10,7 +10,7 @@
         "etnicka_struktura_str": [
           "Hrvati",
           "Srbi",
-          "Bošnjaci",
+          "Bosnjaci",
           "Talijani"
         ],
         "etnicka_struktura_float": [
@@ -21,11 +21,11 @@
         ]
       },
       "odnosi": {
-        "Srbija": -22
+        "Srbija": -42
       },
       "podaci": [
         {
-          "ime": "Požeško-Slavonska",
+          "ime": "Pozesko-Slavonska",
           "boja": "#FF0000",
           "demografija": {
             "populacija": 64420,
@@ -34,7 +34,7 @@
               "Hrvati",
               "Srbi",
               "Talijani",
-              "Mađari",
+              "Madjari",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -52,7 +52,7 @@
               "velicina": 1
             },
             {
-              "ime": "Požega",
+              "ime": "Pozega",
               "velicina": 3
             },
             {
@@ -72,7 +72,7 @@
               "Hrvati",
               "Srbi",
               "Romi",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostalo"
             ],
             "etnicka_struktura_float": [
@@ -85,11 +85,11 @@
           },
           "gradovi": [
             {
-              "ime": "Okučani",
+              "ime": "Okucani",
               "velicina": 0
             },
             {
-              "ime": "Nova Gradiška",
+              "ime": "Nova Gradiska",
               "velicina": 2
             },
             {
@@ -108,8 +108,8 @@
             "etnicka_struktura_str": [
               "Hrvati",
               "Srbi",
-              "Česi",
-              "Mađari",
+              "cesi",
+              "Madjari",
               "Ostalo"
             ],
             "etnicka_struktura_float": [
@@ -126,7 +126,7 @@
               "velicina": 3
             },
             {
-              "ime": "Čazma",
+              "ime": "cazma",
               "velicina": 1
             },
             {
@@ -136,7 +136,7 @@
           ]
         },
         {
-          "ime": "Virovitičko-Podravska",
+          "ime": "Viroviticko-Podravska",
           "boja": "#FFFF00",
           "kapital": 0,
           "demografija": {
@@ -145,7 +145,7 @@
             "etnicka_struktura_str": [
               "Hrvati",
               "Srbi",
-              "Mađari",
+              "Madjari",
               "Ostalo"
             ],
             "etnicka_struktura_float": [
@@ -165,13 +165,13 @@
               "velicina": 2
             },
             {
-              "ime": "Voćin",
+              "ime": "Vocin",
               "velicina": 1
             }
           ]
         },
         {
-          "ime": "Osječko-Baranjska",
+          "ime": "Osjecko-Baranjska",
           "boja": "#FFFFFF",
           "kapital": 0,
           "demografija": {
@@ -180,7 +180,7 @@
             "etnicka_struktura_str": [
               "Hrvati",
               "Srbi",
-              "Mađari",
+              "Madjari",
               "Ostalo"
             ],
             "etnicka_struktura_float": [
@@ -196,11 +196,11 @@
               "velicina": 4
             },
             {
-              "ime": "Đakovo",
+              "ime": "djakovo",
               "velicina": 3
             },
             {
-              "ime": "Našice",
+              "ime": "Nasice",
               "velicina": 2
             }
           ]
@@ -215,7 +215,7 @@
             "etnicka_struktura_str": [
               "Hrvati",
               "Srbi",
-              "Mađari",
+              "Madjari",
               "Rusini",
               "Ostalo"
             ],
@@ -237,13 +237,13 @@
               "velicina": 3
             },
             {
-              "ime": "Županja",
+              "ime": "zupanja",
               "velicina": 2
             }
           ]
         },
         {
-          "ime": "Sisačko-Moslavačka",
+          "ime": "Sisacko-Moslavacka",
           "boja": "#FF00FF",
           "kapital": 0,
           "demografija": {
@@ -252,7 +252,7 @@
             "etnicka_struktura_str": [
               "Hrvati",
               "Srbi",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostalo"
             ],
             "etnicka_struktura_float": [
@@ -278,7 +278,7 @@
           ]
         },
         {
-          "ime": "Zagrebačka",
+          "ime": "Zagrebacka",
           "boja": "#AE0145",
           "kapital": 0,
           "demografija": {
@@ -287,7 +287,7 @@
             "etnicka_struktura_str": [
               "Hrvati",
               "Srbi",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostalo"
             ],
             "etnicka_struktura_float": [
@@ -307,13 +307,13 @@
               "velicina": 3
             },
             {
-              "ime": "Zaprešić",
+              "ime": "Zapresic",
               "velicina": 2
             }
           ]
         },
         {
-          "ime": "Koprivničko-križevačka",
+          "ime": "Koprivnicko-krizevacka",
           "boja": "#51FEBA",
           "kapital": 0,
           "demografija": {
@@ -340,17 +340,17 @@
               "velicina": 3
             },
             {
-              "ime": "Križevci",
+              "ime": "Krizevci",
               "velicina": 2
             },
             {
-              "ime": "Đurđevac",
+              "ime": "djurdjevac",
               "velicina": 1
             }
           ]
         },
         {
-          "ime": "Međimurska",
+          "ime": "Medjimurska",
           "boja": "#CCF51B",
           "kapital": 0,
           "demografija": {
@@ -358,7 +358,7 @@
             "etnicka_struktura_velicina": 5,
             "etnicka_struktura_str": [
               "Hrvati",
-              "Mađari",
+              "Madjari",
               "Slovenci",
               "Romi",
               "Albanci"
@@ -373,7 +373,7 @@
           },
           "gradovi": [
             {
-              "ime": "Čakovec",
+              "ime": "cakovec",
               "velicina": 3
             },
             {
@@ -381,7 +381,7 @@
               "velicina": 1
             },
             {
-              "ime": "Goričan",
+              "ime": "Gorican",
               "velicina": 1
             }
           ]
@@ -395,7 +395,7 @@
             "etnicka_struktura_velicina": 4,
             "etnicka_struktura_str": [
               "Hrvati",
-              "Mađari",
+              "Madjari",
               "Slovenci",
               "Ostali"
             ],
@@ -422,7 +422,7 @@
           ]
         },
         {
-          "ime": "Varaždinska",
+          "ime": "Varazdinska",
           "boja": "#330AE4",
           "kapital": 0,
           "demografija": {
@@ -445,7 +445,7 @@
           },
           "gradovi": [
             {
-              "ime": "Varaždin",
+              "ime": "Varazdin",
               "velicina": 3
             }
           ]
@@ -460,7 +460,7 @@
             "etnicka_struktura_str": [
               "Hrvati",
               "Srbi",
-              "Bošnjaci",
+              "Bosnjaci",
               "Albanci",
               "Ostali"
             ],
@@ -480,7 +480,7 @@
           ]
         },
         {
-          "ime": "Karlovačka",
+          "ime": "Karlovacka",
           "boja": "#C7AE39",
           "kapital": 0,
           "demografija": {
@@ -489,7 +489,7 @@
             "etnicka_struktura_str": [
               "Hrvati",
               "Srbi",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -525,7 +525,7 @@
               "Hrvati",
               "Srbi",
               "Talijani",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -562,7 +562,7 @@
               "Hrvati",
               "Srbi",
               "Talijani",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -589,7 +589,7 @@
           ]
         },
         {
-          "ime": "Ličko-Senjska",
+          "ime": "Licko-Senjska",
           "boja": "#FF901E",
           "kapital": 0,
           "demografija": {
@@ -599,7 +599,7 @@
               "Hrvati",
               "Srbi",
               "Talijani",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -636,7 +636,7 @@
               "Hrvati",
               "Srbi",
               "Talijani",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -663,7 +663,7 @@
           ]
         },
         {
-          "ime": "Šibensko-Kninska",
+          "ime": "sibensko-Kninska",
           "boja": "#088F04",
           "kapital": 0,
           "demografija": {
@@ -673,7 +673,7 @@
               "Hrvati",
               "Srbi",
               "Talijani",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -710,7 +710,7 @@
               "Hrvati",
               "Srbi",
               "Talijani",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -737,7 +737,7 @@
           ]
         },
         {
-          "ime": "Dubrovačko-Neretvanska",
+          "ime": "Dubrovacko-Neretvanska",
           "boja": "#77FAAE",
           "kapital": 0,
           "demografija": {
@@ -747,7 +747,7 @@
               "Hrvati",
               "Srbi",
               "Talijani",
-              "Bošnjaci",
+              "Bosnjaci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
@@ -777,15 +777,15 @@
     },
     {
       "ime": "Srbija",
-      "prezident": "Slobodan Milošević",
+      "prezident": "Slobodan Milosevic",
       "kapital": "Beograd",
       "demografija": {
         "populacija": 7498001,
         "etnicka_struktura_velicina": 5,
         "etnicka_struktura_str": [
           "Srbi",
-          "Mađari",
-          "Bošnjaci",
+          "Madjari",
+          "Bosnjaci",
           "Romi",
           "Ostali"
         ],
@@ -811,8 +811,8 @@
             "etnicka_struktura_velicina": 5,
             "etnicka_struktura_str": [
               "Srbi",
-              "Mađari",
-              "Bošnjaci",
+              "Madjari",
+              "Bosnjaci",
               "Romi",
               "Ostali"
             ],

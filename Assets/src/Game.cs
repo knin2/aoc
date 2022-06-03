@@ -15,9 +15,11 @@ public class CityData
 }
 public class ProvinceData
 {
+    public Color color;
     public string name;
     public CityData capital;
     public string country;
+    public int homogenous_people;
 }
 public class CountryData
 {
@@ -35,19 +37,32 @@ public class EthnicData
     public List<float> postotci;
     public List<int> stanovnici;
 }
+public class GameData
+{
+    public int potez;
+    public int kinta;
+    public int zarada;
+    public int vojnici;
+}
 public class Game : MonoBehaviour
 {
     [Header("UI")]
+    public Slider slider;
     public TextMeshProUGUI ime;
     public TextMeshProUGUI drzava;
     public TextMeshProUGUI ime_zupanije;
     public TextMeshProUGUI kapital;
-
+    public TextMeshProUGUI gore_levo_zarada;
+    public TextMeshProUGUI gore_levo_kinta;
+    public TextMeshProUGUI gore_levo_potez;
     public TextMeshProUGUI side_r_drzava;
     public TextMeshProUGUI side_drzava;
     public TextMeshProUGUI side_predsednik;
     public TextMeshProUGUI side_populacija;
     public TextMeshProUGUI side_kapital;
+    public TextMeshProUGUI side_vojska;
+    public TextMeshProUGUI vojnici_slider_text;
+    public TextMeshProUGUI vojnici_cena_text;
     public TextMeshProUGUI odnosi;
     public RawImage map_mask;
     public Texture2D colourMap;
@@ -57,6 +72,7 @@ public class Game : MonoBehaviour
     public List<Color> prefered_colors;
     public Gradient odnosi_gradient;
     public Color highlight;
+    public Color sel_high;
 
     [Header("Vektori")]
     public Vector2 map_size;
@@ -66,21 +82,45 @@ public class Game : MonoBehaviour
     public Transform ime_holder_zup;
     public GameObject template;
 
+    [Header("Konstante")]
+    public int cena_vojnika = 5;
     // Assign your colour-coded territory map here.
+    [HideInInspector]
+    public GameData gameData;
     Texture2D fakeMap_dum;
     Rect map_rect;
     Vector2 side_size;
     float scale_factor;
     bool reset_highlight;
     string last_zup = "";
+    string last_zup_selected;
     Color last_zup_clr;
+    Color last_zup_clr_selected;
     Dictionary<Color, CityData> cities;
     Dictionary<Color, List<Vector2Int>> pixels_zup;
     Dictionary<Color, ProvinceData> provinces;
     Dictionary<string, CountryData> countries;
     Dictionary<string, EthnicData> ethnic_data;
     Dictionary<string, EthnicData> ethnic_data_zup;
+    List<ProvinceData> selected_provinces;
+    ProvinceData current_province;
+    ProvinceData selected_province;
+    int cena;
     // We'll use this to quickly find a territory by its colour
+    void update_potez_ui()
+    {
+
+        gore_levo_kinta.text = string.Format("{0:N0}", gameData.kinta);
+        gore_levo_potez.text = "Potez " + string.Format("{0:N0}", gameData.potez);
+        gore_levo_zarada.text = gameData.zarada > 0 ? String.Format("+{0:N0}", gameData.zarada) : String.Format("{0:N0}", gameData.zarada);
+        side_vojska.text = String.Format("{0:N0} vojnika", gameData.vojnici);
+    }
+    public void next_potez()
+    {
+        gameData.potez++;
+        gameData.kinta += gameData.zarada;
+        update_potez_ui();
+    }
     void reset_fake_dum()
     {
         for (int x = 0; x < fakeMap.width; x++)
@@ -103,12 +143,22 @@ public class Game : MonoBehaviour
     private void Start()
     {
         #region init
+        gameData = new GameData();
+        gameData.zarada = 69420;
+        gameData.kinta = -420000;
+        gameData.potez = 0;
+        gameData.vojnici = 400000;
+        update_potez_ui();
+        selected_province = new ProvinceData();
+        selected_province.name = "";
+        current_province = new ProvinceData();
         cities = new Dictionary<Color, CityData>();
         pixels_zup = new Dictionary<Color, List<Vector2Int>>();
         provinces = new Dictionary<Color, ProvinceData>();
         fakeMap_dum = new Texture2D(fakeMap.width, fakeMap.height);
         ethnic_data = new Dictionary<string, EthnicData>();
         ethnic_data_zup = new Dictionary<string, EthnicData>();
+        selected_provinces = new List<ProvinceData>();
         countries = new Dictionary<string, CountryData>();
         #endregion
         #region province
@@ -142,7 +192,7 @@ public class Game : MonoBehaviour
                 Color clr;
                 ColorUtility.TryParseHtmlString(Convert.ToString(province.boja), out clr);
 
-                
+
 
 
                 ProvinceData data = new ProvinceData();
@@ -158,7 +208,6 @@ public class Game : MonoBehaviour
                 cityData.parent = data;
 
                 data.capital = cityData;
-                provinces.Add(clr, data);
 
                 EthnicData eth_data = new EthnicData();
                 eth_data.drzava = data.country;
@@ -178,6 +227,9 @@ public class Game : MonoBehaviour
                     eth_data.stanovnici.Add(Mathf.RoundToInt(f * zup_populacija));
                 }
 
+                data.homogenous_people = eth_data.stanovnici[0];
+                data.color = clr;
+                provinces.Add(clr, data);
                 ethnic_data_zup.Add(data.name, eth_data);
             }
         }
@@ -255,66 +307,80 @@ public class Game : MonoBehaviour
         }
         #endregion
     }
+    void show_recruit()
+    {
+        slider.maxValue = selected_province.homogenous_people;
+        slider.minValue = 0;
+        vojnici_slider_text.text = String.Format("{0:N0}", Mathf.RoundToInt(slider.value));
+        cena = Mathf.RoundToInt(slider.value) * cena_vojnika;
 
+        vojnici_cena_text.text = String.Format("{0:N0} $", cena);
+        vojnici_cena_text.color = cena > gameData.kinta ? odnosi_gradient.Evaluate(1f) : odnosi_gradient.Evaluate(0f);
+    }
+    public void end_recruit()
+    {
+        slider.gameObject.SetActive(false);
+        gameData.vojnici += (int)slider.value;
+        gameData.kinta -= cena;
+        update_potez_ui();
+    }
     void Update()
     {
         // If no click this frame, abort. Nothing to do.
-
-        if (Input.GetMouseButtonDown(0))
+        if (slider.gameObject.activeSelf)
         {
-            Vector2 mouse_pos = Input.mousePosition;
-            if (map_rect.Contains(mouse_pos))
+            show_recruit();
+        }
+        Vector2 mouse_pos = Input.mousePosition;
+        if (map_rect.Contains(mouse_pos))
+        {
+            Color target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
+            if (target == Color.black)
             {
-                //for (int i = 0; i < template.transform.parent.childCount; i++)
-                //{
-                //    Transform child = template.transform.parent.GetChild(i);
-                //    if (child.name != template.name)
-                //    {
-                //        Destroy(child.gameObject);
-                //    }
-                //}
-                //print(new Vector2((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y));
-                Color target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
-                if (target == Color.black)
+                mouse_pos += new Vector2(10, 10);
+            }
+            //print(target);
+            if (provinces.ContainsKey(target))
+            {
+                current_province = provinces[target];
+                ProvinceData data = current_province;
+                CountryData countryData = countries[data.country];
+                if (data.name != last_zup && last_zup != "")
                 {
-                    mouse_pos += new Vector2(10, 10);
+                    erase_last_zup();
                 }
-                //print(target);
-                if (provinces.ContainsKey(target))
+                last_zup = data.name;
+                last_zup_clr = target;
+                if (Input.GetMouseButtonDown(0))
                 {
-                    ProvinceData data = provinces[target];
-                    print(data.country);
-                    CountryData countryData = countries[data.country];
+                    selected_province = current_province;
+                    selected_provinces.Add(selected_province);
+                    last_zup_selected = selected_province.name;
+                    last_zup_clr_selected = selected_province.color;
                     ime.text = data.name;
-                    if (last_zup != "" && last_zup != ime.text)
-                    {
-                        erase_last_zup();
-                        map_mask.texture = fakeMap;
-
-                    }
-
                     last_zup = ime.text;
                     last_zup_clr = target;
                     drzava.text = data.country;
                     side_r_drzava.text = data.country;
+                    side_vojska.text = string.Format("{0:N0} vojnika", gameData.vojnici);
                     side_predsednik.text = countryData.president;
                     side_drzava.text = countryData.name;
                     side_kapital.text = countryData.capital;
                     side_populacija.text = string.Format("{0:N0}", countryData.population);
-                    int o_d = countryData.odnosi_dict["Hrvatska"];
-                    odnosi.text = o_d > 0 ? "+" + o_d : "-" + o_d;
-                    float o_d_grad = (o_d + 100) / 200;
-                    odnosi.color = odnosi_gradient.Evaluate(o_d_grad);
+                    if (countryData.odnosi_dict.ContainsKey("Hrvatska"))
+                    {
+                        int o_d = countryData.odnosi_dict["Hrvatska"];
+                        odnosi.text = o_d > 0 ? $"+{o_d}" : $"{o_d}";
+                        float o_d_grad = 1f - ((o_d + 100f) / 200f);
+                        odnosi.color = odnosi_gradient.Evaluate(o_d_grad);
+                    }
+                    else
+                    {
+                        odnosi.text = "";
+                        odnosi.color = Color.white;
+                    }
                     kapital.text = data.capital.name;
                     ime_zupanije.text = data.name;
-
-                    List<Vector2Int> pix_data = pixels_zup[target];
-                    foreach (Vector2Int vector2Int in pix_data)
-                    {
-                        fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, highlight);
-                    }
-                    fakeMap_dum.Apply();
-                    map_mask.texture = fakeMap_dum;
                     EthnicData data_eth = ethnic_data[data.country];
                     EthnicData data_eth_zup = ethnic_data_zup[data.name];
                     for (int idxi = 0; idxi < data_eth.size; idxi++)
@@ -323,6 +389,39 @@ public class Game : MonoBehaviour
                         ime_holder_zup.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth_zup.ljudi[idxi], data_eth_zup.postotci[idxi] * 100f, data_eth_zup.stanovnici[idxi]);
                     }
                 }
+                List<Vector2Int> pix_data = pixels_zup[target];
+                foreach (Vector2Int vector2Int in pix_data)
+                {
+                    fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, highlight);
+                }
+                fakeMap_dum.Apply();
+                map_mask.texture = fakeMap_dum;
+            }
+        }
+        foreach (ProvinceData data in selected_provinces.ToArray())
+        {
+            if (data.name != selected_province.name)
+            {
+                List<Vector2Int> pix_data_ = pixels_zup[data.color];
+                foreach (Vector2Int vector2Int in pix_data_)
+                {
+                    fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, Color.clear);
+                }
+                fakeMap_dum.Apply();
+                map_mask.texture = fakeMap_dum;
+                selected_provinces.Remove(data);
+                continue;
+            }
+            else
+            {
+                List<Vector2Int> pix_data_ = pixels_zup[data.color];
+                foreach (Vector2Int vector2Int in pix_data_)
+                {
+                    fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, sel_high);
+                }
+                fakeMap_dum.Apply();
+                map_mask.texture = fakeMap_dum;
+                continue;
             }
         }
     }
