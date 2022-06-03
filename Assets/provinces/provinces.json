@@ -20,6 +20,9 @@
           0.0042
         ]
       },
+      "odnosi": {
+        "Srbija": -22
+      },
       "podaci": [
         {
           "ime": "Požeško-Slavonska",
@@ -582,6 +585,250 @@
             {
               "ime": "Opatija",
               "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Ličko-Senjska",
+          "boja": "#FF901E",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 266503,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Talijani",
+              "Bošnjaci",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.8634,
+              0.0503,
+              0.0116,
+              0.0165,
+              0.0582
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Rijeka",
+              "velicina": 4
+            },
+            {
+              "ime": "Crikvenica",
+              "velicina": 2
+            },
+            {
+              "ime": "Opatija",
+              "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Zadarska",
+          "boja": "#006FE1",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 266503,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Talijani",
+              "Bošnjaci",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.8634,
+              0.0503,
+              0.0116,
+              0.0165,
+              0.0582
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Rijeka",
+              "velicina": 4
+            },
+            {
+              "ime": "Crikvenica",
+              "velicina": 2
+            },
+            {
+              "ime": "Opatija",
+              "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Šibensko-Kninska",
+          "boja": "#088F04",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 266503,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Talijani",
+              "Bošnjaci",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.8634,
+              0.0503,
+              0.0116,
+              0.0165,
+              0.0582
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Rijeka",
+              "velicina": 4
+            },
+            {
+              "ime": "Crikvenica",
+              "velicina": 2
+            },
+            {
+              "ime": "Opatija",
+              "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Splitsko-Dalmatinska",
+          "boja": "#F770FB",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 266503,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Talijani",
+              "Bošnjaci",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.8634,
+              0.0503,
+              0.0116,
+              0.0165,
+              0.0582
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Rijeka",
+              "velicina": 4
+            },
+            {
+              "ime": "Crikvenica",
+              "velicina": 2
+            },
+            {
+              "ime": "Opatija",
+              "velicina": 2
+            }
+          ]
+        },
+        {
+          "ime": "Dubrovačko-Neretvanska",
+          "boja": "#77FAAE",
+          "kapital": 0,
+          "demografija": {
+            "populacija": 266503,
+            "etnicka_struktura_velicina": 4,
+            "etnicka_struktura_str": [
+              "Hrvati",
+              "Srbi",
+              "Talijani",
+              "Bošnjaci",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.8634,
+              0.0503,
+              0.0116,
+              0.0165,
+              0.0582
+            ]
+          },
+          "gradovi": [
+            {
+              "ime": "Rijeka",
+              "velicina": 4
+            },
+            {
+              "ime": "Crikvenica",
+              "velicina": 2
+            },
+            {
+              "ime": "Opatija",
+              "velicina": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ime": "Srbija",
+      "prezident": "Slobodan Milošević",
+      "kapital": "Beograd",
+      "demografija": {
+        "populacija": 7498001,
+        "etnicka_struktura_velicina": 5,
+        "etnicka_struktura_str": [
+          "Srbi",
+          "Mađari",
+          "Bošnjaci",
+          "Romi",
+          "Ostali"
+        ],
+        "etnicka_struktura_float": [
+          0.82,
+          0.03,
+          0.01,
+          0.01,
+          0.13
+        ]
+      },
+      "odnosi_velicina": 1,
+      "odnosi": [
+        "Hrvatska",
+        -42
+      ],
+      "podaci": [
+        {
+          "ime": "Srbija",
+          "boja": "#123456",
+          "demografija": {
+            "populacija": 7498001,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Srbi",
+              "Mađari",
+              "Bošnjaci",
+              "Romi",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.82,
+              0.03,
+              0.01,
+              0.01,
+              0.13
+            ]
+          },
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Beograd",
+              "velicina": 1
             }
           ]
         }

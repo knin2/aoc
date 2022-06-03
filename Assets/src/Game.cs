@@ -19,6 +19,14 @@ public class ProvinceData
     public CityData capital;
     public string country;
 }
+public class CountryData
+{
+    public string name, president, capital;
+    public int population;
+    public Dictionary<string, int> odnosi_dict;
+    public List<ProvinceData> provinces;
+    public EthnicData ethnicData;
+}
 public class EthnicData
 {
     public int size;
@@ -34,12 +42,20 @@ public class Game : MonoBehaviour
     public TextMeshProUGUI drzava;
     public TextMeshProUGUI ime_zupanije;
     public TextMeshProUGUI kapital;
+
+    public TextMeshProUGUI side_r_drzava;
+    public TextMeshProUGUI side_drzava;
+    public TextMeshProUGUI side_predsednik;
+    public TextMeshProUGUI side_populacija;
+    public TextMeshProUGUI side_kapital;
+    public TextMeshProUGUI odnosi;
     public RawImage map_mask;
     public Texture2D colourMap;
     public Texture2D fakeMap;
 
     [Header("Boja")]
     public List<Color> prefered_colors;
+    public Gradient odnosi_gradient;
     public Color highlight;
 
     [Header("Vektori")]
@@ -61,6 +77,7 @@ public class Game : MonoBehaviour
     Dictionary<Color, CityData> cities;
     Dictionary<Color, List<Vector2Int>> pixels_zup;
     Dictionary<Color, ProvinceData> provinces;
+    Dictionary<string, CountryData> countries;
     Dictionary<string, EthnicData> ethnic_data;
     Dictionary<string, EthnicData> ethnic_data_zup;
     // We'll use this to quickly find a territory by its colour
@@ -92,6 +109,7 @@ public class Game : MonoBehaviour
         fakeMap_dum = new Texture2D(fakeMap.width, fakeMap.height);
         ethnic_data = new Dictionary<string, EthnicData>();
         ethnic_data_zup = new Dictionary<string, EthnicData>();
+        countries = new Dictionary<string, CountryData>();
         #endregion
         #region province
         reset_fake_dum();
@@ -123,6 +141,9 @@ public class Game : MonoBehaviour
             {
                 Color clr;
                 ColorUtility.TryParseHtmlString(Convert.ToString(province.boja), out clr);
+
+                
+
 
                 ProvinceData data = new ProvinceData();
                 data.name = province.ime;
@@ -195,6 +216,12 @@ public class Game : MonoBehaviour
             string drz = Convert.ToString(drzava.ime);
             int pop = Convert.ToInt32(drzava.demografija.populacija);
             print(pop);
+
+            CountryData countryData = new CountryData();
+            countryData.population = pop;
+            countryData.president = drzava.prezident;
+            countryData.odnosi_dict = new Dictionary<string, int>();
+
             EthnicData data = new EthnicData();
             data.postotci = new List<float>();
             data.ljudi = new List<string>();
@@ -208,9 +235,22 @@ public class Game : MonoBehaviour
                 data.ljudi.Add(s);
                 data.stanovnici.Add(Mathf.RoundToInt(f * pop));
             }
+            for (int i = 0; i < Convert.ToInt32(drzava.odnosi_velicina); i++)
+            {
+                int j = i * 2;
+                string o_drz = drzava.odnosi[j];
+                int o_data = drzava.odnosi[j + 1];
+                countryData.odnosi_dict[o_drz] = o_data;
+            }
             //TValue["Ostali"]  = 1f - sum;
             data.size = data.postotci.Count;
             data.drzava = drz;
+
+            countryData.capital = drzava.kapital;
+            countryData.name = drzava.ime;
+            countryData.ethnicData = data;
+
+            countries[Convert.ToString(drzava.ime)] = countryData;
             ethnic_data.Add(drz, data);
         }
         #endregion
@@ -243,7 +283,8 @@ public class Game : MonoBehaviour
                 if (provinces.ContainsKey(target))
                 {
                     ProvinceData data = provinces[target];
-
+                    print(data.country);
+                    CountryData countryData = countries[data.country];
                     ime.text = data.name;
                     if (last_zup != "" && last_zup != ime.text)
                     {
@@ -255,6 +296,15 @@ public class Game : MonoBehaviour
                     last_zup = ime.text;
                     last_zup_clr = target;
                     drzava.text = data.country;
+                    side_r_drzava.text = data.country;
+                    side_predsednik.text = countryData.president;
+                    side_drzava.text = countryData.name;
+                    side_kapital.text = countryData.capital;
+                    side_populacija.text = string.Format("{0:N0}", countryData.population);
+                    int o_d = countryData.odnosi_dict["Hrvatska"];
+                    odnosi.text = o_d > 0 ? "+" + o_d : "-" + o_d;
+                    float o_d_grad = (o_d + 100) / 200;
+                    odnosi.color = odnosi_gradient.Evaluate(o_d_grad);
                     kapital.text = data.capital.name;
                     ime_zupanije.text = data.name;
 
