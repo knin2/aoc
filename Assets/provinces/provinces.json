@@ -806,31 +806,143 @@
       ],
       "podaci": [
         {
-          "ime": "Srbija",
+          "ime": "Zapadnobački",
           "boja": "#123456",
           "demografija": {
-            "populacija": 7498001,
+            "populacija": 215916,
             "etnicka_struktura_velicina": 5,
             "etnicka_struktura_str": [
               "Srbi",
               "Madjari",
-              "Bosnjaci",
-              "Romi",
+              "Hrvati",
+              "Crnogorci",
               "Ostali"
             ],
             "etnicka_struktura_float": [
-              0.82,
-              0.03,
-              0.01,
-              0.01,
-              0.13
+              0.62,
+              0.10,
+              0.06,
+              0.04,
+              0.18
             ]
           },
           "kapital": 0,
           "gradovi": [
             {
-              "ime": "Beograd",
-              "velicina": 1
+              "ime": "Sombor",
+              "velicina": 4
+            }
+          ]
+        },
+        {
+          "ime": "Severnobački",
+          "boja": "#EDCBA9",
+          "demografija": {
+            "populacija": 200140,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Madjari",
+              "Srbi",
+              "Jugoslaveni",
+              "Bunjevci",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.48,
+              0.16,
+              0.12,
+              0.08,
+              0.16
+            ]
+          },
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Subotica",
+              "velicina": 4
+            }
+          ]
+        },
+        {
+          "ime": "Severnobanatski",
+          "boja": "#654321",
+          "demografija": {
+            "populacija": 165881,
+            "etnicka_struktura_velicina": 3,
+            "etnicka_struktura_str": [
+              "Madjari",
+              "Srbi",
+              "Romi"
+            ],
+            "etnicka_struktura_float": [
+              0.48,
+              0.48,
+              0.02
+            ]
+          },
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Kikinda",
+              "velicina": 3
+            }
+          ]
+        },
+        {
+          "ime": "Srednjobanatski",
+          "boja": "#9ABCDE",
+          "demografija": {
+            "populacija": 165881,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Srbi",
+              "Madjari",
+              "Romi",
+              "Rumunji",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.72,
+              0.13,
+              0.02,
+              0.02,
+              0.11
+            ]
+          },
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Zrenjanin",
+              "velicina": 4
+            }
+          ]
+        },
+        {
+          "ime": "Južnobački",
+          "boja": "#AABBCC",
+          "demografija": {
+            "populacija": 591752,
+            "etnicka_struktura_velicina": 5,
+            "etnicka_struktura_str": [
+              "Srbi",
+              "Madjari",
+              "Slovaci",
+              "Rumunji",
+              "Ostali"
+            ],
+            "etnicka_struktura_float": [
+              0.72,
+              0.13,
+              0.02,
+              0.02,
+              0.11
+            ]
+          },
+          "kapital": 0,
+          "gradovi": [
+            {
+              "ime": "Zrenjanin",
+              "velicina": 4
             }
           ]
         }

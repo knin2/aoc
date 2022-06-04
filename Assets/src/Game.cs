@@ -95,6 +95,7 @@ public class Game : MonoBehaviour
 
     [Header("Konstante")]
     public int cena_vojnika = 5;
+    public float loss_factor_recruit = 1.4f;
     // Assign your colour-coded territory map here.
     [HideInInspector]
     public GameData gameData;
@@ -158,8 +159,8 @@ public class Game : MonoBehaviour
     {
         #region init
         gameData = new GameData();
-        gameData.zarada = 69420;
-        gameData.kinta = -420000;
+        gameData.zarada = 2000000;
+        gameData.kinta = 20000000;
         gameData.potez = 0;
         gameData.drzava = "Hrvatska";
 
@@ -353,11 +354,18 @@ public class Game : MonoBehaviour
             drzave_holder.GetChild(countries[current_province.country].index).GetComponent<RawImage>().color = _c;
         }
     }
+   void update_provinces()
+    {
+        selected_province = provinces[selected_province.color];
+        current_province = provinces[current_province.color];
+    }
     public void end_recruit()
     {
         slider.gameObject.SetActive(false);
         gameData.vojnici += (int)slider.value;
         gameData.kinta -= cena;
+        provinces[selected_province.color].homogenous_people -= (int)(slider.value / loss_factor_recruit);
+        update_provinces();
         update_potez_ui();
     }
     public void end_color_pick()
