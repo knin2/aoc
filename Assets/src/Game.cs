@@ -7,19 +7,24 @@ using System.Web;
 using TMPro;
 using System.IO;
 using Newtonsoft.Json;
+[System.Serializable]
 public class CityData
 {
     public string name;
     public int size;
     public ProvinceData parent;
 }
+[System.Serializable]
 public class ProvinceData
 {
     public Color color;
     public string name;
     public CityData capital;
     public string country;
+    public int vojska;
     public int homogenous_people;
+    public int stanovnici;
+    public EthnicData ethnicData;
 }
 public class CountryData
 {
@@ -46,11 +51,29 @@ public class GameData
     public int kinta;
     public int zarada;
     public int vojnici;
+    public List<WarData> ratovi;
     public GameSettings settings;
+
+    public bool atWar(string country)
+    {
+        foreach (WarData war in ratovi)
+        {
+            if (war.defender == country || war.aggresor == country)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 public class GameSettings
 {
     public int saturation = 40;
+}
+public class WarData
+{
+    public string aggresor;
+    public string defender;
 }
 public class Game : MonoBehaviour
 {
@@ -74,6 +97,11 @@ public class Game : MonoBehaviour
     public TextMeshProUGUI vojnici_slider_text;
     public TextMeshProUGUI vojnici_cena_text;
     public TextMeshProUGUI odnosi;
+    public TextMeshProUGUI odnosi_label;
+    public TextMeshProUGUI rat_textinho;
+    public TextMeshProUGUI zup_vojska;
+    public TextMeshProUGUI zup_stanovnistvo;
+    public TextMeshProUGUI zup_text_name;
     public RawImage map_mask;
     public Texture2D colourMap;
     public Texture2D fakeMap;
@@ -83,6 +111,7 @@ public class Game : MonoBehaviour
     public Gradient odnosi_gradient;
     public Color highlight;
     public Color sel_high;
+    public Gradient vojska_gradient;
 
     [Header("Vektori")]
     public Vector2 map_size;
@@ -91,12 +120,12 @@ public class Game : MonoBehaviour
     public Transform drzave_holder;
     public Transform ime_holder;
     public Transform ime_holder_zup;
+    public Transform objavi_rat_btn_transform;
     public GameObject template;
 
     [Header("Konstante")]
     public int cena_vojnika = 5;
     public float loss_factor_recruit = 1.4f;
-    // Assign your colour-coded territory map here.
     [HideInInspector]
     public GameData gameData;
     Texture2D fakeMap_dum;
@@ -109,6 +138,7 @@ public class Game : MonoBehaviour
     Color last_zup_clr;
     Color last_zup_clr_selected;
     Color original;
+    Color target;
     bool og_set = false;
     Dictionary<Color, CityData> cities;
     Dictionary<Color, List<Vector2Int>> pixels_zup;
@@ -121,14 +151,37 @@ public class Game : MonoBehaviour
     ProvinceData selected_province;
     bool changed_sliders = false;
     int cena;
-    // We'll use this to quickly find a territory by its colour
+    bool objavi_rat_bool;
+    string format_number(int num)
+    {
+        return string.Format("{0:N0}", num);
+    }
+    void change_province_owner(ProvinceData data, string owner)
+    {
+        provinces[data.color].country = owner;
+        update_provinces();
+    }
+    void set_objavi_rat_interactable(bool interactable)
+    {
+        objavi_rat_btn_transform.GetComponent<Button>().interactable = interactable;
+    }
+    void set_objavi_rat_text_alpha(float a)
+    {
+        Color clr = objavi_rat_btn_transform.GetChild(0).GetComponent<TextMeshProUGUI>().color;
+        objavi_rat_btn_transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Color(clr.r, clr.g, clr.b, a);
+    }
     void update_potez_ui()
     {
-
-        gore_levo_kinta.text = string.Format("{0:N0}", gameData.kinta);
-        gore_levo_potez.text = "Potez " + string.Format("{0:N0}", gameData.potez);
-        gore_levo_zarada.text = gameData.zarada > 0 ? String.Format("+{0:N0}", gameData.zarada) : String.Format("{0:N0}", gameData.zarada);
-        side_vojska.text = String.Format("{0:N0} vojnika", gameData.vojnici);
+        gore_levo_kinta.text = format_number(gameData.kinta);
+        gore_levo_potez.text = "Potez " + format_number(gameData.potez);
+        gore_levo_zarada.text = gameData.zarada > 0 ? String.Format("+{0:N0}", gameData.zarada) : format_number(gameData.zarada);
+        side_vojska.text = format_number(gameData.vojnici);
+    }
+    void update_province_ui()
+    {
+        zup_text_name.text = selected_province.name;
+        zup_stanovnistvo.text = $"{format_number(selected_province.stanovnici)} ljudi";
+        zup_vojska.text = $"{format_number(selected_province.vojska)} vojnika";
     }
     public void next_potez()
     {
@@ -163,11 +216,12 @@ public class Game : MonoBehaviour
         gameData.kinta = 20000000;
         gameData.potez = 0;
         gameData.drzava = "Hrvatska";
-
+        gameData.ratovi = new List<WarData>();
         gameData.settings = new GameSettings();
         update_potez_ui();
         selected_province = new ProvinceData();
         selected_province.name = "";
+        selected_province.stanovnici = 0;
         current_province = new ProvinceData();
         cities = new Dictionary<Color, CityData>();
         pixels_zup = new Dictionary<Color, List<Vector2Int>>();
@@ -215,6 +269,7 @@ public class Game : MonoBehaviour
                 ProvinceData data = new ProvinceData();
                 data.name = province.ime;
                 data.country = country.ime;
+                data.stanovnici = Convert.ToInt32(province.demografija.populacija);
 
                 CityData cityData = new CityData();
                 int k = Convert.ToInt32(province.kapital);
@@ -246,6 +301,8 @@ public class Game : MonoBehaviour
 
                 data.homogenous_people = eth_data.stanovnici[0];
                 data.color = clr;
+
+                data.ethnicData = eth_data;
                 provinces.Add(clr, data);
                 ethnic_data_zup.Add(data.name, eth_data);
             }
@@ -328,13 +385,19 @@ public class Game : MonoBehaviour
             index++;
         }
         #endregion
+        selected_province = provinces[provinces.Keys.ToArray()[0]];
         gameData.vojnici = countries[gameData.drzava].vojska;
+
+        update_potez_ui();
+        update_province_ui();
+        update_rat_text();
+        update_side_ui();
     }
     void show_recruit()
     {
         slider.maxValue = selected_province.homogenous_people;
         slider.minValue = 0;
-        vojnici_slider_text.text = String.Format("{0:N0}", Mathf.RoundToInt(slider.value));
+        vojnici_slider_text.text = format_number(Mathf.RoundToInt(slider.value));
         cena = Mathf.RoundToInt(slider.value) * cena_vojnika;
 
         vojnici_cena_text.text = String.Format("{0:N0} $", cena);
@@ -354,7 +417,7 @@ public class Game : MonoBehaviour
             drzave_holder.GetChild(countries[current_province.country].index).GetComponent<RawImage>().color = _c;
         }
     }
-   void update_provinces()
+    void update_provinces()
     {
         selected_province = provinces[selected_province.color];
         current_province = provinces[current_province.color];
@@ -363,9 +426,11 @@ public class Game : MonoBehaviour
     {
         slider.gameObject.SetActive(false);
         gameData.vojnici += (int)slider.value;
+        provinces[selected_province.color].vojska += (int)slider.value;
         gameData.kinta -= cena;
         provinces[selected_province.color].homogenous_people -= (int)(slider.value / loss_factor_recruit);
         update_provinces();
+        update_province_ui();
         update_potez_ui();
     }
     public void end_color_pick()
@@ -381,6 +446,71 @@ public class Game : MonoBehaviour
     {
         changed_sliders = to;
     }
+    void update_rat_text()
+    {
+        rat_textinho.text = "<sprite=0>";
+        foreach (WarData dom in gameData.ratovi)
+        {
+            if (dom.aggresor != selected_province.country)
+            {
+                rat_textinho.text += $"<sprite={countries[dom.aggresor].index + 1}>";
+            }
+            else
+            {
+                rat_textinho.text += $"<sprite={countries[dom.defender].index + 1}>";
+            }
+        }
+    }
+    public void objavi_ratno_stanje()
+    {
+        if (!gameData.atWar(gameData.drzava))
+        {
+            WarData wdata = new WarData();
+
+            wdata.aggresor = gameData.drzava;
+            wdata.defender = selected_province.country;
+
+            gameData.ratovi.Add(wdata);
+
+            update_rat_text();
+        }
+    }
+    void update_side_ui()
+    {
+        ProvinceData data = current_province;
+        CountryData countryData = countries[data.name];
+        ime.text = data.name;
+        last_zup = ime.text;
+        last_zup_clr = target;
+        drzava.text = data.country;
+        side_r_drzava.text = data.country;
+        if (selected_province.country == gameData.drzava)
+        {
+            side_vojska.text = format_number(gameData.vojnici);
+        }
+        else
+        {
+            side_vojska.text = format_number(countryData.vojska);
+        }
+        side_predsednik.text = countryData.president;
+        side_drzava.text = countryData.name;
+        side_kapital.text = countryData.capital;
+        side_populacija.text = format_number(countryData.population);
+        if (countryData.odnosi_dict.ContainsKey(gameData.drzava))
+        {
+            int o_d = countryData.odnosi_dict[gameData.drzava];
+            odnosi.text = o_d > 0 ? $"+{o_d}" : $"{o_d}";
+            float o_d_grad = 1f - ((o_d + 100f) / 200f);
+            odnosi.color = odnosi_gradient.Evaluate(o_d_grad);
+        }
+        else
+        {
+            odnosi.text = "";
+            odnosi.color = Color.white;
+        }
+        kapital.text = data.capital.name;
+        ime_zupanije.text = data.name;
+    }
     void Update()
     {
         // If no click this frame, abort. Nothing to do.
@@ -395,11 +525,7 @@ public class Game : MonoBehaviour
         Vector2 mouse_pos = Input.mousePosition;
         if (map_rect.Contains(mouse_pos))
         {
-            Color target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
-            if (target == Color.black)
-            {
-                mouse_pos += new Vector2(10, 10);
-            }
+            target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
             //print(target);
             if (provinces.ContainsKey(target))
             {
@@ -419,46 +545,30 @@ public class Game : MonoBehaviour
                     last_zup_selected = selected_province.name;
                     last_zup_clr_selected = selected_province.color;
 
-                    ime.text = data.name;
-                    last_zup = ime.text;
-                    last_zup_clr = target;
-                    drzava.text = data.country;
-                    side_r_drzava.text = data.country;
-                    if (selected_province.country == gameData.drzava)
-                    {
-                        side_vojska.text = string.Format("{0:N0} vojnika", gameData.vojnici);
-                    }
-                    else
-                    {
-                        side_vojska.text = String.Format("{0:N0} vojnika", countryData.vojska);
-                    }
-                    side_predsednik.text = countryData.president;
-                    side_drzava.text = countryData.name;
-                    side_kapital.text = countryData.capital;
-                    side_populacija.text = string.Format("{0:N0}", countryData.population);
-                    if (countryData.odnosi_dict.ContainsKey(gameData.drzava))
-                    {
-                        int o_d = countryData.odnosi_dict[gameData.drzava];
-                        odnosi.text = o_d > 0 ? $"+{o_d}" : $"{o_d}";
-                        float o_d_grad = 1f - ((o_d + 100f) / 200f);
-                        odnosi.color = odnosi_gradient.Evaluate(o_d_grad);
-                    }
-                    else
-                    {
-                        odnosi.text = "";
-                        odnosi.color = Color.white;
-                    }
-                    kapital.text = data.capital.name;
-                    ime_zupanije.text = data.name;
+                    update_side_ui();
+
+                    objavi_rat_bool = gameData.drzava == selected_province.country;
+                    set_objavi_rat_interactable(!objavi_rat_bool);
+                    set_objavi_rat_text_alpha(objavi_rat_bool ? 0.5f : 1f);
+
+                    odnosi_label.color = objavi_rat_bool ? new Color(odnosi_label.color.r, odnosi_label.color.g, odnosi_label.color.b, 0.5f) : new Color(odnosi_label.color.r, odnosi_label.color.g, odnosi_label.color.b, 1);
+                    odnosi.color = objavi_rat_bool ? new Color(odnosi.color.r, odnosi.color.g, odnosi.color.b, 0.5f) : new Color(odnosi.color.r, odnosi.color.g, odnosi.color.b, 1);
                     EthnicData data_eth = ethnic_data[data.country];
                     EthnicData data_eth_zup = ethnic_data_zup[data.name];
                     for (int idxi = 0; idxi < data_eth.size; idxi++)
                     {
                         ime_holder.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth.ljudi[idxi], data_eth.postotci[idxi] * 100f, data_eth.stanovnici[idxi]);
+                    }
+                    for (int idxi = 0; idxi < data_eth_zup.size; idxi++)
+                    {
                         ime_holder_zup.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth_zup.ljudi[idxi], data_eth_zup.postotci[idxi] * 100f, data_eth_zup.stanovnici[idxi]);
                     }
+
+                    update_rat_text();
+                    update_province_ui();
                 }
                 List<Vector2Int> pix_data = pixels_zup[target];
+
                 foreach (Vector2Int vector2Int in pix_data)
                 {
                     fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, highlight);
