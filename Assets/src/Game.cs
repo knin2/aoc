@@ -8,18 +8,10 @@ using TMPro;
 using System.IO;
 using Newtonsoft.Json;
 [System.Serializable]
-public class CityData
-{
-    public string name;
-    public int size;
-    public ProvinceData parent;
-}
-[System.Serializable]
 public class ProvinceData
 {
     public Color color;
     public string name;
-    public CityData capital;
     public string country;
     public int vojska;
     public int homogenous_people;
@@ -140,7 +132,6 @@ public class Game : MonoBehaviour
     Color original;
     Color target;
     bool og_set = false;
-    Dictionary<Color, CityData> cities;
     Dictionary<Color, List<Vector2Int>> pixels_zup;
     Dictionary<Color, ProvinceData> provinces;
     Dictionary<string, CountryData> countries;
@@ -223,7 +214,6 @@ public class Game : MonoBehaviour
         selected_province.name = "";
         selected_province.stanovnici = 0;
         current_province = new ProvinceData();
-        cities = new Dictionary<Color, CityData>();
         pixels_zup = new Dictionary<Color, List<Vector2Int>>();
         provinces = new Dictionary<Color, ProvinceData>();
         fakeMap_dum = new Texture2D(fakeMap.width, fakeMap.height);
@@ -271,15 +261,6 @@ public class Game : MonoBehaviour
                 data.country = country.ime;
                 data.stanovnici = Convert.ToInt32(province.demografija.populacija);
 
-                CityData cityData = new CityData();
-                int k = Convert.ToInt32(province.kapital);
-                dynamic city_entry = province.gradovi[k];
-
-                cityData.size = city_entry.velicina;
-                cityData.name = city_entry.ime;
-                cityData.parent = data;
-
-                data.capital = cityData;
 
                 EthnicData eth_data = new EthnicData();
                 eth_data.drzava = data.country;
@@ -322,18 +303,6 @@ public class Game : MonoBehaviour
 
             }
             pixels_zup.Add(p, pix_c);
-        }
-        for (int x = 0; x < colourMap.width; x++)
-        {
-            for (int y = 0; y < colourMap.height; y++)
-            {
-                Color c = colourMap.GetPixel(x, y);
-                if (cities.ContainsKey(c))
-                {
-                    CityData city = cities[c];
-
-                }
-            }
         }
         #endregion
         #region ethnic
@@ -386,6 +355,7 @@ public class Game : MonoBehaviour
         }
         #endregion
         selected_province = provinces[provinces.Keys.ToArray()[0]];
+        current_province = selected_province;
         gameData.vojnici = countries[gameData.drzava].vojska;
 
         update_potez_ui();
@@ -478,7 +448,7 @@ public class Game : MonoBehaviour
     void update_side_ui()
     {
         ProvinceData data = current_province;
-        CountryData countryData = countries[data.name];
+        CountryData countryData = countries[data.country];
         ime.text = data.name;
         last_zup = ime.text;
         last_zup_clr = target;
@@ -508,7 +478,6 @@ public class Game : MonoBehaviour
             odnosi.text = "";
             odnosi.color = Color.white;
         }
-        kapital.text = data.capital.name;
         ime_zupanije.text = data.name;
     }
     void Update()
