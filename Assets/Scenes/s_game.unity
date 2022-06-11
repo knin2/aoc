@@ -771,7 +771,6 @@ GameObject:
   - component: {fileID: 154924271}
   - component: {fileID: 154924274}
   - component: {fileID: 154924273}
-  - component: {fileID: 154924272}
   m_Layer: 5
   m_Name: vode
   m_TagString: Untagged
@@ -798,32 +797,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1136, y: 778}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!61 &154924272
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 154924270}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1136, y: 788}
-  m_EdgeRadius: 0
 --- !u!114 &154924273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3963,8 +3936,10 @@ MonoBehaviour:
   drzave_holder: {fileID: 683811188}
   ime_holder: {fileID: 576001479}
   ime_holder_zup: {fileID: 1003325409}
+  zup_vojska_text_holder: {fileID: 1370795087}
   objavi_rat_btn_transform: {fileID: 553029297}
-  template: {fileID: 0}
+  zup_text_vojska_template: {fileID: 1660331790}
+  main_cam: {fileID: 519420031}
   cena_vojnika: 5
   loss_factor_recruit: 1.4
 --- !u!1 &744194569
@@ -7585,12 +7560,12 @@ GameObject:
   - component: {fileID: 1660331793}
   - component: {fileID: 1660331792}
   m_Layer: 5
-  m_Name: vojska
+  m_Name: template
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1660331791
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7630,7 +7605,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10.000.000
+  m_text: 100.00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9f74f8f2a69a1ea4db750c9cc40b02be, type: 2}
   m_sharedMaterial: {fileID: 8245528985515475314, guid: 9f74f8f2a69a1ea4db750c9cc40b02be, type: 2}
@@ -7657,8 +7632,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 31.96
+  m_fontSizeBase: 31.96
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7693,7 +7668,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 94.959656, z: 599.8907, w: 0}
+  m_margin: {x: 0, y: 94.959656, z: 517.5644, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

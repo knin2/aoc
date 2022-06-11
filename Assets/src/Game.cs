@@ -123,7 +123,8 @@ public class Game : MonoBehaviour
     public Transform ime_holder_zup;
     public Transform zup_vojska_text_holder;
     public Transform objavi_rat_btn_transform;
-    public GameObject template;
+    public GameObject zup_text_vojska_template;
+    public Camera main_cam;
     #endregion
     #region konstante
     [Header("Konstante")]
@@ -133,6 +134,8 @@ public class Game : MonoBehaviour
     #region globalne varijable
     [HideInInspector]
     public GameData gameData;
+    [HideInInspector]
+    public static string save_path;
     Texture2D fakeMap_dum;
     Rect map_rect;
     Vector2 side_size;
@@ -149,6 +152,7 @@ public class Game : MonoBehaviour
 
     Dictionary<Color, List<Vector2Int>> pixels_zup;
     Dictionary<Color, ProvinceData> provinces;
+    Dictionary<string, List<ProvinceData>> provinces_by_country;
     Dictionary<Color, Vector2Int> pozicije_misa_u_provinciji; //koordinate na ekranu, ne na teksturi
     Dictionary<string, CountryData> countries;
     Dictionary<string, EthnicData> ethnic_data;
@@ -166,17 +170,17 @@ public class Game : MonoBehaviour
     private void Start()
     {
         #region init
+        save_path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/baoc/";
+
         gameData = new GameData();
         gameData.zarada = 2000000;
         gameData.kinta = 20000000;
         gameData.potez = 0;
         gameData.drzava = "Hrvatska";
+
         gameData.ratovi = new List<WarData>();
         gameData.settings = new GameSettings();
-        update_potez_ui();
         selected_province = new ProvinceData();
-        selected_province.name = "";
-        selected_province.stanovnici = 0;
         current_province = new ProvinceData();
         pixels_zup = new Dictionary<Color, List<Vector2Int>>();
         provinces = new Dictionary<Color, ProvinceData>();
@@ -184,7 +188,11 @@ public class Game : MonoBehaviour
         ethnic_data = new Dictionary<string, EthnicData>();
         ethnic_data_zup = new Dictionary<string, EthnicData>();
         selected_provinces = new List<ProvinceData>();
+        provinces_by_country = new Dictionary<string, List<ProvinceData>>();
         countries = new Dictionary<string, CountryData>();
+        pozicije_misa_u_provinciji = new Dictionary<Color, Vector2Int>();
+
+        update_potez_ui();
         #endregion
         #region province
         reset_fake_dum();
@@ -212,6 +220,8 @@ public class Game : MonoBehaviour
         dynamic provinces_json = JsonConvert.DeserializeObject(json);
         foreach (dynamic country in provinces_json.podaci)
         {
+            List<ProvinceData> provinces__ = new List<ProvinceData>();
+            
             foreach (dynamic province in country.podaci)
             {
                 Color clr;
@@ -250,7 +260,11 @@ public class Game : MonoBehaviour
                 data.ethnicData = eth_data;
                 provinces.Add(clr, data);
                 ethnic_data_zup.Add(data.name, eth_data);
+
+                provinces__.Add(data);
             }
+            string drzava_ = Convert.ToString(country.ime);
+            provinces_by_country[drzava_] = provinces__;
         }
         foreach (Color p in provinces.Keys)
         {
@@ -278,6 +292,7 @@ public class Game : MonoBehaviour
             int vojske = Convert.ToInt32(drzava.vojska);
 
             CountryData countryData = new CountryData();
+            countryData.provinces = provinces_by_country[drz];
             countryData.population = pop;
             countryData.president = drzava.prezident;
             countryData.odnosi_dict = new Dictionary<string, int>();
@@ -326,6 +341,10 @@ public class Game : MonoBehaviour
         update_province_ui();
         update_rat_text();
         update_side_ui();
+
+        #region RPC
+        init_rich_presence();
+        #endregion
     }
     void Update()
     {
@@ -347,7 +366,7 @@ public class Game : MonoBehaviour
             target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
             if (provinces.ContainsKey(target))
             {
-                #region na?i provinciju
+                #region nadi provinciju
                 current_province = provinces[target];
                 ProvinceData data = current_province;
                 CountryData countryData = countries[data.country];
@@ -359,19 +378,21 @@ public class Game : MonoBehaviour
                 last_zup_clr = target;
                 #endregion
 
-                
+
                 if (Input.GetMouseButtonDown(0))
                 {
                     #region pozicija miša na ekranu (provincija dictionary), ne teksturi
-                    Vector2Int mouse_pos_int = new Vector2Int( (int) mouse_pos.x, (int) mouse_pos.y);
+                    Vector2Int mouse_pos_int = new Vector2Int((int)mouse_pos.x, (int)mouse_pos.y);
 
-                    mouse_pos_int.x += (int) side_size.x;
-                    mouse_pos_int.y += (int) side_size.y;
+                    mouse_pos_int.x += (int)side_size.x;
+                    mouse_pos_int.y += (int)side_size.y;
 
                     #endregion
 
                     selected_province = current_province;
                     selected_provinces.Add(selected_province);
+
+                    print(mouse_pos_int);
 
                     pozicije_misa_u_provinciji[selected_province.color] = mouse_pos_int;
 
@@ -402,19 +423,35 @@ public class Game : MonoBehaviour
 
                         t_plus.color = v_cpy;
 
-                        
+
                     }
                     #endregion
-
+                    #region province hud ui
                     for (int i = 0; i < zup_vojska_text_holder.childCount; i++)
                     {
-                        zup_vojska_text_holder.
+                        GameObject child_GO = zup_vojska_text_holder.GetChild(i).gameObject;
+                        if (child_GO.activeSelf)
+                        {
+                            Destroy(child_GO);
+                        }
                     }
 
                     foreach (Color key in pozicije_misa_u_provinciji.Keys)
                     {
-                        
+                        if (provinces[key].vojska != 0)
+                        {
+                            Vector3 pos = v2int_to_v3(pozicije_misa_u_provinciji[key]);
+                            pos.y -= 128;
+                            zup_text_vojska_template.transform.position = pos;
+                            zup_text_vojska_template.GetComponent<TextMeshProUGUI>().text = format_number(provinces[key].vojska);
+                            zup_text_vojska_template.SetActive(true);
+
+                            Instantiate(zup_text_vojska_template, zup_text_vojska_template.transform.parent);
+
+                            zup_text_vojska_template.SetActive(false);
+                        }
                     }
+                    #endregion
 
                     last_zup_selected = selected_province.name;
                     last_zup_clr_selected = selected_province.color;
@@ -433,11 +470,11 @@ public class Game : MonoBehaviour
                     odnosi_label.color = objavi_rat_bool ? new Color(odnosi_label.color.r, odnosi_label.color.g, odnosi_label.color.b, 0.5f) : new Color(odnosi_label.color.r, odnosi_label.color.g, odnosi_label.color.b, 1);
                     odnosi.color = objavi_rat_bool ? new Color(odnosi.color.r, odnosi.color.g, odnosi.color.b, 0.5f) : new Color(odnosi.color.r, odnosi.color.g, odnosi.color.b, 1);
                     #endregion
-                    
+
                     EthnicData data_eth = ethnic_data[data.country];
                     EthnicData data_eth_zup = ethnic_data_zup[data.name];
 
-                    #region etni?ki sastav UI
+                    #region etnicki sastav UI
                     for (int idxi = 0; idxi < data_eth.size; idxi++)
                     {
                         ime_holder.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth.ljudi[idxi], data_eth.postotci[idxi] * 100f, data_eth.stanovnici[idxi]);
@@ -447,8 +484,11 @@ public class Game : MonoBehaviour
                         ime_holder_zup.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth_zup.ljudi[idxi], data_eth_zup.postotci[idxi] * 100f, data_eth_zup.stanovnici[idxi]);
                     }
                     #endregion
+                    
                     update_rat_text();
                     update_province_ui();
+
+                    update_rich_presence();
                 }
                 List<Vector2Int> pix_data = pixels_zup[target];
 
@@ -492,9 +532,54 @@ public class Game : MonoBehaviour
     }
     #endregion
     #region util metode
+    ulong get_epoch()
+    {
+        TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+        int secondsSinceEpoch = (int)t.TotalSeconds;
+        return (ulong)secondsSinceEpoch;
+    }
+    RPCData get_rpc_data()
+    {
+        RPCData activity = new RPCData();
+        activity.state = "U igri";
+        Debug.Log("Updating rich presence");
+        Debug.Log(countries[gameData.drzava].provinces.Count);
+        activity.details = $"{gameData.drzava} | {countries[gameData.drzava].provinces.Count} provincije | {gameData.potez}. potez";
+
+        RPC_Timestamps timestamps = new RPC_Timestamps();
+        timestamps.start = get_epoch();
+        activity.timestamps = timestamps;
+
+
+        Dictionary<string, string> assets = new Dictionary<string, string>();
+
+        assets.Add("large_image", $"{save_path}/rpc/logo.png");
+        assets.Add("large_text", "Balkanski AOC");
+        assets.Add("small_image", $"{save_path}/rpc/logo.png");
+        assets.Add("small_text", "Balkanski AOC");
+
+        activity.assets = assets;
+        activity.instance = true;
+
+        return activity;
+    }
+    void init_rich_presence()
+    {
+        RPCData activity = get_rpc_data();
+        RPC.Init(activity);
+    }
+    void update_rich_presence()
+    {
+        RPCData activity = get_rpc_data();
+        RPC.SetActivity(activity);
+    }
     Color copy_color(Color og)
     {
         return new Color(og.r, og.g, og.b, og.a);
+    }
+    Vector3 v2int_to_v3(Vector2Int v2int)
+    {
+        return new Vector3(v2int.x, v2int.y);
     }
     string format_number(int num)
     {

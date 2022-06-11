@@ -8,6 +8,7 @@ public class ColorPick : MonoBehaviour
     void Start()
     {
         print("yes");
+        
     }
 
     // Update is called once per frame
