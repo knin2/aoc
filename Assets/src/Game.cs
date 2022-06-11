@@ -530,6 +530,10 @@ public class Game : MonoBehaviour
         }
         #endregion
     }
+    private void OnApplicationQuit()
+    {
+        RPC.Deinit();
+    }
     #endregion
     #region util metode
     ulong get_epoch()
@@ -547,15 +551,14 @@ public class Game : MonoBehaviour
         activity.details = $"{gameData.drzava} | {countries[gameData.drzava].provinces.Count} provincije | {gameData.potez}. potez";
 
         RPC_Timestamps timestamps = new RPC_Timestamps();
-        timestamps.start = get_epoch();
+        timestamps.start = 1654899807;
         activity.timestamps = timestamps;
 
 
         Dictionary<string, string> assets = new Dictionary<string, string>();
-
-        assets.Add("large_image", $"{save_path}/rpc/logo.png");
+        assets.Add("large_image", "logo");
         assets.Add("large_text", "Balkanski AOC");
-        assets.Add("small_image", $"{save_path}/rpc/logo.png");
+        assets.Add("small_image", "logo");
         assets.Add("small_text", "Balkanski AOC");
 
         activity.assets = assets;

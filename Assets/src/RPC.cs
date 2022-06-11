@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 public class RPC_Timestamps
 {
     public ulong start;
-    public ulong end;
 }
 public class RPCData
 {
@@ -30,9 +29,9 @@ public class RPC : MonoBehaviour
     }
     public static void SetActivity(object activity_)
     {
-        main_t.Join();
+        main_t.Abort();
         main_t = new Thread(new ParameterizedThreadStart(setActivity));
-        main_t.Start((RPCData)activity_);
+        main_t.Start(activity_);
     }
     public static void setActivity(object _activity) { 
         RPCData activity = (RPCData)_activity;
@@ -43,12 +42,15 @@ public class RPC : MonoBehaviour
         System.Diagnostics.Process process = new System.Diagnostics.Process();
         System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
         startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Maximized;
-        Debug.Log(Game.save_path);
+        Debug.Log($"\"{json_path}\"");
         startInfo.FileName = $"{Game.save_path}/rpc/rpc-cmd-api.exe";
-        startInfo.UseShellExecute = false;
+        startInfo.UseShellExecute = true;
         startInfo.Arguments = $"\"{json_path}\"";
-        startInfo.RedirectStandardOutput = true;
         process.StartInfo = startInfo;
         process.Start();
     }
+    public static void Deinit()
+    {
+        main_t.Abort();
+    }        
 }
