@@ -22,14 +22,17 @@ public class RPCData
 public class RPC : MonoBehaviour
 {
     public static Thread main_t;
+    public static System.Diagnostics.Process process;
     public static void Init(RPCData activity) 
     {
+        process = new System.Diagnostics.Process();
        main_t = new Thread(setActivity);
        main_t.Start(activity);
     }
     public static void SetActivity(object activity_)
     {
         main_t.Abort();
+        process.Close();
         main_t = new Thread(new ParameterizedThreadStart(setActivity));
         main_t.Start(activity_);
     }
@@ -39,7 +42,7 @@ public class RPC : MonoBehaviour
         string TEMP = Path.GetTempPath();
         string json_path = $"{TEMP}/BAOC_ACTIVITY.JSON";
         File.WriteAllText(json_path, jsonString);
-        System.Diagnostics.Process process = new System.Diagnostics.Process();
+        process = new System.Diagnostics.Process();
         System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
         startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Maximized;
         Debug.Log($"\"{json_path}\"");
@@ -52,5 +55,6 @@ public class RPC : MonoBehaviour
     public static void Deinit()
     {
         main_t.Abort();
+        process.Close();
     }        
 }
