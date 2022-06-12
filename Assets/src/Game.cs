@@ -129,6 +129,7 @@ public class Game : MonoBehaviour
     #region konstante
     [Header("Konstante")]
     public int cena_vojnika = 5;
+    public int broj_kutova = 64;
     public float loss_factor_recruit = 1.4f;
     #endregion
     #region globalne varijable
@@ -155,6 +156,7 @@ public class Game : MonoBehaviour
     Dictionary<string, List<ProvinceData>> provinces_by_country;
     Dictionary<Color, Vector2Int> pozicije_misa_u_provinciji; //koordinate na ekranu, ne na teksturi
     Dictionary<string, CountryData> countries;
+    Dictionary<Color, List<Color>> neighboring_provinces;
     Dictionary<string, EthnicData> ethnic_data;
     Dictionary<string, EthnicData> ethnic_data_zup;
     List<ProvinceData> selected_provinces;
@@ -191,6 +193,7 @@ public class Game : MonoBehaviour
         provinces_by_country = new Dictionary<string, List<ProvinceData>>();
         countries = new Dictionary<string, CountryData>();
         pozicije_misa_u_provinciji = new Dictionary<Color, Vector2Int>();
+        neighboring_provinces = new Dictionary<Color, List<Color>>();
 
         update_potez_ui();
         #endregion
@@ -221,7 +224,7 @@ public class Game : MonoBehaviour
         foreach (dynamic country in provinces_json.podaci)
         {
             List<ProvinceData> provinces__ = new List<ProvinceData>();
-            
+
             foreach (dynamic province in country.podaci)
             {
                 Color clr;
@@ -262,6 +265,8 @@ public class Game : MonoBehaviour
                 ethnic_data_zup.Add(data.name, eth_data);
 
                 provinces__.Add(data);
+
+
             }
             string drzava_ = Convert.ToString(country.ime);
             provinces_by_country[drzava_] = provinces__;
@@ -280,8 +285,19 @@ public class Game : MonoBehaviour
                 }
 
             }
+            List<Color> nei_p = new List<Color>();
+            for (int i = 0; i < broj_kutova; i++)
+            {
+                Color neighboring = get_first_non_black_pixel_at_angle(colourMap, pix_c[0], i * (360f / broj_kutova), p);
+                if (!nei_p.Contains(neighboring) && provinces.ContainsKey(neighboring))
+                {
+                    nei_p.Add(neighboring);
+                }
+            }
+            neighboring_provinces[p] = nei_p;
             pixels_zup.Add(p, pix_c);
         }
+
         #endregion
         #region ethnic
         int index = 0;
@@ -436,21 +452,21 @@ public class Game : MonoBehaviour
                         }
                     }
 
-                    foreach (Color key in pozicije_misa_u_provinciji.Keys)
-                    {
-                        if (provinces[key].vojska != 0)
-                        {
-                            Vector3 pos = v2int_to_v3(pozicije_misa_u_provinciji[key]);
-                            pos.y -= 128;
-                            zup_text_vojska_template.transform.position = pos;
-                            zup_text_vojska_template.GetComponent<TextMeshProUGUI>().text = format_number(provinces[key].vojska);
-                            zup_text_vojska_template.SetActive(true);
+                    //foreach (Color key in pozicije_misa_u_provinciji.Keys)
+                    //{
+                    //    if (provinces[key].vojska != 0)
+                    //    {
+                    //        Vector3 pos = v2int_to_v3(pozicije_misa_u_provinciji[key]);
+                    //        pos.y -= 128;
+                    //        zup_text_vojska_template.transform.position = pos;
+                    //        zup_text_vojska_template.GetComponent<TextMeshProUGUI>().text = format_number(provinces[key].vojska);
+                    //        zup_text_vojska_template.SetActive(true);
 
-                            Instantiate(zup_text_vojska_template, zup_text_vojska_template.transform.parent);
+                    //        Instantiate(zup_text_vojska_template, zup_text_vojska_template.transform.parent);
 
-                            zup_text_vojska_template.SetActive(false);
-                        }
-                    }
+                    //        zup_text_vojska_template.SetActive(false);
+                    //    }
+                    //}
                     #endregion
 
                     last_zup_selected = selected_province.name;
@@ -484,47 +500,38 @@ public class Game : MonoBehaviour
                         ime_holder_zup.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth_zup.ljudi[idxi], data_eth_zup.postotci[idxi] * 100f, data_eth_zup.stanovnici[idxi]);
                     }
                     #endregion
-                    
+
                     update_rat_text();
                     update_province_ui();
 
                     update_rich_presence();
                 }
-                List<Vector2Int> pix_data = pixels_zup[target];
-
-                foreach (Vector2Int vector2Int in pix_data)
-                {
-                    fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, highlight);
-                }
-                fakeMap_dum.Apply();
-                map_mask.texture = fakeMap_dum;
+                #region provincija hover
+                light_up_province(target, highlight);
+                #endregion
             }
         }
         #endregion
         #region GFX provincije
         foreach (ProvinceData data in selected_provinces.ToArray())
         {
-            if (data.name != selected_province.name)
+            if (data.name != selected_province.name && !neighboring_provinces[data.color].Contains(selected_province.color))
             {
-                List<Vector2Int> pix_data_ = pixels_zup[data.color];
-                foreach (Vector2Int vector2Int in pix_data_)
-                {
-                    fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, Color.clear);
-                }
-                fakeMap_dum.Apply();
-                map_mask.texture = fakeMap_dum;
+                light_up_province(data.color, Color.clear);
                 selected_provinces.Remove(data);
                 continue;
             }
             else
             {
-                List<Vector2Int> pix_data_ = pixels_zup[data.color];
-                foreach (Vector2Int vector2Int in pix_data_)
+                light_up_province(data.color, sel_high);
+
+                //light up neighbours
+                foreach (Color neighbour in neighboring_provinces[data.color])
                 {
-                    fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, sel_high);
+                    light_up_province(neighbour, highlight);
+                    selected_provinces.Add(provinces[neighbour]);
                 }
-                fakeMap_dum.Apply();
-                map_mask.texture = fakeMap_dum;
+                
                 continue;
             }
         }
@@ -532,10 +539,38 @@ public class Game : MonoBehaviour
     }
     private void OnApplicationQuit()
     {
-        RPC.Deinit();
+        RPC.Abort();
+    }
+    #endregion
+    #region gameplay metode
+    public void next_potez()
+    {
+        gameData.potez++;
+        gameData.kinta += gameData.zarada;
+        update_potez_ui();
+        update_rich_presence();
     }
     #endregion
     #region util metode
+    void set_province_color(Color province, Color with)
+    {
+        List<Vector2Int> pix_data = pixels_zup[province];
+
+        foreach (Vector2Int vector2Int in pix_data)
+        {
+            fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, with);
+        }
+    }
+    void light_up_province(Color province, Color with_color)
+    {
+        set_province_color(province, with_color);
+        fakeMap_dum.Apply();
+        map_mask.texture = fakeMap_dum;
+    }
+    string color_to_rgb255_string(Color c)
+    {
+        return String.Format("r: {0}, g: {1}, b: {2}", (int)(c.r * 255), (int)(c.g * 255), (int)(c.b * 255));
+    }
     ulong get_epoch()
     {
         TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
@@ -546,12 +581,10 @@ public class Game : MonoBehaviour
     {
         RPCData activity = new RPCData();
         activity.state = "U igri";
-        Debug.Log("Updating rich presence");
-        Debug.Log(countries[gameData.drzava].provinces.Count);
         activity.details = $"{gameData.drzava} | {countries[gameData.drzava].provinces.Count} provincije | {gameData.potez}. potez";
 
         RPC_Timestamps timestamps = new RPC_Timestamps();
-        timestamps.start = 1654899807;
+        timestamps.start = get_epoch();
         activity.timestamps = timestamps;
 
 
@@ -568,8 +601,8 @@ public class Game : MonoBehaviour
     }
     void init_rich_presence()
     {
-        RPCData activity = get_rpc_data();
-        RPC.Init(activity);
+        RPC.Init();
+        update_rich_presence();
     }
     void update_rich_presence()
     {
@@ -615,12 +648,6 @@ public class Game : MonoBehaviour
         zup_stanovnistvo.text = $"{format_number(selected_province.stanovnici)} ljudi";
         zup_vojska.text = $"{format_number(selected_province.vojska)} vojnika";
     }
-    public void next_potez()
-    {
-        gameData.potez++;
-        gameData.kinta += gameData.zarada;
-        update_potez_ui();
-    }
     void reset_fake_dum()
     {
         for (int x = 0; x < fakeMap.width; x++)
@@ -633,11 +660,7 @@ public class Game : MonoBehaviour
     }
     void erase_last_zup()
     {
-        List<Vector2Int> pix_data = pixels_zup[last_zup_clr];
-        foreach (Vector2Int vector2Int in pix_data)
-        {
-            fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, Color.clear);
-        }
+        set_province_color(last_zup_clr, Color.clear);
         fakeMap_dum.Apply();
     }
     void show_recruit()
@@ -758,6 +781,67 @@ public class Game : MonoBehaviour
     public void resetiraj_slider()
     {
         slider.value = 0;
+    }
+    List<Vector2Int> get_circle_points(int radius)
+    {
+        List<Vector2Int> points = new List<Vector2Int>();
+
+
+        int x = radius;
+        int y = 0;
+        int err = 0;
+
+        int x0 = 0;
+        int y0 = 0;
+
+        while (x >= y)
+        {
+            points.Add(new Vector2Int(x0 + x, y0 + y));
+            points.Add(new Vector2Int(x0 + y, y0 + x));
+            points.Add(new Vector2Int(x0 - y, y0 + x));
+            points.Add(new Vector2Int(x0 - x, y0 + y));
+            points.Add(new Vector2Int(x0 - x, y0 - y));
+            points.Add(new Vector2Int(x0 - y, y0 - x));
+            points.Add(new Vector2Int(x0 + y, y0 - x));
+            points.Add(new Vector2Int(x0 + x, y0 - y));
+
+            if (err <= 0)
+            {
+                y += 1;
+                err += 2 * y + 1;
+            }
+
+            if (err > 0)
+            {
+                x -= 1;
+                err -= 2 * x + 1;
+            }
+        }
+
+        return points;
+    }
+    Color get_first_non_black_pixel_at_angle(Texture2D tex, Vector2Int origin, float angle, Color original)
+    {
+        List<Vector2Int> points = get_circle_points(128);
+        Vector2Int p2 = points[(int)((angle / 360f) * points.Count)] + origin;
+
+        Vector2 t = origin;
+        float frac = 1 / Mathf.Sqrt(Mathf.Pow(p2.x - origin.x, 2) + Mathf.Pow(p2.y - origin.y, 2));
+        float ctr = 0;
+
+        while ((int)t.x != (int)p2.x || (int)t.y != (int)p2.y)
+        {
+            t = Vector2.Lerp(origin, p2, ctr);
+            ctr += frac;
+            Color col = tex.GetPixel((int)t.x, (int)t.y);
+
+            if (col != Color.black && col != original && provinces.ContainsKey(col))
+            {
+                return col;
+            }
+        }
+        fakeMap_dum.Apply();
+        return Color.black;
     }
     #endregion
 }

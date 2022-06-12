@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-
 using Newtonsoft.Json;
 
 public class RPC_Timestamps
@@ -21,40 +20,34 @@ public class RPCData
 }
 public class RPC : MonoBehaviour
 {
-    public static Thread main_t;
-    public static System.Diagnostics.Process process;
-    public static void Init(RPCData activity) 
+    public static void Init()
     {
-        process = new System.Diagnostics.Process();
-       main_t = new Thread(setActivity);
-       main_t.Start(activity);
+        DiscordRPC.EventHandlers eventHandlers = new DiscordRPC.EventHandlers();
+        DiscordRPC.Initialize("985117362153992302", ref eventHandlers, true, "");
+        
     }
-    public static void SetActivity(object activity_)
+    private static DiscordRPC.RichPresence rpc_data_to_rich_presence(RPCData data)
     {
-        main_t.Abort();
-        process.Close();
-        main_t = new Thread(new ParameterizedThreadStart(setActivity));
-        main_t.Start(activity_);
+        DiscordRPC.RichPresence richPresence = new DiscordRPC.RichPresence();
+        
+        richPresence.state = data.state;
+        richPresence.details = data.details;
+        richPresence.largeImageText = data.assets["large_text"];
+        richPresence.instance = data.instance;
+        richPresence.startTimestamp = (long)data.timestamps.start;
+        richPresence.largeImageKey = data.assets["large_image"];
+        richPresence.smallImageKey = data.assets["small_image"];
+        richPresence.smallImageText = data.assets["small_text"];
+
+        return richPresence;
     }
-    public static void setActivity(object _activity) { 
-        RPCData activity = (RPCData)_activity;
-        string jsonString = JsonConvert.SerializeObject(activity);
-        string TEMP = Path.GetTempPath();
-        string json_path = $"{TEMP}/BAOC_ACTIVITY.JSON";
-        File.WriteAllText(json_path, jsonString);
-        process = new System.Diagnostics.Process();
-        System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-        startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Maximized;
-        Debug.Log($"\"{json_path}\"");
-        startInfo.FileName = $"{Game.save_path}/rpc/rpc-cmd-api.exe";
-        startInfo.UseShellExecute = true;
-        startInfo.Arguments = $"\"{json_path}\"";
-        process.StartInfo = startInfo;
-        process.Start();
-    }
-    public static void Deinit()
+    public static void SetActivity(RPCData data)
     {
-        main_t.Abort();
-        process.Close();
-    }        
+        DiscordRPC.RichPresence rpc_foreign = rpc_data_to_rich_presence(data);
+        DiscordRPC.UpdatePresence(rpc_foreign);
+    }
+    public static void Abort()
+    {
+        DiscordRPC.Shutdown();
+    }
 }

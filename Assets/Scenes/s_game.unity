@@ -357,7 +357,6 @@ GameObject:
   - component: {fileID: 63216315}
   - component: {fileID: 63216314}
   - component: {fileID: 63216313}
-  - component: {fileID: 63216316}
   m_Layer: 5
   m_Name: boja
   m_TagString: Untagged
@@ -478,18 +477,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 63216311}
   m_CullTransparentMesh: 1
---- !u!114 &63216316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63216311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd7ca1034c853cc4ea6ad575a3e10d43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &124815987
 GameObject:
   m_ObjectHideFlags: 0
@@ -3941,6 +3928,7 @@ MonoBehaviour:
   zup_text_vojska_template: {fileID: 1660331790}
   main_cam: {fileID: 519420031}
   cena_vojnika: 5
+  broj_kutova: 360
   loss_factor_recruit: 1.4
 --- !u!1 &744194569
 GameObject:

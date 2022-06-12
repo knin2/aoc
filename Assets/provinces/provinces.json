@@ -806,7 +806,7 @@
       ],
       "podaci": [
         {
-          "ime": "Zapadnobački",
+          "ime": "Zapadnobacki",
           "boja": "#123456",
           "demografija": {
             "populacija": 215916,
@@ -835,7 +835,7 @@
           ]
         },
         {
-          "ime": "Severnobački",
+          "ime": "Severnobacki",
           "boja": "#EDCBA9",
           "demografija": {
             "populacija": 200140,
@@ -918,7 +918,7 @@
           ]
         },
         {
-          "ime": "Južnobački",
+          "ime": "Juznobacki",
           "boja": "#AABBCC",
           "demografija": {
             "populacija": 591752,
