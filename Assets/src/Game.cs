@@ -1,13 +1,33 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System;
 using System.Linq;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
 using Newtonsoft.Json;
-
 #region klase
+public static class BAOC
+{
+    public static object that;
+    static string get_sorrounded(string start, string end, string s)
+    {
+        int idx = s.IndexOf(start) + start.Length;
+        int end_idx = s.IndexOf(end) - end.Length;
+        return s.Substring(idx, (end_idx - idx) + 1);
+    }
+#nullable enable
+    public static void Log(object val, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = "")
+    {
+        Debug.Log(string.Format("[LOG] BAOC: [{0}] [{1}]: [{3}] [{2}] | {4}",
+            DateTime.Now.ToString("dd-MM-yyyy h:mm:ss tt"), that.GetType().Name, caller, lineNumber, val)
+        );
+        return;
+        
+    }
+#nullable disable
+}
 [System.Serializable]
 public class ProvinceData
 {
@@ -76,10 +96,8 @@ public class WarData
 [System.Serializable]
 public struct BAOC_Color
 {
-    
     public float r, g, b, a;
-
-    public BAOC_Color(float r, float g, float b, float a = 1f)
+    public BAOC_Color(float r, float g, float b, float a = 1f) : this()
     {
         this.r = r;
         this.g = g;
@@ -95,7 +113,7 @@ public struct BAOC_Color
     {
         return new Color(r, g, b, a);
     }
-    
+
     public BAOC_Color Copy()
     {
         return new BAOC_Color(r, g, b, a);
@@ -216,7 +234,11 @@ public struct BAOC_Color
     }
     public static BAOC_Color FromHex(string hex)
     {
-        return FromColor(ColorUtility.TryParseHtmlString(hex, out Color color) ? color : Color.white);
+        Color out_clr = Color.clear;
+        ColorUtility.TryParseHtmlString(hex, out out_clr);
+        BAOC_Color bclr = FromColor(out_clr);
+        BAOC.Log($"{hex} -> {bclr}");
+        return bclr;
     }
     public static BAOC_Color black = new BAOC_Color(0, 0, 0);
     public static BAOC_Color clear = new BAOC_Color(0, 0, 0, 0);
@@ -250,6 +272,10 @@ public struct BAOC_Color
         hash = hash * 31 + b.GetHashCode();
         hash = hash * 31 + a.GetHashCode();
         return hash;
+    }
+    public override string ToString()
+    {
+        return $"BAOC_Color: {r}, {g}, {b}, {a}";
     }
 }
 #region enum
@@ -309,7 +335,7 @@ public class Game : MonoBehaviour
     public Gradient odnosi_gradient;
     public BAOC_Color highlight;
     public BAOC_Color sel_high;
-    
+
     public Gradient vojska_gradient;
     #endregion
     #region vektori
@@ -371,6 +397,10 @@ public class Game : MonoBehaviour
     bool selected_province_is_part_of_country = false;
     #endregion
     #region glavne metode
+    private void Awake()
+    {
+        BAOC.that = this;
+    }
     private void Start()
     {
         #region init
@@ -558,13 +588,15 @@ public class Game : MonoBehaviour
         update_province_ui();
         update_rat_text();
         update_side_ui();
-        Dictionary<string, ProvinceData> neigh_form2 = new Dictionary<string, ProvinceData>();
+        Dictionary<string, string[]> neigh_form2 = new Dictionary<string, string[]>();
         foreach (BAOC_Color c in neighboring_provinces.Keys)
         {
+            List<string> value = new List<string>();
             foreach (BAOC_Color province_c in neighboring_provinces[c])
             {
-                neigh_form2[provinces[c].name] = provinces[province_c];
+                value.Add(provinces[province_c].name);
             }
+            neigh_form2[provinces[c].name] = value.ToArray();
         }
 
 
@@ -591,18 +623,20 @@ public class Game : MonoBehaviour
         if (map_rect.Contains(mouse_pos))
         {
             target = BAOC_Color.FromColor(colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y));
+            clear_all_provinces_except(new BAOC_Color[] { target, selected_province.color });
+
             if (provinces.ContainsKey(target))
             {
                 #region nadi provinciju
                 current_province = provinces[target];
                 ProvinceData data = current_province;
-                CountryData countryData = countries[data.country];
-                if (data.name != last_zup && last_zup != "")
-                {
-                    erase_last_zup();
-                }
-                last_zup = data.name;
-                last_zup_clr = target;
+                //CountryData countryData = countries[data.country];
+                //if (data.name != last_zup && last_zup != "")
+                //{
+                //    erase_last_zup();
+                //}
+                //last_zup = data.name;
+                //last_zup_clr = target;
                 #endregion
 
 
@@ -620,7 +654,7 @@ public class Game : MonoBehaviour
                     selected_provinces.Add(selected_province);
                     selected_neighbouring_provinces = province_BAOC_Colors_to_province_data_collection(neighboring_provinces[selected_province.color]);
 
-                    print(mouse_pos_int);
+                    BAOC.Log(mouse_pos_int);
 
                     pozicije_misa_u_provinciji[selected_province.color] = mouse_pos_int;
 
@@ -725,37 +759,37 @@ public class Game : MonoBehaviour
         }
         #endregion
         #region GFX provincije
-        foreach (ProvinceData data in selected_provinces.ToArray())
-        {
-            if (data.name != selected_province.name)
-            {
-                light_up_province(data.color, BAOC_Color.clear);
-                selected_provinces.Remove(data);
-                continue;
-            }
-            else
-            {
-                light_up_province(data.color, sel_high);
-                continue;
-            }
-        }
+        //foreach (ProvinceData data in selected_provinces.ToArray())
+        //{
+        //    if (data.name != selected_province.name)
+        //    {
+        //        light_up_province(data.color, BAOC_Color.clear);
+        //        selected_provinces.Remove(data);
+        //        continue;
+        //    }
+        //    else
+        //    {
+        //        light_up_province(data.color, sel_high);
+        //        continue;
+        //    }
+        //}
 
-        //susedi
-        foreach (ProvinceData data in selected_neighbouring_provinces.ToArray())
-        {
-            if (!neighboring_provinces[selected_province.color].Contains(data.color) || data.country != selected_province.country)
-            {
-                light_up_province(data.color, BAOC_Color.clear);
-                selected_neighbouring_provinces.Remove(data);
-                print($"Removed {data.name} from neighbouring provinces");
-                continue;
-            }
-            else
-            {
-                light_up_province(data.color, highlight);
-                continue;
-            }
-        }
+        ////susedi
+        //foreach (ProvinceData data in selected_neighbouring_provinces.ToArray())
+        //{
+        //    if (!neighboring_provinces[selected_province.color].Contains(data.color) || data.country != selected_province.country)
+        //    {
+        //        light_up_province(data.color, BAOC_Color.clear);
+        //        selected_neighbouring_provinces.Remove(data);
+        //        BAOC.Log($"Removed {data.name} from neighbouring provinces");
+        //        continue;
+        //    }
+        //    else
+        //    {
+        //        light_up_province(data.color, highlight);
+        //        continue;
+        //    }
+        //}
         #endregion
     }
     private void OnApplicationQuit()
@@ -773,6 +807,8 @@ public class Game : MonoBehaviour
     }
     #endregion
     #region util metode
+    #nullable enable
+
     List<ProvinceData> province_BAOC_Colors_to_province_data_collection(List<BAOC_Color> BAOC_Colors)
     {
         List<ProvinceData> __provinces = new List<ProvinceData>();
@@ -785,12 +821,13 @@ public class Game : MonoBehaviour
     #nullable enable
     string jsonify(object? val)
     {
-        var settings = new Newtonsoft.Json.JsonSerializerSettings();
-        // This tells your serializer that multiple references are okay.
-        settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        return JsonConvert.SerializeObject(val, settings);
+        return JsonConvert.SerializeObject(val, Formatting.Indented);
     }
-    ///<summary>path = save_path + path to file without starting / and filetype</summary>
+    
+    ///<summary>
+    ///path = save_path + path to file without starting / and filetype
+    ///</summary>
+
     void save_json(object? val, string path)
     {
         File.WriteAllText($"{save_path}{path}.json", jsonify(val));
@@ -799,10 +836,18 @@ public class Game : MonoBehaviour
     {
         List<Vector2Int> pix_data = pixels_zup[province];
 
+        if (fakeMap_dum.GetPixel(pix_data[0].x, pix_data[0].y) == with.GetColor()) return;
+        
         foreach (Vector2Int vector2Int in pix_data)
         {
             fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, with.GetColor());
         }
+    }
+    void clear_province(BAOC_Color province)
+    {
+        set_province_BAOC_Color(province, BAOC_Color.clear);
+        fakeMap_dum.Apply();
+        map_mask.texture = fakeMap_dum;
     }
     void light_up_province(BAOC_Color province, BAOC_Color with_BAOC_Color)
     {
@@ -810,6 +855,24 @@ public class Game : MonoBehaviour
         fakeMap_dum.Apply();
         map_mask.texture = fakeMap_dum;
     }
+    
+    void clear_all_provinces()
+    {
+        foreach (BAOC_Color p in provinces.Keys) {
+            clear_province(p);
+        }
+    }
+    void clear_all_provinces_except(BAOC_Color[] exceptions)
+    {
+        foreach (BAOC_Color p in provinces.Keys)
+        {
+            if (!exceptions.Contains(p))
+            {
+                clear_province(p);
+            }
+        }
+    }
+
     string BAOC_Color_to_rgb255_string(BAOC_Color c)
     {
         return String.Format("r: {0}, g: {1}, b: {2}", (int)(c.r * 255), (int)(c.g * 255), (int)(c.b * 255));
@@ -855,6 +918,10 @@ public class Game : MonoBehaviour
     Vector3 v2int_to_v3(Vector2Int v2int)
     {
         return new Vector3(v2int.x, v2int.y);
+    }
+    Vector2 v2int_to_v2(Vector2Int v2int)
+    {
+        return new Vector2(v2int.x, v2int.y);
     }
     string format_number(int num)
     {
