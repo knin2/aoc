@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine.UI;
-using System.Web;
 using TMPro;
 using System.IO;
 using Newtonsoft.Json;
@@ -12,7 +11,7 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class ProvinceData
 {
-    public Color color;
+    public BAOC_Color color;
     public string name;
     public string country;
     public int vojska;
@@ -20,6 +19,7 @@ public class ProvinceData
     public int stanovnici;
     public EthnicData ethnicData;
 }
+[System.Serializable]
 public class CountryData
 {
     public string name, president, capital;
@@ -30,6 +30,7 @@ public class CountryData
     public List<ProvinceData> provinces;
     public EthnicData ethnicData;
 }
+[System.Serializable]
 public class EthnicData
 {
     public int size;
@@ -38,6 +39,7 @@ public class EthnicData
     public List<float> postotci;
     public List<int> stanovnici;
 }
+[System.Serializable]
 public class GameData
 {
     public string drzava;
@@ -60,18 +62,215 @@ public class GameData
         return false;
     }
 }
+[System.Serializable]
 public class GameSettings
 {
     public int saturation = 40;
 }
+[System.Serializable]
 public class WarData
 {
     public string aggresor;
     public string defender;
 }
+[System.Serializable]
+public struct BAOC_Color
+{
+    
+    public float r, g, b, a;
+
+    public BAOC_Color(float r, float g, float b, float a = 1f)
+    {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+
+    public string ToHex()
+    {
+        return ColorUtility.ToHtmlStringRGBA(GetColor());
+    }
+    public Color GetColor()
+    {
+        return new Color(r, g, b, a);
+    }
+    
+    public BAOC_Color Copy()
+    {
+        return new BAOC_Color(r, g, b, a);
+    }
+
+    public BAOC_Color Invert()
+    {
+        return new BAOC_Color(1f - r, 1f - g, 1f - b, a);
+    }
+
+
+    public BAOC_Color SetComponent(Channel channel, float value)
+    {
+        BAOC_Color instance = Copy();
+        switch (channel)
+        {
+            case Channel.RED:
+                instance = new BAOC_Color(value, g, b, a);
+                break;
+            case Channel.GREEN:
+                instance = new BAOC_Color(r, value, b, a);
+                g = value;
+                break;
+            case Channel.BLUE:
+                instance = new BAOC_Color(r, g, value, a);
+                b = value;
+                break;
+            case Channel.ALPHA:
+                instance = new BAOC_Color(r, g, b, value);
+                a = value;
+                break;
+        }
+        return instance;
+    }
+    public static BAOC_Color FromColor(Color color)
+    {
+        return new BAOC_Color(color.r, color.g, color.b, color.a);
+    }
+    public static BAOC_Color HSVToRGB(float H, float S, float V, bool hdr = false)
+    {
+        Color white = Color.white;
+        if (S == 0f)
+        {
+            white.r = V;
+            white.g = V;
+            white.b = V;
+        }
+        else if (V == 0f)
+        {
+            white.r = 0f;
+            white.g = 0f;
+            white.b = 0f;
+        }
+        else
+        {
+            white.r = 0f;
+            white.g = 0f;
+            white.b = 0f;
+            float num = H * 6f;
+            int num2 = (int)Mathf.Floor(num);
+            float num3 = num - (float)num2;
+            float num4 = V * (1f - S);
+            float num5 = V * (1f - S * num3);
+            float num6 = V * (1f - S * (1f - num3));
+            switch (num2)
+            {
+                case 0:
+                    white.r = V;
+                    white.g = num6;
+                    white.b = num4;
+                    break;
+                case 1:
+                    white.r = num5;
+                    white.g = V;
+                    white.b = num4;
+                    break;
+                case 2:
+                    white.r = num4;
+                    white.g = V;
+                    white.b = num6;
+                    break;
+                case 3:
+                    white.r = num4;
+                    white.g = num5;
+                    white.b = V;
+                    break;
+                case 4:
+                    white.r = num6;
+                    white.g = num4;
+                    white.b = V;
+                    break;
+                case 5:
+                    white.r = V;
+                    white.g = num4;
+                    white.b = num5;
+                    break;
+                case 6:
+                    white.r = V;
+                    white.g = num6;
+                    white.b = num4;
+                    break;
+                case -1:
+                    white.r = V;
+                    white.g = num4;
+                    white.b = num5;
+                    break;
+            }
+
+            if (!hdr)
+            {
+                white.r = Mathf.Clamp(white.r, 0f, 1f);
+                white.g = Mathf.Clamp(white.g, 0f, 1f);
+                white.b = Mathf.Clamp(white.b, 0f, 1f);
+            }
+        }
+
+        return FromColor(white);
+    }
+    public static BAOC_Color FromHex(string hex)
+    {
+        return FromColor(ColorUtility.TryParseHtmlString(hex, out Color color) ? color : Color.white);
+    }
+    public static BAOC_Color black = new BAOC_Color(0, 0, 0);
+    public static BAOC_Color clear = new BAOC_Color(0, 0, 0, 0);
+    public static BAOC_Color white = new BAOC_Color(1, 1, 1);
+
+    public static BAOC_Color operator +(BAOC_Color left, BAOC_Color right)
+    {
+        return new BAOC_Color(left.r + right.r, left.g + right.g, left.b + right.b, left.a + right.a);
+    }
+    public static BAOC_Color operator -(BAOC_Color left, BAOC_Color right)
+    {
+        return new BAOC_Color(left.r - right.r, left.g - right.g, left.b - right.b, left.a - right.a);
+    }
+    public static bool operator ==(BAOC_Color left, BAOC_Color right)
+    {
+        return (left.r == right.r) && (left.g == right.g) && (left.b == right.b) && (left.a == right.a);
+    }
+    public static bool operator !=(BAOC_Color left, BAOC_Color right)
+    {
+        return !(left == right);
+    }
+    public override bool Equals(object obj)
+    {
+        return this == (BAOC_Color)obj;
+    }
+    public override int GetHashCode()
+    {
+        int hash = 17;
+        hash = hash * 31 + r.GetHashCode();
+        hash = hash * 31 + g.GetHashCode();
+        hash = hash * 31 + b.GetHashCode();
+        hash = hash * 31 + a.GetHashCode();
+        return hash;
+    }
+}
+#region enum
+public enum ProvinceGFXAction
+{
+    LIT,
+    REMOVED,
+    IDLE
+}
+public enum Channel
+{
+    RED,
+    GREEN,
+    BLUE,
+    ALPHA
+}
+#endregion
 #endregion
 public class Game : MonoBehaviour
 {
+
     #region ui
     [Header("UI")]
     public Slider slider;
@@ -106,10 +305,11 @@ public class Game : MonoBehaviour
     #endregion
     #region boja
     [Header("Boja")]
-    public List<Color> prefered_colors;
+    public List<BAOC_Color> prefered_BAOC_Colors;
     public Gradient odnosi_gradient;
-    public Color highlight;
-    public Color sel_high;
+    public BAOC_Color highlight;
+    public BAOC_Color sel_high;
+    
     public Gradient vojska_gradient;
     #endregion
     #region vektori
@@ -146,22 +346,24 @@ public class Game : MonoBehaviour
 
     int cena;
 
-    Color last_zup_clr;
-    Color last_zup_clr_selected;
-    Color original;
-    Color target;
+    BAOC_Color last_zup_clr;
+    BAOC_Color last_zup_clr_selected;
+    BAOC_Color original;
+    BAOC_Color target;
 
-    Dictionary<Color, List<Vector2Int>> pixels_zup;
-    Dictionary<Color, ProvinceData> provinces;
+    Dictionary<BAOC_Color, List<Vector2Int>> pixels_zup;
+    Dictionary<BAOC_Color, ProvinceData> provinces;
     Dictionary<string, List<ProvinceData>> provinces_by_country;
-    Dictionary<Color, Vector2Int> pozicije_misa_u_provinciji; //koordinate na ekranu, ne na teksturi
+    Dictionary<BAOC_Color, Vector2Int> pozicije_misa_u_provinciji; //koordinate na ekranu, ne na teksturi
     Dictionary<string, CountryData> countries;
-    Dictionary<Color, List<Color>> neighboring_provinces;
+    Dictionary<BAOC_Color, List<BAOC_Color>> neighboring_provinces;
     Dictionary<string, EthnicData> ethnic_data;
     Dictionary<string, EthnicData> ethnic_data_zup;
     List<ProvinceData> selected_provinces;
+    List<ProvinceData> selected_neighbouring_provinces;
     ProvinceData current_province;
     ProvinceData selected_province;
+
 
     bool changed_sliders = false;
     bool og_set = false;
@@ -173,7 +375,6 @@ public class Game : MonoBehaviour
     {
         #region init
         save_path = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/baoc/";
-
         gameData = new GameData();
         gameData.zarada = 2000000;
         gameData.kinta = 20000000;
@@ -184,16 +385,17 @@ public class Game : MonoBehaviour
         gameData.settings = new GameSettings();
         selected_province = new ProvinceData();
         current_province = new ProvinceData();
-        pixels_zup = new Dictionary<Color, List<Vector2Int>>();
-        provinces = new Dictionary<Color, ProvinceData>();
+        pixels_zup = new Dictionary<BAOC_Color, List<Vector2Int>>();
+        provinces = new Dictionary<BAOC_Color, ProvinceData>();
         fakeMap_dum = new Texture2D(fakeMap.width, fakeMap.height);
         ethnic_data = new Dictionary<string, EthnicData>();
         ethnic_data_zup = new Dictionary<string, EthnicData>();
         selected_provinces = new List<ProvinceData>();
+        selected_neighbouring_provinces = new List<ProvinceData>();
         provinces_by_country = new Dictionary<string, List<ProvinceData>>();
         countries = new Dictionary<string, CountryData>();
-        pozicije_misa_u_provinciji = new Dictionary<Color, Vector2Int>();
-        neighboring_provinces = new Dictionary<Color, List<Color>>();
+        pozicije_misa_u_provinciji = new Dictionary<BAOC_Color, Vector2Int>();
+        neighboring_provinces = new Dictionary<BAOC_Color, List<BAOC_Color>>();
 
         update_potez_ui();
         #endregion
@@ -227,8 +429,7 @@ public class Game : MonoBehaviour
 
             foreach (dynamic province in country.podaci)
             {
-                Color clr;
-                ColorUtility.TryParseHtmlString(Convert.ToString(province.boja), out clr);
+                BAOC_Color clr = BAOC_Color.FromHex(Convert.ToString(province.boja));
 
 
 
@@ -271,24 +472,24 @@ public class Game : MonoBehaviour
             string drzava_ = Convert.ToString(country.ime);
             provinces_by_country[drzava_] = provinces__;
         }
-        foreach (Color p in provinces.Keys)
+        foreach (BAOC_Color p in provinces.Keys)
         {
             List<Vector2Int> pix_c = new List<Vector2Int>();
             for (int x = 0; x < colourMap.width; x++)
             {
                 for (int y = 0; y < colourMap.height; y++)
                 {
-                    if (p == colourMap.GetPixel(x, y))
+                    if (p.GetColor() == colourMap.GetPixel(x, y))
                     {
                         pix_c.Add(new Vector2Int(x, y));
                     }
                 }
 
             }
-            List<Color> nei_p = new List<Color>();
+            List<BAOC_Color> nei_p = new List<BAOC_Color>();
             for (int i = 0; i < broj_kutova; i++)
             {
-                Color neighboring = get_first_non_black_pixel_at_angle(colourMap, pix_c[0], i * (360f / broj_kutova), p);
+                BAOC_Color neighboring = get_first_non_black_pixel_at_angle(colourMap, pix_c[pix_c.Count / 2], i * (360f / broj_kutova), p);
                 if (!nei_p.Contains(neighboring) && provinces.ContainsKey(neighboring))
                 {
                     nei_p.Add(neighboring);
@@ -357,7 +558,17 @@ public class Game : MonoBehaviour
         update_province_ui();
         update_rat_text();
         update_side_ui();
+        Dictionary<string, ProvinceData> neigh_form2 = new Dictionary<string, ProvinceData>();
+        foreach (BAOC_Color c in neighboring_provinces.Keys)
+        {
+            foreach (BAOC_Color province_c in neighboring_provinces[c])
+            {
+                neigh_form2[provinces[c].name] = provinces[province_c];
+            }
+        }
 
+
+        save_json(neigh_form2, "data");
         #region RPC
         init_rich_presence();
         #endregion
@@ -371,7 +582,7 @@ public class Game : MonoBehaviour
         }
         if (sli_hue.transform.parent.gameObject.activeSelf)
         {
-            show_color_pick();
+            show_BAOC_Color_pick();
         }
 
         #endregion
@@ -379,7 +590,7 @@ public class Game : MonoBehaviour
         Vector2 mouse_pos = Input.mousePosition;
         if (map_rect.Contains(mouse_pos))
         {
-            target = colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y);
+            target = BAOC_Color.FromColor(colourMap.GetPixel((int)mouse_pos.x - (int)side_size.x, (int)mouse_pos.y - (int)side_size.y));
             if (provinces.ContainsKey(target))
             {
                 #region nadi provinciju
@@ -407,6 +618,7 @@ public class Game : MonoBehaviour
 
                     selected_province = current_province;
                     selected_provinces.Add(selected_province);
+                    selected_neighbouring_provinces = province_BAOC_Colors_to_province_data_collection(neighboring_provinces[selected_province.color]);
 
                     print(mouse_pos_int);
 
@@ -417,27 +629,27 @@ public class Game : MonoBehaviour
                     plus_button.interactable = selected_province_is_part_of_country;
                     if (selected_province_is_part_of_country)
                     {
-                        Color v_cpy = copy_color(side_vojska.color);
+                        BAOC_Color v_cpy = BAOC_Color.FromColor(side_vojska.color);
                         v_cpy.a = 1f;
 
-                        side_vojska.color = v_cpy;
+                        side_vojska.color = v_cpy.GetColor();
 
-                        v_cpy = copy_color(t_plus.color);
+                        v_cpy = BAOC_Color.FromColor(t_plus.color);
                         v_cpy.a = 1f;
 
-                        t_plus.color = v_cpy;
+                        t_plus.color = v_cpy.GetColor();
                     }
                     else
                     {
-                        Color v_cpy = copy_color(side_vojska.color);
+                        BAOC_Color v_cpy = BAOC_Color.FromColor(side_vojska.color);
                         v_cpy.a = 0.5f;
 
-                        side_vojska.color = v_cpy;
+                        side_vojska.color = v_cpy.GetColor();
 
-                        v_cpy = copy_color(t_plus.color);
+                        v_cpy = BAOC_Color.FromColor(t_plus.color);
                         v_cpy.a = 0.5f;
 
-                        t_plus.color = v_cpy;
+                        t_plus.color = v_cpy.GetColor();
 
 
                     }
@@ -452,7 +664,7 @@ public class Game : MonoBehaviour
                         }
                     }
 
-                    //foreach (Color key in pozicije_misa_u_provinciji.Keys)
+                    //foreach (BAOC_Color key in pozicije_misa_u_provinciji.Keys)
                     //{
                     //    if (provinces[key].vojska != 0)
                     //    {
@@ -483,8 +695,8 @@ public class Game : MonoBehaviour
                     #region boja UI elemenata
                     set_objavi_rat_text_alpha(objavi_rat_bool ? 0.5f : 1f);
 
-                    odnosi_label.color = objavi_rat_bool ? new Color(odnosi_label.color.r, odnosi_label.color.g, odnosi_label.color.b, 0.5f) : new Color(odnosi_label.color.r, odnosi_label.color.g, odnosi_label.color.b, 1);
-                    odnosi.color = objavi_rat_bool ? new Color(odnosi.color.r, odnosi.color.g, odnosi.color.b, 0.5f) : new Color(odnosi.color.r, odnosi.color.g, odnosi.color.b, 1);
+                    odnosi_label.color = objavi_rat_bool ? BAOC_Color.FromColor(odnosi_label.color).SetComponent(Channel.ALPHA, 0.5f).GetColor() : BAOC_Color.FromColor(odnosi_label.color).SetComponent(Channel.ALPHA, 1f).GetColor();
+                    odnosi.color = objavi_rat_bool ? BAOC_Color.FromColor(odnosi_label.color).SetComponent(Channel.ALPHA, 0.5f).GetColor() : BAOC_Color.FromColor(odnosi_label.color).SetComponent(Channel.ALPHA, 1f).GetColor();
                     #endregion
 
                     EthnicData data_eth = ethnic_data[data.country];
@@ -515,23 +727,32 @@ public class Game : MonoBehaviour
         #region GFX provincije
         foreach (ProvinceData data in selected_provinces.ToArray())
         {
-            if (data.name != selected_province.name && !neighboring_provinces[data.color].Contains(selected_province.color))
+            if (data.name != selected_province.name)
             {
-                light_up_province(data.color, Color.clear);
+                light_up_province(data.color, BAOC_Color.clear);
                 selected_provinces.Remove(data);
                 continue;
             }
             else
             {
                 light_up_province(data.color, sel_high);
+                continue;
+            }
+        }
 
-                //light up neighbours
-                foreach (Color neighbour in neighboring_provinces[data.color])
-                {
-                    light_up_province(neighbour, highlight);
-                    selected_provinces.Add(provinces[neighbour]);
-                }
-                
+        //susedi
+        foreach (ProvinceData data in selected_neighbouring_provinces.ToArray())
+        {
+            if (!neighboring_provinces[selected_province.color].Contains(data.color) || data.country != selected_province.country)
+            {
+                light_up_province(data.color, BAOC_Color.clear);
+                selected_neighbouring_provinces.Remove(data);
+                print($"Removed {data.name} from neighbouring provinces");
+                continue;
+            }
+            else
+            {
+                light_up_province(data.color, highlight);
                 continue;
             }
         }
@@ -552,22 +773,44 @@ public class Game : MonoBehaviour
     }
     #endregion
     #region util metode
-    void set_province_color(Color province, Color with)
+    List<ProvinceData> province_BAOC_Colors_to_province_data_collection(List<BAOC_Color> BAOC_Colors)
+    {
+        List<ProvinceData> __provinces = new List<ProvinceData>();
+        foreach (BAOC_Color item in BAOC_Colors)
+        {
+            __provinces.Add(provinces[item]);
+        }
+        return __provinces;
+    }
+    #nullable enable
+    string jsonify(object? val)
+    {
+        var settings = new Newtonsoft.Json.JsonSerializerSettings();
+        // This tells your serializer that multiple references are okay.
+        settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        return JsonConvert.SerializeObject(val, settings);
+    }
+    ///<summary>path = save_path + path to file without starting / and filetype</summary>
+    void save_json(object? val, string path)
+    {
+        File.WriteAllText($"{save_path}{path}.json", jsonify(val));
+    }
+    void set_province_BAOC_Color(BAOC_Color province, BAOC_Color with)
     {
         List<Vector2Int> pix_data = pixels_zup[province];
 
         foreach (Vector2Int vector2Int in pix_data)
         {
-            fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, with);
+            fakeMap_dum.SetPixel(vector2Int.x, vector2Int.y, with.GetColor());
         }
     }
-    void light_up_province(Color province, Color with_color)
+    void light_up_province(BAOC_Color province, BAOC_Color with_BAOC_Color)
     {
-        set_province_color(province, with_color);
+        set_province_BAOC_Color(province, with_BAOC_Color);
         fakeMap_dum.Apply();
         map_mask.texture = fakeMap_dum;
     }
-    string color_to_rgb255_string(Color c)
+    string BAOC_Color_to_rgb255_string(BAOC_Color c)
     {
         return String.Format("r: {0}, g: {1}, b: {2}", (int)(c.r * 255), (int)(c.g * 255), (int)(c.b * 255));
     }
@@ -609,10 +852,6 @@ public class Game : MonoBehaviour
         RPCData activity = get_rpc_data();
         RPC.SetActivity(activity);
     }
-    Color copy_color(Color og)
-    {
-        return new Color(og.r, og.g, og.b, og.a);
-    }
     Vector3 v2int_to_v3(Vector2Int v2int)
     {
         return new Vector3(v2int.x, v2int.y);
@@ -632,8 +871,8 @@ public class Game : MonoBehaviour
     }
     void set_objavi_rat_text_alpha(float a)
     {
-        Color clr = objavi_rat_btn_transform.GetChild(0).GetComponent<TextMeshProUGUI>().color;
-        objavi_rat_btn_transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Color(clr.r, clr.g, clr.b, a);
+        BAOC_Color clr = BAOC_Color.FromColor(objavi_rat_btn_transform.GetChild(0).GetComponent<TextMeshProUGUI>().color);
+        objavi_rat_btn_transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new BAOC_Color(clr.r, clr.g, clr.b, a).GetColor();
     }
     void update_potez_ui()
     {
@@ -660,7 +899,7 @@ public class Game : MonoBehaviour
     }
     void erase_last_zup()
     {
-        set_province_color(last_zup_clr, Color.clear);
+        set_province_BAOC_Color(last_zup_clr, BAOC_Color.clear);
         fakeMap_dum.Apply();
     }
     void show_recruit()
@@ -673,18 +912,18 @@ public class Game : MonoBehaviour
         vojnici_cena_text.text = String.Format("{0:N0} $", cena);
         vojnici_cena_text.color = cena > gameData.kinta ? odnosi_gradient.Evaluate(1f) : odnosi_gradient.Evaluate(0f);
     }
-    void show_color_pick()
+    void show_BAOC_Color_pick()
     {
         if (!og_set)
         {
-            Color c = drzave_holder.GetChild(countries[current_province.country].index).GetComponent<RawImage>().color;
+            BAOC_Color c = BAOC_Color.FromColor(drzave_holder.GetChild(countries[current_province.country].index).GetComponent<RawImage>().color);
             original = c;
             og_set = true;
         }
         if (changed_sliders)
         {
-            Color _c = Color.HSVToRGB(sli_hue.value, gameData.settings.saturation / 100f, sli_value.value);
-            drzave_holder.GetChild(countries[current_province.country].index).GetComponent<RawImage>().color = _c;
+            BAOC_Color _c = BAOC_Color.HSVToRGB(sli_hue.value, gameData.settings.saturation / 100f, sli_value.value);
+            drzave_holder.GetChild(countries[current_province.country].index).GetComponent<RawImage>().color = _c.GetColor();
         }
     }
     void update_provinces()
@@ -703,14 +942,14 @@ public class Game : MonoBehaviour
         update_province_ui();
         update_potez_ui();
     }
-    public void end_color_pick()
+    public void end_BAOC_Color_pick()
     {
         sli_hue.transform.parent.gameObject.SetActive(false);
     }
-    public void abort_color_pick()
+    public void abort_BAOC_Color_pick()
     {
         sli_hue.transform.parent.gameObject.SetActive(false);
-        drzave_holder.GetChild(countries[current_province.country].index).GetComponent<RawImage>().color = original;
+        drzave_holder.GetChild(countries[current_province.country].index).GetComponent<RawImage>().color = original.GetColor();
     }
     public void set_sliders_changed(bool to)
     {
@@ -820,7 +1059,7 @@ public class Game : MonoBehaviour
 
         return points;
     }
-    Color get_first_non_black_pixel_at_angle(Texture2D tex, Vector2Int origin, float angle, Color original)
+    BAOC_Color get_first_non_black_pixel_at_angle(Texture2D tex, Vector2Int origin, float angle, BAOC_Color original)
     {
         List<Vector2Int> points = get_circle_points(128);
         Vector2Int p2 = points[(int)((angle / 360f) * points.Count)] + origin;
@@ -833,15 +1072,15 @@ public class Game : MonoBehaviour
         {
             t = Vector2.Lerp(origin, p2, ctr);
             ctr += frac;
-            Color col = tex.GetPixel((int)t.x, (int)t.y);
+            BAOC_Color col = BAOC_Color.FromColor(tex.GetPixel((int)t.x, (int)t.y));
 
-            if (col != Color.black && col != original && provinces.ContainsKey(col))
+            if (col != BAOC_Color.black && col != original && provinces.ContainsKey(col))
             {
                 return col;
             }
         }
         fakeMap_dum.Apply();
-        return Color.black;
+        return BAOC_Color.black;
     }
     #endregion
 }
