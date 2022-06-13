@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 19991871}
   - component: {fileID: 19991870}
   m_Layer: 5
-  m_Name: top
+  m_Name: TopLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 59526756}
   - component: {fileID: 59526755}
   m_Layer: 5
-  m_Name: Srbija
+  m_Name: SRB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 63216314}
   - component: {fileID: 63216313}
   m_Layer: 5
-  m_Name: boja
+  m_Name: SideBarCountryColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 124815990}
   - component: {fileID: 124815989}
   m_Layer: 5
-  m_Name: ime (2)
+  m_Name: Element 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -623,7 +623,7 @@ GameObject:
   - component: {fileID: 138699547}
   - component: {fileID: 138699546}
   m_Layer: 5
-  m_Name: predsednik
+  m_Name: SideBarPresident
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -759,7 +759,7 @@ GameObject:
   - component: {fileID: 154924274}
   - component: {fileID: 154924273}
   m_Layer: 5
-  m_Name: vode
+  m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -831,7 +831,7 @@ GameObject:
   - component: {fileID: 201313736}
   - component: {fileID: 201313735}
   m_Layer: 5
-  m_Name: t_kvacica
+  m_Name: ConfirmText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1002,7 +1002,7 @@ GameObject:
   - component: {fileID: 238851568}
   - component: {fileID: 238851567}
   m_Layer: 5
-  m_Name: turn
+  m_Name: NextTurn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1135,7 +1135,7 @@ GameObject:
   - component: {fileID: 240126892}
   - component: {fileID: 240126891}
   m_Layer: 5
-  m_Name: plus
+  m_Name: RecruitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1279,7 +1279,7 @@ GameObject:
   - component: {fileID: 248985872}
   - component: {fileID: 248985871}
   m_Layer: 5
-  m_Name: odnosi_label
+  m_Name: RelationsLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1413,7 +1413,7 @@ GameObject:
   - component: {fileID: 273950173}
   - component: {fileID: 273950172}
   m_Layer: 5
-  m_Name: bg
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1488,7 +1488,7 @@ GameObject:
   - component: {fileID: 339431353}
   - component: {fileID: 339431352}
   m_Layer: 5
-  m_Name: bg_full_scr
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1563,7 +1563,7 @@ GameObject:
   - component: {fileID: 365351028}
   - component: {fileID: 365351027}
   m_Layer: 5
-  m_Name: ime
+  m_Name: Element 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1697,7 +1697,7 @@ GameObject:
   - component: {fileID: 372990777}
   - component: {fileID: 372990776}
   m_Layer: 5
-  m_Name: Bosna i Hercegovina
+  m_Name: BIH
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1769,7 +1769,7 @@ GameObject:
   - component: {fileID: 375794931}
   - component: {fileID: 375794930}
   m_Layer: 5
-  m_Name: drzava
+  m_Name: SideBarCountry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1903,7 +1903,7 @@ GameObject:
   - component: {fileID: 376387536}
   - component: {fileID: 376387535}
   m_Layer: 5
-  m_Name: ime (2)
+  m_Name: Element 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2037,7 +2037,7 @@ GameObject:
   - component: {fileID: 380439698}
   - component: {fileID: 380439697}
   m_Layer: 5
-  m_Name: ime (4)
+  m_Name: Element 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2171,7 +2171,7 @@ GameObject:
   - component: {fileID: 444390831}
   - component: {fileID: 444390830}
   m_Layer: 5
-  m_Name: populacija
+  m_Name: SideBarPopulation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2304,7 +2304,7 @@ GameObject:
   - component: {fileID: 450739995}
   - component: {fileID: 450739996}
   m_Layer: 5
-  m_Name: color_pick
+  m_Name: ColorPickGUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2448,7 +2448,7 @@ GameObject:
   - component: {fileID: 538148677}
   - component: {fileID: 538148676}
   m_Layer: 5
-  m_Name: ime_regije
+  m_Name: SideBarRightProvinceName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2582,7 +2582,7 @@ GameObject:
   - component: {fileID: 541423901}
   - component: {fileID: 541423900}
   m_Layer: 5
-  m_Name: picka_materina
+  m_Name: Wars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2717,7 +2717,7 @@ GameObject:
   - component: {fileID: 553029299}
   - component: {fileID: 553029298}
   m_Layer: 5
-  m_Name: objavi_rat
+  m_Name: DeclareWar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2848,7 +2848,7 @@ GameObject:
   - component: {fileID: 557254265}
   - component: {fileID: 557254266}
   m_Layer: 5
-  m_Name: hue
+  m_Name: Hue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2948,7 +2948,7 @@ GameObject:
   m_Component:
   - component: {fileID: 576001479}
   m_Layer: 5
-  m_Name: ime_holder
+  m_Name: CountryEthnicStructure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2990,7 +2990,7 @@ GameObject:
   - component: {fileID: 630601975}
   - component: {fileID: 630601974}
   m_Layer: 5
-  m_Name: t_exit
+  m_Name: AbortText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3124,7 +3124,7 @@ GameObject:
   - component: {fileID: 650733671}
   - component: {fileID: 650733670}
   m_Layer: 5
-  m_Name: Kosovo
+  m_Name: KOS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3269,7 +3269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 683811188}
   m_Layer: 5
-  m_Name: drzave
+  m_Name: CountriesByColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3347,7 +3347,7 @@ GameObject:
   - component: {fileID: 722146857}
   - component: {fileID: 722146856}
   m_Layer: 5
-  m_Name: izajdi
+  m_Name: Escape_Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3479,7 +3479,7 @@ GameObject:
   - component: {fileID: 732537348}
   - component: {fileID: 732537347}
   m_Layer: 5
-  m_Name: t_vojska
+  m_Name: ArmyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3613,7 +3613,7 @@ GameObject:
   - component: {fileID: 734230432}
   - component: {fileID: 734230431}
   m_Layer: 5
-  m_Name: vojska
+  m_Name: SideBarArmyTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3749,7 +3749,7 @@ GameObject:
   - component: {fileID: 736353996}
   - component: {fileID: 736353998}
   m_Layer: 5
-  m_Name: map_real
+  m_Name: MapReal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3923,9 +3923,9 @@ MonoBehaviour:
   drzave_holder: {fileID: 683811188}
   ime_holder: {fileID: 576001479}
   ime_holder_zup: {fileID: 1003325409}
-  zup_vojska_text_holder: {fileID: 1370795087}
+  zup_vojska_text_holder: {fileID: 0}
   objavi_rat_btn_transform: {fileID: 553029297}
-  zup_text_vojska_template: {fileID: 1660331790}
+  zup_text_vojska_template: {fileID: 0}
   main_cam: {fileID: 519420031}
   cena_vojnika: 5
   broj_kutova: 360
@@ -3951,7 +3951,7 @@ GameObject:
   - component: {fileID: 744194572}
   - component: {fileID: 744194571}
   m_Layer: 5
-  m_Name: ime_drzave
+  m_Name: SideBarRightCountryName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4085,7 +4085,7 @@ GameObject:
   - component: {fileID: 759061668}
   - component: {fileID: 759061667}
   m_Layer: 5
-  m_Name: side
+  m_Name: SideBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4166,7 +4166,7 @@ GameObject:
   - component: {fileID: 770940237}
   - component: {fileID: 770940240}
   m_Layer: 5
-  m_Name: map_mask
+  m_Name: MapMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4258,7 +4258,7 @@ GameObject:
   - component: {fileID: 770966392}
   - component: {fileID: 770966391}
   m_Layer: 5
-  m_Name: postavke
+  m_Name: Escape_Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4391,7 +4391,7 @@ GameObject:
   - component: {fileID: 784838745}
   - component: {fileID: 784838744}
   m_Layer: 5
-  m_Name: kvacica
+  m_Name: Confirm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4559,7 +4559,7 @@ GameObject:
   - component: {fileID: 804614582}
   - component: {fileID: 804614581}
   m_Layer: 5
-  m_Name: kvacica
+  m_Name: Confirm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4691,7 +4691,7 @@ GameObject:
   - component: {fileID: 831020682}
   - component: {fileID: 831020681}
   m_Layer: 5
-  m_Name: diplomatija
+  m_Name: SideBarDiplomacyTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4770,7 +4770,7 @@ GameObject:
   - component: {fileID: 877117251}
   - component: {fileID: 877117250}
   m_Layer: 5
-  m_Name: t_kvacica
+  m_Name: ConfirmText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4904,7 +4904,7 @@ GameObject:
   - component: {fileID: 888279955}
   - component: {fileID: 888279954}
   m_Layer: 5
-  m_Name: GRID
+  m_Name: GRID_BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4976,7 +4976,7 @@ GameObject:
   - component: {fileID: 977745589}
   - component: {fileID: 977745588}
   m_Layer: 5
-  m_Name: ime (4)
+  m_Name: Element 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5174,7 +5174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1003325409}
   m_Layer: 5
-  m_Name: ime_holder_zup
+  m_Name: ProvinceEthnicStructure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5215,7 +5215,7 @@ GameObject:
   - component: {fileID: 1008207624}
   - component: {fileID: 1008207625}
   m_Layer: 5
-  m_Name: script_holder
+  m_Name: Scripts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5268,7 +5268,7 @@ GameObject:
   - component: {fileID: 1008517254}
   - component: {fileID: 1008517255}
   m_Layer: 5
-  m_Name: esc_menu
+  m_Name: EscapeMenuGUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5327,7 +5327,7 @@ GameObject:
   - component: {fileID: 1024566641}
   - component: {fileID: 1024566640}
   m_Layer: 5
-  m_Name: zup_vojska
+  m_Name: SideBarProvinceArmy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5461,7 +5461,7 @@ GameObject:
   - component: {fileID: 1105799916}
   - component: {fileID: 1105799917}
   m_Layer: 5
-  m_Name: regrutiraj
+  m_Name: RecruitGUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5649,7 +5649,7 @@ GameObject:
   - component: {fileID: 1178745009}
   - component: {fileID: 1178745010}
   m_Layer: 5
-  m_Name: zup_data
+  m_Name: SideBarProvinceTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5697,7 +5697,7 @@ GameObject:
   - component: {fileID: 1183302167}
   - component: {fileID: 1183302166}
   m_Layer: 5
-  m_Name: side_r
+  m_Name: SideBarRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5773,7 +5773,7 @@ GameObject:
   - component: {fileID: 1245810849}
   - component: {fileID: 1245810848}
   m_Layer: 5
-  m_Name: ime (3)
+  m_Name: Element 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5907,7 +5907,7 @@ GameObject:
   - component: {fileID: 1255327760}
   - component: {fileID: 1255327759}
   m_Layer: 5
-  m_Name: odnosi
+  m_Name: RelationsValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6043,7 +6043,7 @@ GameObject:
   - component: {fileID: 1324757045}
   - component: {fileID: 1324757044}
   m_Layer: 5
-  m_Name: bg
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6142,42 +6142,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -9}
   m_SizeDelta: {x: 0, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1370795086
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1370795087}
-  m_Layer: 5
-  m_Name: zup_hud_text_holder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1370795087
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1370795086}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1660331791}
-  m_Father: {fileID: 2088277227}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1407600396
 GameObject:
   m_ObjectHideFlags: 0
@@ -6190,7 +6154,7 @@ GameObject:
   - component: {fileID: 1407600399}
   - component: {fileID: 1407600398}
   m_Layer: 5
-  m_Name: t_turn
+  m_Name: NextTurnText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6324,7 +6288,7 @@ GameObject:
   - component: {fileID: 1426191802}
   - component: {fileID: 1426191801}
   m_Layer: 5
-  m_Name: zup_txt
+  m_Name: SideBarProvinceName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6458,7 +6422,7 @@ GameObject:
   - component: {fileID: 1442026636}
   - component: {fileID: 1442026635}
   m_Layer: 5
-  m_Name: tab
+  m_Name: TopRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6531,7 +6495,7 @@ GameObject:
   - component: {fileID: 1453642627}
   - component: {fileID: 1453642626}
   m_Layer: 5
-  m_Name: ime (1)
+  m_Name: Element 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6666,7 +6630,7 @@ GameObject:
   - component: {fileID: 1473200321}
   - component: {fileID: 1473200320}
   m_Layer: 5
-  m_Name: exit
+  m_Name: Abort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6810,7 +6774,7 @@ GameObject:
   - component: {fileID: 1492444626}
   - component: {fileID: 1492444625}
   m_Layer: 5
-  m_Name: zup_populacija
+  m_Name: SideBarProvincePopulation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6944,7 +6908,7 @@ GameObject:
   - component: {fileID: 1521112068}
   - component: {fileID: 1521112067}
   m_Layer: 5
-  m_Name: corner
+  m_Name: BottomLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7019,7 +6983,7 @@ GameObject:
   - component: {fileID: 1527246938}
   - component: {fileID: 1527246937}
   m_Layer: 5
-  m_Name: drzava
+  m_Name: Country
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7153,7 +7117,7 @@ GameObject:
   - component: {fileID: 1571257596}
   - component: {fileID: 1571257595}
   m_Layer: 5
-  m_Name: kapital
+  m_Name: SideBarCapital
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7289,7 +7253,7 @@ GameObject:
   - component: {fileID: 1597776116}
   - component: {fileID: 1597776115}
   m_Layer: 5
-  m_Name: t_+
+  m_Name: DeclareWarText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7423,7 +7387,7 @@ GameObject:
   - component: {fileID: 1612026511}
   - component: {fileID: 1612026510}
   m_Layer: 5
-  m_Name: ime
+  m_Name: Element 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7545,140 +7509,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612026508}
   m_CullTransparentMesh: 1
---- !u!1 &1660331790
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1660331791}
-  - component: {fileID: 1660331793}
-  - component: {fileID: 1660331792}
-  m_Layer: 5
-  m_Name: template
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1660331791
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1660331790}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1370795087}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 1328.4, y: 268.5}
-  m_SizeDelta: {x: 768, y: 128}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1660331792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1660331790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 100.00
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9f74f8f2a69a1ea4db750c9cc40b02be, type: 2}
-  m_sharedMaterial: {fileID: 8245528985515475314, guid: 9f74f8f2a69a1ea4db750c9cc40b02be, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 1
-  m_colorMode: 2
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
-    bottomRight: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 31.96
-  m_fontSizeBase: 31.96
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 94.959656, z: 517.5644, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1660331793
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1660331790}
-  m_CullTransparentMesh: 1
 --- !u!1 &1677812016
 GameObject:
   m_ObjectHideFlags: 0
@@ -7766,7 +7596,7 @@ GameObject:
   - component: {fileID: 1699593465}
   - component: {fileID: 1699593464}
   m_Layer: 5
-  m_Name: ime
+  m_Name: TopRightTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7900,7 +7730,7 @@ GameObject:
   - component: {fileID: 1707727687}
   - component: {fileID: 1707727686}
   m_Layer: 5
-  m_Name: t_vojska_cena
+  m_Name: ArmyPriceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8033,7 +7863,7 @@ GameObject:
   - component: {fileID: 1709842286}
   - component: {fileID: 1709842287}
   m_Layer: 5
-  m_Name: value
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8210,7 +8040,7 @@ GameObject:
   - component: {fileID: 1738998052}
   - component: {fileID: 1738998051}
   m_Layer: 5
-  m_Name: t_exit
+  m_Name: AbortText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8344,7 +8174,7 @@ GameObject:
   - component: {fileID: 1745034891}
   - component: {fileID: 1745034890}
   m_Layer: 5
-  m_Name: balans
+  m_Name: Balance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8589,7 +8419,7 @@ GameObject:
   - component: {fileID: 1767384222}
   - component: {fileID: 1767384221}
   m_Layer: 5
-  m_Name: ime (1)
+  m_Name: Element 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8798,7 +8628,7 @@ GameObject:
   - component: {fileID: 1825714375}
   - component: {fileID: 1825714374}
   m_Layer: 5
-  m_Name: ime (3)
+  m_Name: Element 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8932,7 +8762,7 @@ GameObject:
   - component: {fileID: 1903828843}
   - component: {fileID: 1903828842}
   m_Layer: 5
-  m_Name: t_+
+  m_Name: RecruitButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9069,7 +8899,7 @@ GameObject:
   - component: {fileID: 1953990109}
   - component: {fileID: 1953990108}
   m_Layer: 5
-  m_Name: exit
+  m_Name: Abort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9201,7 +9031,7 @@ GameObject:
   - component: {fileID: 1974936455}
   - component: {fileID: 1974936454}
   m_Layer: 5
-  m_Name: t_izlaz
+  m_Name: Escape_ExitText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9335,7 +9165,7 @@ GameObject:
   - component: {fileID: 2006469655}
   - component: {fileID: 2006469654}
   m_Layer: 5
-  m_Name: tab_b
+  m_Name: BottomRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9408,7 +9238,7 @@ GameObject:
   - component: {fileID: 2025557284}
   - component: {fileID: 2025557283}
   m_Layer: 5
-  m_Name: kapital
+  m_Name: Capital
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9542,7 +9372,7 @@ GameObject:
   - component: {fileID: 2034480300}
   - component: {fileID: 2034480299}
   m_Layer: 5
-  m_Name: ime
+  m_Name: ProvinceName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9676,7 +9506,7 @@ GameObject:
   - component: {fileID: 2055627265}
   - component: {fileID: 2055627264}
   m_Layer: 5
-  m_Name: zarada
+  m_Name: Income
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9812,7 +9642,7 @@ GameObject:
   - component: {fileID: 2055657582}
   - component: {fileID: 2055657581}
   m_Layer: 5
-  m_Name: t_postavke
+  m_Name: Escape_SettingsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9946,7 +9776,7 @@ GameObject:
   - component: {fileID: 2060024284}
   - component: {fileID: 2060024283}
   m_Layer: 5
-  m_Name: Hrvatska
+  m_Name: CRO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10016,7 +9846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2088277227}
   m_Layer: 5
-  m_Name: map
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10038,7 +9868,6 @@ RectTransform:
   - {fileID: 770940236}
   - {fileID: 736353995}
   - {fileID: 154924271}
-  - {fileID: 1370795087}
   m_Father: {fileID: 1748027841}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10059,7 +9888,7 @@ GameObject:
   - component: {fileID: 2090562793}
   - component: {fileID: 2090562792}
   m_Layer: 5
-  m_Name: datum
+  m_Name: Move
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
