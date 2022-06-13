@@ -3821,40 +3821,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00606b9fb761aae48a7deadf33d2d5af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 1105799916}
-  sli_hue: {fileID: 557254266}
-  sli_value: {fileID: 1709842287}
-  ime: {fileID: 2034480299}
-  drzava: {fileID: 1527246937}
-  ime_zupanije: {fileID: 538148676}
-  kapital: {fileID: 2025557283}
-  gore_levo_zarada: {fileID: 2055627264}
-  gore_levo_kinta: {fileID: 1745034890}
-  gore_levo_potez: {fileID: 2090562792}
-  side_r_drzava: {fileID: 744194571}
-  side_drzava: {fileID: 375794930}
-  side_predsednik: {fileID: 138699546}
-  side_populacija: {fileID: 444390830}
-  side_kapital: {fileID: 1571257595}
-  side_vojska: {fileID: 734230431}
-  vojnici_slider_text: {fileID: 732537347}
-  vojnici_cena_text: {fileID: 1707727686}
-  odnosi: {fileID: 1255327759}
-  odnosi_label: {fileID: 248985871}
-  rat_textinho: {fileID: 541423900}
-  zup_vojska: {fileID: 1024566640}
-  zup_stanovnistvo: {fileID: 1492444625}
-  zup_text_name: {fileID: 1426191801}
-  t_plus: {fileID: 1903828842}
-  map_mask: {fileID: 770940237}
-  colourMap: {fileID: 2800000, guid: 971f4c8c5a28be34b95169e0d9c731a6, type: 3}
-  fakeMap: {fileID: 2800000, guid: 8ebf2a2200133a547b9ed3fe0ab04273, type: 3}
-  plus_button: {fileID: 240126891}
-  prefered_BAOC_Colors: []
-  odnosi_gradient:
+  S_Slider: {fileID: 1105799916}
+  S_SliderHue: {fileID: 557254266}
+  S_SliderValue: {fileID: 1709842287}
+  TXT_ProvinceName: {fileID: 2034480299}
+  TXT_Country: {fileID: 1527246937}
+  TXT_Capital: {fileID: 2025557283}
+  TXT_Income: {fileID: 2055627264}
+  TXT_Balance: {fileID: 1745034890}
+  TXT_Move: {fileID: 2090562792}
+  TXT_SideBarRightProvinceName: {fileID: 538148676}
+  TXT_SideBarRightCountryName: {fileID: 744194571}
+  TXT_SideBarCountry: {fileID: 375794930}
+  TXT_SideBarPresident: {fileID: 138699546}
+  TXT_SideBarPopulation: {fileID: 444390830}
+  TXT_SideBarCapital: {fileID: 1571257595}
+  TXT_SideBarArmy: {fileID: 734230431}
+  TXT_SideBarProvinceArmy: {fileID: 1024566640}
+  TXT_SideBarProvincePopulation: {fileID: 1492444625}
+  TXT_SideBarProvinceName: {fileID: 1426191801}
+  TXT_ArmyText: {fileID: 732537347}
+  TXT_ArmyPriceText: {fileID: 1707727686}
+  TXT_RelationsValue: {fileID: 1255327759}
+  TXT_RelationsLabel: {fileID: 248985871}
+  TXT_Wars: {fileID: 541423900}
+  TXT_RecruitButtonText: {fileID: 1903828842}
+  RIM_PixelOverlay: {fileID: 847686159}
+  TEX_ColourMap: {fileID: 2800000, guid: 971f4c8c5a28be34b95169e0d9c731a6, type: 3}
+  TEX_FakeMap: {fileID: 2800000, guid: 8ebf2a2200133a547b9ed3fe0ab04273, type: 3}
+  B_RecruitButton: {fileID: 240126891}
+  GR_RelationsGradient:
     serializedVersion: 2
-    key0: {r: 0.2754169, g: 0.8867924, b: 0.10457456, a: 1}
-    key1: {r: 0.9528302, g: 0.0764062, b: 0.24246252, a: 1}
+    key0: {r: 0.64463496, g: 0.8584906, b: 0.17412782, a: 1}
+    key1: {r: 0.8773585, g: 0.16967781, b: 0.34806082, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -3880,65 +3879,33 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  highlight:
-    r: 1
-    g: 1
-    b: 1
-    a: 0.2509804
-  sel_high:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
-  vojska_gradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  map_size: {x: 1136, y: 778}
-  drzave_holder: {fileID: 683811188}
-  ime_holder: {fileID: 576001479}
-  ime_holder_zup: {fileID: 1003325409}
-  zup_vojska_text_holder: {fileID: 0}
-  objavi_rat_btn_transform: {fileID: 553029297}
-  zup_text_vojska_template: {fileID: 0}
-  main_cam: {fileID: 519420031}
-  cena_vojnika: 5
-  broj_kutova: 360
-  loss_factor_recruit: 1.4
-  gameData:
-    drzava: 
-    potez: 0
-    kinta: 0
-    zarada: 0
-    vojnici: 0
-    ratovi: []
-    settings:
-      saturation: 40
+  BCLR_ProvinceHoverHighlight:
+    R: 0.4
+    G: 0.4
+    B: 0.4
+    A: 1
+  BCLR_ProvinceSelectHighlight:
+    R: 1
+    G: 1
+    B: 1
+    A: 1
+  V2_MapSize: {x: 1136, y: 778}
+  TF_CountriesByColor: {fileID: 683811188}
+  TF_CountryEthnicStructure: {fileID: 576001479}
+  TF_ProvinceEthnicStructure: {fileID: 1003325409}
+  TF_DeclareWar: {fileID: 553029297}
+  CM_MainCamera: {fileID: 519420031}
+  CInt_SoldierPrice: 5
+  CInt_AnglesForNeighbourDetection: 64
+  CInt_PixelOriginsForNeighbourDetection: 6
+  CFloat_RecruitLossFactor: 1.4
+  GameData:
+    Country: 
+    Move: 0
+    Balance: 0
+    Income: 0
+    Army: 0
+    Wars: []
 --- !u!1 &744194569
 GameObject:
   m_ObjectHideFlags: 0
@@ -4757,6 +4724,98 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 831020679}
+  m_CullTransparentMesh: 1
+--- !u!1 &847686156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 847686157}
+  - component: {fileID: 847686160}
+  - component: {fileID: 847686159}
+  - component: {fileID: 847686158}
+  m_Layer: 5
+  m_Name: PixelOverlay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &847686157
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847686156}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2088277227}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1136, y: 778}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &847686158
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847686156}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: afc1a3378a9a8574881c6b5c323bd128, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &847686159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847686156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 8ebf2a2200133a547b9ed3fe0ab04273, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &847686160
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847686156}
   m_CullTransparentMesh: 1
 --- !u!1 &877117248
 GameObject:
@@ -7985,8 +8044,8 @@ RectTransform:
   m_Father: {fileID: 718186310}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -8.8}
   m_SizeDelta: {x: -10, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9868,6 +9927,7 @@ RectTransform:
   - {fileID: 770940236}
   - {fileID: 736353995}
   - {fileID: 154924271}
+  - {fileID: 847686157}
   m_Father: {fileID: 1748027841}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
