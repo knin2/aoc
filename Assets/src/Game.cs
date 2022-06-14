@@ -824,7 +824,6 @@ public class Game : MonoBehaviour
         List<Vector2Int> pix_data = ProvincePixels[province];
 
         //if (FakeMapDummy.GetPixel(pix_data[0].x, pix_data[0].y) == with.GetColor()) return;
-
         foreach (Vector2Int vector2Int in pix_data)
         {
             FakeMapDummy.SetPixel(vector2Int.x, vector2Int.y, with.GetColor());
@@ -841,6 +840,7 @@ public class Game : MonoBehaviour
         SetProvinceColor(province, with_BAOC_Color);
         FakeMapDummy.Apply();
         RIM_PixelOverlay.texture = FakeMapDummy;
+        GL.Begin(GL.LINES);
     }
 
     void ClearAllProvinces()
