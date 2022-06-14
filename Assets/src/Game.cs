@@ -645,6 +645,7 @@ public class Game : MonoBehaviour
 
                     SelectedProvince = CurrentProvince;
 
+
                     ClearProvince(LastProvinceSelected);
                     LightUpProvince(SelectedProvince.Color, BCLR_ProvinceSelectHighlight);
 
@@ -804,9 +805,9 @@ public class Game : MonoBehaviour
         return __Provinces;
     }
 #nullable enable
-    string ToJSON(object? val)
+    string ToJSON(object? val, bool format = true)
     {
-        return JsonConvert.SerializeObject(val, Formatting.Indented);
+        return JsonConvert.SerializeObject(val, format ? Formatting.Indented : Formatting.None);
     }
 
     ///<summary>
@@ -869,7 +870,7 @@ public class Game : MonoBehaviour
         int secondsSinceEpoch = (int)t.TotalSeconds;
         return (ulong)secondsSinceEpoch;
     }
-    RPCData GetRPCData()
+    public RPCData GetRPCData()
     {
         RPCData activity = new RPCData();
         activity.state = "U igri";
@@ -893,6 +894,8 @@ public class Game : MonoBehaviour
     }
     void InitializeRichPresence()
     {
+        RPC.GameInstance = this;    
+
         RPC.Init();
         UpdateRichPresence();
     }

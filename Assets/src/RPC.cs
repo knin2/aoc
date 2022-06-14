@@ -20,11 +20,12 @@ public class RPCData
 }
 public class RPC : MonoBehaviour
 {
+    public static Game GameInstance;
     public static void Init()
     {
         DiscordRPC.EventHandlers eventHandlers = new DiscordRPC.EventHandlers();
         DiscordRPC.Initialize("985117362153992302", ref eventHandlers, true, "");
-        
+        SetActivity(GameInstance.GetRPCData());
     }
     private static DiscordRPC.RichPresence rpc_data_to_rich_presence(RPCData data)
     {
