@@ -345,11 +345,19 @@ public class Game : MonoBehaviour
     public int CInt_PixelOriginsForNeighbourDetection = 6;
     public float CFloat_RecruitLossFactor = 1.4f;
     #endregion
+    #region klase static
+    public static Stats stats;
+    #endregion
     #region globalne varijable
     [HideInInspector]
     public GameData GameData;
     [HideInInspector]
+    
+    /// <summary>
+    /// završava s [/].
+    /// </summary>
     public static string SavePath;
+    
     string LastProvinceByName = "";
     string LastProvinceSelectedByName;
     Texture2D FakeMapDummy;
@@ -392,6 +400,10 @@ public class Game : MonoBehaviour
     {
         #region init
         SavePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/baoc/";
+
+        SaveManager.ManualStart(SavePath);
+        
+        
         GameData = new GameData();
         GameData.Income = 2000000;
         GameData.Balance = 20000000;
@@ -793,9 +805,10 @@ public class Game : MonoBehaviour
     }
     #endregion
     #region util metode
-#nullable enable
-
-    List<ProvinceData> ProvincesByBAOCColorsToProvincesByProvinceData(List<BAOC_Color> BAOC_Colors)
+    
+    
+    #nullable enable
+    public List<ProvinceData> ProvincesByBAOCColorsToProvincesByProvinceData(List<BAOC_Color> BAOC_Colors)
     {
         List<ProvinceData> __Provinces = new List<ProvinceData>();
         foreach (BAOC_Color item in BAOC_Colors)
@@ -804,8 +817,8 @@ public class Game : MonoBehaviour
         }
         return __Provinces;
     }
-#nullable enable
-    string ToJSON(object? val, bool format = true)
+    #nullable enable
+    public static string ToJSON(object? val, bool format = true)
     {
         return JsonConvert.SerializeObject(val, format ? Formatting.Indented : Formatting.None);
     }
@@ -814,12 +827,11 @@ public class Game : MonoBehaviour
     ///path = SavePath + path to file without starting / and filetype
     ///</summary>
 
-    void SaveJSON(object? val, string path)
+    public void SaveJSON(object? val, string path)
     {
         File.WriteAllText($"{SavePath}{path}.json", ToJSON(val));
     }
-
-    void SetProvinceColor(BAOC_Color province, BAOC_Color with)
+    public void SetProvinceColor(BAOC_Color province, BAOC_Color with)
     {
         List<Vector2Int> pix_data = ProvincePixels[province];
 
@@ -829,28 +841,27 @@ public class Game : MonoBehaviour
             FakeMapDummy.SetPixel(vector2Int.x, vector2Int.y, with.GetColor());
         }
     }
-    void ClearProvince(BAOC_Color province)
+    public void ClearProvince(BAOC_Color province)
     {
         SetProvinceColor(province, BAOC_Color.clear);
         FakeMapDummy.Apply();
         RIM_PixelOverlay.texture = FakeMapDummy;
     }
-    void LightUpProvince(BAOC_Color province, BAOC_Color with_BAOC_Color)
+    public void LightUpProvince(BAOC_Color province, BAOC_Color with_BAOC_Color)
     {
         SetProvinceColor(province, with_BAOC_Color);
         FakeMapDummy.Apply();
         RIM_PixelOverlay.texture = FakeMapDummy;
         GL.Begin(GL.LINES);
     }
-
-    void ClearAllProvinces()
+    public void ClearAllProvinces()
     {
         foreach (BAOC_Color p in Provinces.Keys)
         {
             ClearProvince(p);
         }
     }
-    void ClearAllProvincesExcept(BAOC_Color[] exceptions)
+    public void ClearAllProvincesExcept(BAOC_Color[] exceptions)
     {
         foreach (BAOC_Color p in Provinces.Keys)
         {
@@ -860,11 +871,15 @@ public class Game : MonoBehaviour
             }
         }
     }
-    string BAOCColorToRGBString(BAOC_Color c)
+    public string BAOCColorToRGBString(BAOC_Color c)
     {
         return String.Format("r: {0}, g: {1}, b: {2}", (int)(c.R * 255), (int)(c.G * 255), (int)(c.B * 255));
     }
-    ulong GetEpoch()
+    /// <summary>
+    /// vra?a epoch time u sekundama
+    /// </summary>
+    /// <returns>epoch time u sekundama</returns>
+    public static ulong GetEpoch()
     {
         TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
         int secondsSinceEpoch = (int)t.TotalSeconds;
@@ -873,8 +888,10 @@ public class Game : MonoBehaviour
     public RPCData GetRPCData()
     {
         RPCData activity = new RPCData();
-        activity.state = "U igri";
-        activity.details = $"{GameData.Country} | {CountriesByName[GameData.Country].Provinces.Count} provincije | {GameData.Move}. potez";
+        activity.state = $"U igri ({GameData.Country})";
+        activity.details = $"{CountriesByName[GameData.Country].Provinces.Count} " +
+                           $"pokrajine | Potez {GameData.Move} | " +
+                           $"{stats.played.Format()} sveukupno";
 
         RPC_Timestamps timestamps = new RPC_Timestamps();
         timestamps.start = GetEpoch();
@@ -892,59 +909,59 @@ public class Game : MonoBehaviour
 
         return activity;
     }
-    void InitializeRichPresence()
+    public void InitializeRichPresence()
     {
         RPC.GameInstance = this;    
 
         RPC.Init();
         UpdateRichPresence();
     }
-    void UpdateRichPresence()
+    public void UpdateRichPresence()
     {
         RPCData activity = GetRPCData();
         RPC.SetActivity(activity);
     }
-    Vector3 Vector2IntToVector3(Vector2Int v2int)
+    public Vector3 Vector2IntToVector3(Vector2Int v2int)
     {
         return new Vector3(v2int.x, v2int.y);
     }
-    Vector2 Vector2IntToVector2(Vector2Int v2int)
+    public Vector2 Vector2IntToVector2(Vector2Int v2int)
     {
         return new Vector2(v2int.x, v2int.y);
     }
-    string FormatNumber(int num)
+    public string FormatNumber(int num)
     {
         return string.Format("{0:N0}", num);
     }
-    void ChangeProvinceOwner(ProvinceData data, string owner)
+    public void ChangeProvinceOwner(ProvinceData data, string owner)
     {
         Provinces[data.Color].Country = owner;
         UpdateProvinces();
     }
-    void SetDeclareWarButtonInteractable(bool interactable)
+    public void SetDeclareWarButtonInteractable(bool interactable)
     {
         TF_DeclareWar.GetComponent<Button>().interactable = interactable;
     }
-    void SetDeclareWarTextAlpha(float a)
+    public void SetDeclareWarTextAlpha(float a)
     {
         BAOC_Color clr = BAOC_Color.FromColor(TF_DeclareWar.GetChild(0).GetComponent<TextMeshProUGUI>().color);
         TF_DeclareWar.GetChild(0).GetComponent<TextMeshProUGUI>().color = new BAOC_Color(clr.R, clr.G, clr.B, a).GetColor();
 
     }
-    void UpdateMoveUI()
+    public void UpdateMoveUI()
     {
         TXT_Balance.text = FormatNumber(GameData.Balance);
         TXT_Move.text = "Potez " + FormatNumber(GameData.Move);
         TXT_Income.text = GameData.Income > 0 ? String.Format("+{0:N0}", GameData.Income) : FormatNumber(GameData.Income);
         TXT_SideBarArmy.text = FormatNumber(GameData.Army);
     }
-    void UpdateProvinceUI()
+    public void UpdateProvinceUI()
     {
         TXT_ProvinceName.text = SelectedProvince.Name;
         TXT_SideBarProvincePopulation.text = $"{FormatNumber(SelectedProvince.Population)} ljudi";
         TXT_SideBarProvinceArmy.text = $"{FormatNumber(SelectedProvince.Army)} vojnika";
     }
-    void ResetFakeMapDummy()
+    public void ResetFakeMapDummy()
     {
         for (int x = 0; x < TEX_FakeMap.width; x++)
         {
@@ -954,12 +971,12 @@ public class Game : MonoBehaviour
             }
         }
     }
-    void EraseLastProvince()
+    public void EraseLastProvince()
     {
         SetProvinceColor(LastProvinceColor, BAOC_Color.clear);
         FakeMapDummy.Apply();
     }
-    void ShowRecruitGUI()
+    public void ShowRecruitGUI()
     {
         S_Slider.maxValue = SelectedProvince.HomogenousPeople;
         S_Slider.minValue = 0;
@@ -969,7 +986,7 @@ public class Game : MonoBehaviour
         TXT_ArmyPriceText.text = String.Format("{0:N0} $", Price);
         TXT_ArmyPriceText.color = Price > GameData.Balance ? GR_RelationsGradient.Evaluate(1f) : GR_RelationsGradient.Evaluate(0f);
     }
-    void ShowColorPick()
+    public void ShowColorPick()
     {
         if (!OriginalSet)
         {
@@ -983,7 +1000,7 @@ public class Game : MonoBehaviour
             TF_CountriesByColor.GetChild(CountriesByName[CurrentProvince.Country].Index).GetComponent<RawImage>().color = _c.GetColor();
         }
     }
-    void UpdateProvinces()
+    public void UpdateProvinces()
     {
         SelectedProvince = Provinces[SelectedProvince.Color];
         CurrentProvince = Provinces[CurrentProvince.Color];
@@ -1079,7 +1096,7 @@ public class Game : MonoBehaviour
     {
         S_Slider.value = 0;
     }
-    List<Vector2Int> GetCirclePoints(int radius)
+    public List<Vector2Int> GetCirclePoints(int radius)
     {
         List<Vector2Int> points = new List<Vector2Int>();
 
@@ -1117,7 +1134,7 @@ public class Game : MonoBehaviour
 
         return points;
     }
-    BAOC_Color GetFirstNonBlackPixelAtAngle(Texture2D tex, Vector2Int origin, float angle, BAOC_Color original)
+    public BAOC_Color GetFirstNonBlackPixelAtAngle(Texture2D tex, Vector2Int origin, float angle, BAOC_Color original)
     {
         List<Vector2Int> points = GetCirclePoints(128);
         Vector2Int p2 = points[(int)((angle / 360f) * points.Count)] + origin;
