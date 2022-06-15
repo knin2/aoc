@@ -10177,6 +10177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65085574bf3defb4888b5132cd38c4bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SaveFrequency: 12
 --- !u!4 &2105631761
 Transform:
   m_ObjectHideFlags: 0
