@@ -70,17 +70,7 @@ public class GameData
     public int Army;
     public List<WarData> Wars;
 
-    public bool AtWar(string country)
-    {
-        foreach (WarData war in Wars)
-        {
-            if (war.Defender == country || war.Aggresor == country)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+
 }
 [System.Serializable]
 public class WarData
@@ -235,6 +225,7 @@ public struct BAOC_Color
     public static BAOC_Color clear = new BAOC_Color(a: 0);
     public static BAOC_Color white = new BAOC_Color(1, 1, 1);
     public static BAOC_Color red = new BAOC_Color(1);
+    public static BAOC_Color special0 = BAOC_Color.FromHex("#A64026FF");
 
     public static BAOC_Color operator +(BAOC_Color left, BAOC_Color right)
     {
@@ -323,6 +314,7 @@ public class Game : MonoBehaviour
     [Header("Boja")]
     public Gradient GR_RelationsGradient;
     public BAOC_Color BCLR_ProvinceHoverHighlight;
+    public BAOC_Color BCLR_ProvinceNeighbourHighlight;
     public BAOC_Color BCLR_ProvinceSelectHighlight;
     #endregion
     #region vektori
@@ -336,6 +328,8 @@ public class Game : MonoBehaviour
     public Transform TF_ProvinceEthnicStructure;
     public Transform TF_DeclareWar;
     public Transform TF_ProvinceHolder;
+    public Transform TF_ArrowHolder;
+    public GameObject GO_ArrowPrefab;
     public Camera CM_MainCamera;
     #endregion
     #region konstante
@@ -344,6 +338,7 @@ public class Game : MonoBehaviour
     public int CInt_AnglesForNeighbourDetection = 64;
     public int CInt_PixelOriginsForNeighbourDetection = 6;
     public float CFloat_RecruitLossFactor = 1.4f;
+    public float CFloat_ArrowAnimationTime = 0.25f;
     #endregion
     #region klase static
     #endregion
@@ -369,15 +364,24 @@ public class Game : MonoBehaviour
     BAOC_Color LastProvinceSelected;
     BAOC_Color Original;
     BAOC_Color MouseTarget;
-
-    Dictionary<BAOC_Color, List<Vector2Int>> ProvincePixels;
     Dictionary<BAOC_Color, ProvinceData> Provinces;
+    Dictionary<string, ProvinceData> ProvincesByName;
     Dictionary<string, List<ProvinceData>> ProvincesByCountry;
     Dictionary<string, CountryData> CountriesByName;
     Dictionary<BAOC_Color, List<BAOC_Color>> ProvinceNeighbours;
+    Dictionary<string, Dictionary<BAOC_Color, List<BAOC_Color>>> ProvinceNeighboursFiltered;
     Dictionary<string, EthnicData> EthnicDataByCountryName;
     Dictionary<string, EthnicData> EthnicDataByProvinceName;
     Dictionary<string, int> ProvinceHolderChildIndexesByProvinceName;
+    Dictionary<BAOC_Color, Vector2Int> ProvincePixels;
+    Dictionary<BAOC_Color, Vector2Int> ProvincePixelsNearToSpecial;
+#nullable enable
+    Dictionary<BAOC_Color, List<Vector2Int>?> PixelPositionsByColor = new Dictionary<BAOC_Color, List<Vector2Int>?>();
+#nullable disable
+    /// <Summary>
+    /// key = lowercase,
+    /// value = province.Name
+    /// </Summary>
     Dictionary<string, string> LowercaseProvinceNames;
     List<ProvinceData> SelectedProvinces;
     List<ProvinceData> SelectedNeighbouringProvinces;
@@ -399,28 +403,31 @@ public class Game : MonoBehaviour
 
         SavePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/baoc/";
 
-
         GameData = new GameData();
         GameData.Income = 2000000;
         GameData.Balance = 20000000;
         GameData.Move = 0;
         GameData.Country = "Hrvatska";
 
+#nullable enable
         GameData.Wars = new List<WarData>();
         SelectedProvince = new ProvinceData();
         CurrentProvince = new ProvinceData();
-        ProvincePixels = new Dictionary<BAOC_Color, List<Vector2Int>>();
+        ProvincePixels = new Dictionary<BAOC_Color, Vector2Int>();
         Provinces = new Dictionary<BAOC_Color, ProvinceData>();
         EthnicDataByCountryName = new Dictionary<string, EthnicData>();
         EthnicDataByProvinceName = new Dictionary<string, EthnicData>();
         SelectedProvinces = new List<ProvinceData>();
         SelectedNeighbouringProvinces = new List<ProvinceData>();
         ProvincesByCountry = new Dictionary<string, List<ProvinceData>>();
+        ProvincesByName = new Dictionary<string, ProvinceData>();
         CountriesByName = new Dictionary<string, CountryData>();
         ProvinceNeighbours = new Dictionary<BAOC_Color, List<BAOC_Color>>();
+        ProvinceNeighboursFiltered = new Dictionary<string, Dictionary<BAOC_Color, List<BAOC_Color>>>();
+        PixelPositionsByColor = new Dictionary<BAOC_Color, List<Vector2Int>?>();
         ProvinceHolderChildIndexesByProvinceName = new Dictionary<string, int>();
         LowercaseProvinceNames = new Dictionary<string, string>();
-
+#nullable disable
         UpdateMoveUI();
         #endregion
         #region province
@@ -442,6 +449,23 @@ public class Game : MonoBehaviour
             / 2);
         V2_SideSize = new Vector2(size_x, size_y);
         MapRect = new Rect(V2_SideSize, V2_MapSize);
+
+        for (int x = 0; x < TEX_ColourMap.width; x++)
+        {
+            for (int y = 0; y < TEX_ColourMap.height; y++)
+            {
+                Vector2Int v2int = new Vector2Int(x, y);
+                BAOC_Color color = BAOC_Color.FromColor(TEX_ColourMap.GetPixel(x, y));
+
+                if (!PixelPositionsByColor.ContainsKey(color))
+                {
+                    PixelPositionsByColor[color] = new List<Vector2Int>();
+                }
+                PixelPositionsByColor[color].Add(v2int);
+            }
+        }
+
+
 
         string json = File.ReadAllText("Assets/Provinces/Provinces.json");
         dynamic Provinces_json = JsonConvert.DeserializeObject(json);
@@ -484,64 +508,23 @@ public class Game : MonoBehaviour
                 data.Color = clr;
 
                 data.EthnicData = eth_data;
+
                 Provinces.Add(clr, data);
+                ProvincesByName.Add(data.Name, data);
+
                 EthnicDataByProvinceName.Add(data.Name, eth_data);
 
                 Provinces__.Add(data);
 
-                string key__ = "";
-                
-                if (data.Name.Contains("-"))
-                {
-                    key__ = data.Name.Split('-')[0].ToLower();
-                }
-                else if (data.Name.Contains(" "))
-                {
-                    key__ = data.Name.Split(' ')[0].ToLower();
-                }
-                else
-                {
-                    key__ = data.Name.ToLower();
-                }
+                string key__ = ProvinceLowercase(data.Name);
                 LowercaseProvinceNames.Add(key__, data.Name);
             }
             string drzava_ = Convert.ToString(country.ime);
             ProvincesByCountry[drzava_] = Provinces__;
         }
-        foreach (BAOC_Color p in Provinces.Keys)
-        {
-            List<Vector2Int> pix_c = new List<Vector2Int>();
-            for (int x = 0; x < TEX_ColourMap.width; x++)
-            {
-                for (int y = 0; y < TEX_ColourMap.height; y++)
-                {
-                    if (p.GetColor() == TEX_ColourMap.GetPixel(x, y))
-                    {
-                        pix_c.Add(new Vector2Int(x, y));
-                    }
-                }
-
-            }
-            List<BAOC_Color> nei_p = new List<BAOC_Color>();
-            for (int i = 0; i < CInt_AnglesForNeighbourDetection; i++)
-            {
-                for (int j = 1; j < CInt_PixelOriginsForNeighbourDetection + 1; j++)
-                {
-                    int idx_n = pix_c.Count - 1;
-                    idx_n /= j;
-                    BAOC_Color neighboring = GetFirstNonBlackPixelAtAngle(TEX_ColourMap, pix_c[idx_n], i * (360f / CInt_AnglesForNeighbourDetection), p);
-                    if (!nei_p.Contains(neighboring) && Provinces.ContainsKey(neighboring))
-                    {
-                        nei_p.Add(neighboring);
-                    }
-                }
-            }
-            ProvinceNeighbours[p] = nei_p;
-            ProvincePixels.Add(p, pix_c);
-        }
-
         #endregion
-        #region ethnic
+        #region ethnic (2nd provinceData pass)
+        ProvincePixelsNearToSpecial = GetProvinceColorsNearToSpecialColor();
         int index = 0;
         foreach (dynamic drzava in Provinces_json.podaci)
         {
@@ -577,7 +560,6 @@ public class Game : MonoBehaviour
                 int o_data = drzava.odnosi[j + 1];
                 countryData.Relations[o_drz] = o_data;
             }
-            //TValue["Ostali"]  = 1f - sum;
             data.Size = data.PopulationPercentages.Count;
             data.Country = drz;
 
@@ -588,6 +570,44 @@ public class Game : MonoBehaviour
             CountriesByName[Convert.ToString(drzava.ime)] = countryData;
             EthnicDataByCountryName.Add(drz, data);
 
+
+
+            #region detekcija suseda
+            foreach (dynamic province in drzava.podaci)
+            {
+                List<BAOC_Color> __nei = new List<BAOC_Color>();
+                List<BAOC_Color> __f_nei = new List<BAOC_Color>();
+
+
+                string hexCode = Convert.ToString(province.boja);
+                BAOC_Color __key_clr = BAOC_Color.FromHex(hexCode);
+
+                ProvincePixels[__key_clr] = ProvincePixelsNearToSpecial[__key_clr];
+
+                foreach (dynamic neighbour in province.susjedi)
+                {
+                    string name = Convert.ToString(neighbour);
+                    BAOC_Color __clr = ProvincesByName[name].Color;
+
+                    ProvinceData __data = Provinces[__clr];
+
+                    if (__data.Country == drz)
+                    {
+                        __f_nei.Add(__clr);
+                    }
+
+                    __nei.Add(__clr);
+
+                }
+
+                ProvinceNeighbours[__key_clr] = __nei;
+
+                Dictionary<BAOC_Color, List<BAOC_Color>> __val = new Dictionary<BAOC_Color, List<BAOC_Color>>();
+                __val[__key_clr] = __f_nei;
+
+                ProvinceNeighboursFiltered[drz] = __val;
+            }
+            #endregion
             index++;
         }
         #endregion
@@ -596,13 +616,13 @@ public class Game : MonoBehaviour
         foreach (Transform child in children)
         {
             RawImage img = child.GetComponent<RawImage>();
-            BAOC.Log(img.texture.name);
             ProvinceHolderChildIndexesByProvinceName[LowercaseProvinceNames[img.texture.name]] = children.IndexOf(child);
         }
         #endregion
         SelectedProvince = Provinces[BAOC_Color.red];
 
-        BAOC.Log(SelectedProvince.Color.ToString() + " drina");
+        LightUpProvince(SelectedProvince.Color, BCLR_ProvinceSelectHighlight);
+        LightUpProvinces(ProvinceNeighbours[SelectedProvince.Color], BCLR_ProvinceNeighbourHighlight);
 
         CurrentProvince = SelectedProvince;
         LastProvinceSelected = SelectedProvince.Color;
@@ -613,19 +633,6 @@ public class Game : MonoBehaviour
         UpdateProvinceUI();
         UpdateWarText();
         UpdateSideBarUI();
-        Dictionary<string, string[]> neigh_form2 = new Dictionary<string, string[]>();
-        foreach (BAOC_Color c in ProvinceNeighbours.Keys)
-        {
-            List<string> value = new List<string>();
-            foreach (BAOC_Color province_c in ProvinceNeighbours[c])
-            {
-                value.Add(Provinces[province_c].Name);
-            }
-            neigh_form2[Provinces[c].Name] = value.ToArray();
-        }
-
-
-        SaveJSON(neigh_form2, "data");
         #region RPC
         InitializeRichPresence();
         #endregion
@@ -644,36 +651,73 @@ public class Game : MonoBehaviour
 
         #endregion
         #region miš
-        Vector2 mouse_pos = Input.mousePosition;
+        Vector2Int mouse_pos = new Vector2Int((int)Input.mousePosition.x, (int)Input.mousePosition.y);
         if (MapRect.Contains(mouse_pos))
         {
-            MouseTarget = BAOC_Color.FromColor(TEX_ColourMap.GetPixel((int)mouse_pos.x - (int)V2_SideSize.x, (int)mouse_pos.y - (int)V2_SideSize.y));
+            MouseTarget = GetMouseColor(mouse_pos);
+
+            if (MouseTarget == BAOC_Color.special0)
+            {
+                mouse_pos.x++;
+                MouseTarget = GetMouseColor(mouse_pos);
+            }
+
             if (Provinces.ContainsKey(MouseTarget))
             {
+                ClearAllProvincesExcept(new BAOC_Color[] { SelectedProvince.Color, MouseTarget }.Concat(ProvinceNeighbours[SelectedProvince.Color]).ToArray());
+
                 #region nadi provinciju
                 CurrentProvince = Provinces[MouseTarget];
                 ProvinceData data = CurrentProvince;
-                if (data.Name != LastProvinceByName && LastProvinceByName != "" && LastProvinceColor != SelectedProvince.Color && !ProvinceNeighbours[SelectedProvince.Color].Contains(LastProvinceColor))
-                {
-                    ClearProvince(LastProvinceColor);
-                    foreach (BAOC_Color neighbourColor in ProvinceNeighbours[LastProvinceColor])
-                    {
-                        ProvinceData neighbour = Provinces[neighbourColor];
-                        ClearProvince(neighbour.Color);
-                    }
-                }
                 #endregion
 
 
                 if (Input.GetMouseButtonDown(0))
                 {
+                    ClearAllProvinces();
+
                     SelectedProvince = CurrentProvince;
 
-                    ClearProvince(LastProvinceSelected);
+
                     LightUpProvince(SelectedProvince.Color, BCLR_ProvinceSelectHighlight);
 
                     SelectedProvinces.Add(SelectedProvince);
-                    SelectedNeighbouringProvinces = ProvincesByBAOCColorsToProvincesByProvinceData(ProvinceNeighbours[SelectedProvince.Color]);
+                    //SelectedNeighbouringProvinces = ProvincesByBAOCColorsToProvincesByProvinceData(ProvinceNeighbours[SelectedProvince.Color]);
+                    List<Transform> _children = GetChildren(TF_ArrowHolder);
+                    foreach (Transform c in _children)
+                    {
+                        Destroy(c.gameObject);
+                    }
+
+                    foreach (BAOC_Color neighbourColor in ProvinceNeighbours[SelectedProvince.Color])
+                    {
+                        ProvinceData neighbour = Provinces[neighbourColor];
+
+                        //draw arrows if neighbour is a part of the current country OR the current country is at war with the neighbour
+
+                        if (SelectedProvince.Country != GameData.Country) continue;
+
+                        if (SelectedProvince.Army <= 0) continue;
+
+                        if (!AtWar(neighbour.Country, GameData.Country))
+                        {
+                            if (neighbour.Country != GameData.Country) continue;
+                        }
+
+                        Vector2Int shit = ProvincePixels[neighbourColor];
+                        Vector2Int originShit = ProvincePixels[SelectedProvince.Color];
+                        float atangent = AngleBetweenVector2(originShit, shit);
+
+                        GameObject newArrowText = Instantiate(GO_ArrowPrefab, TF_ArrowHolder.transform);
+                        Vector3 pos = TexturePointToWorld(originShit/* - new Vector2Int((int)R.rect.width, (int)R.rect.height)*/);
+                        pos.z = 90;
+                        newArrowText.transform.position = pos;
+                        newArrowText.transform.rotation = Quaternion.Euler(new Vector3(0, 0, atangent));
+
+                        LightUpProvince(neighbour.Color, BCLR_ProvinceNeighbourHighlight);
+
+                    }
+
                     #region alpha promjene
                     SelectedProvinceIsPartOfCountry = SelectedProvince.Country == GameData.Country;
                     B_RecruitButton.interactable = SelectedProvinceIsPartOfCountry;
@@ -723,37 +767,11 @@ public class Game : MonoBehaviour
                     TXT_RelationsValue.color = DeclareWarBoolean ? BAOC_Color.FromColor(TXT_RelationsLabel.color).SetComponent(Channel.ALPHA, 0.5f).GetColor() : BAOC_Color.FromColor(TXT_RelationsLabel.color).SetComponent(Channel.ALPHA, 1f).GetColor();
                     #endregion
 
-                    EthnicData data_eth = EthnicDataByCountryName[data.Country];
-                    EthnicData data_eth_zup = EthnicDataByProvinceName[data.Name];
-
-                    #region etnicki sastav UI
-                    for (int idxi = 0; idxi < data_eth.Size; idxi++)
-                    {
-                        TF_CountryEthnicStructure.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth.PopulationByNation[idxi], data_eth.PopulationPercentages[idxi] * 100f, data_eth.PopulationByQuantity[idxi]);
-                    }
-                    for (int idxi = 0; idxi < data_eth_zup.Size; idxi++)
-                    {
-                        TF_ProvinceEthnicStructure.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth_zup.PopulationByNation[idxi], data_eth_zup.PopulationPercentages[idxi] * 100f, data_eth_zup.PopulationByQuantity[idxi]);
-                    }
-                    #endregion
-
-
-                    #region susjedi provincije
-                    foreach (BAOC_Color neighbourColor in ProvinceNeighbours[SelectedProvince.Color])
-                    {
-                        ProvinceData neighbour = Provinces[neighbourColor];
-                        if (neighbour.Country == GameData.Country)
-                        {
-                            LightUpProvince(neighbour.Color, BCLR_ProvinceHoverHighlight);
-                        }
-                    }
-                    #endregion
                     UpdateWarText();
                     UpdateProvinceUI();
-
+                    UpdateSideBarUI();
                     UpdateRichPresence();
                 }
-
                 LastProvinceByName = data.Name;
                 LastProvinceColor = data.Color;
 
@@ -766,39 +784,6 @@ public class Game : MonoBehaviour
                 #endregion
             }
         }
-        #endregion
-        #region GFX provincije
-        //foreach (ProvinceData data in SelectedProvinces.ToArray())
-        //{
-        //    if (data.Name != SelectedProvince.Name)
-        //    {
-        //        LightUpProvince(data.color, BAOC_Color.clear);
-        //        SelectedProvinces.Remove(data);
-        //        continue;
-        //    }
-        //    else
-        //    {
-        //        LightUpProvince(data.color, sel_high);
-        //        continue;
-        //    }
-        //}
-
-        ////susedi
-        //foreach (ProvinceData data in selected_neighbouring_Provinces.ToArray())
-        //{
-        //    if (!ProvinceNeighbours[SelectedProvince.Color].Contains(data.color) || data.Country != SelectedProvince.Country)
-        //    {
-        //        LightUpProvince(data.color, BAOC_Color.clear);
-        //        selected_neighbouring_Provinces.Remove(data);
-        //        BAOC.Log($"Removed {data.Name} from neighbouring Provinces");
-        //        continue;
-        //    }
-        //    else
-        //    {
-        //        LightUpProvince(data.color, BCLR_ProvinceHoverHighlight);
-        //        continue;
-        //    }
-        //}
         #endregion
     }
     private void OnApplicationQuit()
@@ -828,7 +813,50 @@ public class Game : MonoBehaviour
         }
         return __Provinces;
     }
-#nullable enable
+    public Dictionary<BAOC_Color, Vector2Int> GetProvinceColorsNearToSpecialColor()
+    {
+        Dictionary<BAOC_Color, Vector2Int> ret = new Dictionary<BAOC_Color, Vector2Int>();
+
+        List<Vector2Int>? __positions = PixelPositionsByColor[BAOC_Color.special0];
+        foreach (Vector2Int position in __positions!)
+        {
+            ret[BAOC_Color.FromColor(TEX_ColourMap.GetPixel(position.x + 1, position.y))] = position;
+        }
+
+        return ret;
+    }
+    public BAOC_Color GetMouseColor(Vector2Int mouse_pos)
+    {
+        return BAOC_Color.FromColor(TEX_ColourMap.GetPixel((int)mouse_pos.x - (int)V2_SideSize.x, (int)mouse_pos.y - (int)V2_SideSize.y));
+    }
+    public Vector3 TexturePointToWorld(Vector2Int point)
+    {
+        //return CM_MainCamera.ScreenToWorldPoint(new Vector3(point.x, point.y));
+        return CM_MainCamera.ScreenToWorldPoint(new Vector3(point.x + V2_SideSize.x, point.y + V2_SideSize.y, 0));
+    }
+    private float AngleBetweenVector2(Vector2 vec1, Vector2 vec2)
+    {
+        Vector2 diference = vec2 - vec1;
+        float sign = (vec2.y < vec1.y) ? -1.0f : 1.0f;
+        return Vector2.Angle(Vector2.right, diference) * sign;
+    }
+    public static string ProvinceLowercase(string name)
+    {
+        string key__ = "";
+        if (name.Contains("-"))
+        {
+            key__ = name.Split('-')[0].ToLower();
+        }
+        else if (name.Contains(" "))
+        {
+            key__ = name.Split(' ')[0].ToLower();
+        }
+        else
+        {
+            key__ = name.ToLower();
+        }
+        return key__;
+    }
     public static List<Transform> GetChildren(Transform parent)
     {
         List<Transform> children = new List<Transform>();
@@ -851,13 +879,24 @@ public class Game : MonoBehaviour
     {
         File.WriteAllText($"{SavePath}{path}.json", ToJSON(val));
     }
+#nullable disable
     public void LightUpProvince(BAOC_Color province, BAOC_Color with_BAOC_Color)
     {
         if (Provinces.ContainsKey(province))
         {
-            string name = Provinces[province].Name;            
+            string name = Provinces[province].Name;
             int index = ProvinceHolderChildIndexesByProvinceName[name];
             TF_ProvinceHolder.GetChild(index).GetComponent<RawImage>().color = with_BAOC_Color.GetColor();
+        }
+    }
+    public void LightUpProvinces(IEnumerable<BAOC_Color> provinces, BAOC_Color with)
+    {
+        foreach (BAOC_Color province in provinces)
+        {
+            string name = Provinces[province].Name;
+
+
+            LightUpProvince(province, with);
         }
     }
     public void ClearProvince(BAOC_Color province)
@@ -957,6 +996,21 @@ public class Game : MonoBehaviour
         TF_DeclareWar.GetChild(0).GetComponent<TextMeshProUGUI>().color = new BAOC_Color(clr.R, clr.G, clr.B, a).GetColor();
 
     }
+    public bool AtWar(string country, string with = "NONE")
+    {
+        foreach (WarData war in GameData.Wars)
+        {
+            if (war.Defender == country || war.Aggresor == country)
+            {
+                return true;
+            }
+            if ((war.Defender == country || war.Aggresor == with) & (war.Defender == with || war.Aggresor == country))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public void UpdateMoveUI()
     {
         TXT_Balance.text = FormatNumber(GameData.Balance);
@@ -986,6 +1040,7 @@ public class Game : MonoBehaviour
     }
     public void ShowColorPick()
     {
+        print(ChangedSliders);
         if (!OriginalSet)
         {
             BAOC_Color c = BAOC_Color.FromColor(TF_CountriesByColor.GetChild(CountriesByName[CurrentProvince.Country].Index).GetComponent<RawImage>().color);
@@ -1017,10 +1072,12 @@ public class Game : MonoBehaviour
     public void EndColorPick()
     {
         S_SliderHue.transform.parent.gameObject.SetActive(false);
+        print(TF_CountriesByColor.GetChild(CountriesByName[CurrentProvince.Country].Index).name);
     }
     public void AbortColorPick()
     {
         S_SliderHue.transform.parent.gameObject.SetActive(false);
+        print(TF_CountriesByColor.GetChild(CountriesByName[CurrentProvince.Country].Index).name);
         TF_CountriesByColor.GetChild(CountriesByName[CurrentProvince.Country].Index).GetComponent<RawImage>().color = Original.GetColor();
     }
     public void SetSlidersChanged(bool to)
@@ -1045,7 +1102,7 @@ public class Game : MonoBehaviour
     }
     public void DeclareWar()
     {
-        if (!GameData.AtWar(GameData.Country))
+        if (!AtWar(GameData.Country, SelectedProvince.Country))
         {
             WarData wdata = new WarData();
 
@@ -1059,11 +1116,24 @@ public class Game : MonoBehaviour
     }
     void UpdateSideBarUI()
     {
-        ProvinceData data = CurrentProvince;
+        EthnicData data_eth = EthnicDataByCountryName[SelectedProvince.Country];
+        EthnicData data_eth_zup = EthnicDataByProvinceName[SelectedProvince.Name];
+
+        for (int idxi = 0; idxi < data_eth.Size; idxi++)
+        {
+            TF_CountryEthnicStructure.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth.PopulationByNation[idxi], data_eth.PopulationPercentages[idxi] * 100f, data_eth.PopulationByQuantity[idxi]);
+        }
+        for (int idxi = 0; idxi < data_eth_zup.Size; idxi++)
+        {
+            TF_ProvinceEthnicStructure.GetChild(idxi).GetComponent<TextMeshProUGUI>().text = String.Format("{0}: {1}%, {2:N0}", data_eth_zup.PopulationByNation[idxi], data_eth_zup.PopulationPercentages[idxi] * 100f, data_eth_zup.PopulationByQuantity[idxi]);
+        }
+
+        ProvinceData data = SelectedProvince;
         CountryData countryData = CountriesByName[data.Country];
         TXT_ProvinceName.text = data.Name;
         TXT_Country.text = data.Country;
         TXT_SideBarRightCountryName.text = data.Country;
+        TXT_SideBarRightProvinceName.text = data.Name;
         if (SelectedProvince.Country == GameData.Country)
         {
             TXT_SideBarArmy.text = FormatNumber(GameData.Army);
