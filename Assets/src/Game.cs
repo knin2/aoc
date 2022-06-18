@@ -39,6 +39,11 @@ public class ProvinceData
     public int HomogenousPeople;
     public int Population;
     public EthnicData EthnicData;
+
+    public override string ToString()
+    {
+        return Game.ToJSON(this, false);
+    }
 }
 [System.Serializable]
 public class CountryData
@@ -70,10 +75,13 @@ public class GameData
     public int Army;
     public List<WarData> Wars;
 
-
+    public override string ToString()
+    {
+        return Game.ToJSON(this, false);
+    }
 }
 [System.Serializable]
-public class WarData
+public struct WarData
 {
     public string Aggresor;
     public string Defender;
@@ -262,12 +270,6 @@ public struct BAOC_Color
     }
 }
 #region enum
-public enum ProvinceGFXAction
-{
-    LIT,
-    REMOVED,
-    IDLE
-}
 public enum Channel
 {
     RED,
@@ -285,6 +287,7 @@ public class Game : MonoBehaviour
     public Slider S_Slider;
     public Slider S_SliderHue;
     public Slider S_SliderValue;
+    public Slider S_SendArmySlider;
     public TextMeshProUGUI TXT_ProvinceName;
     public TextMeshProUGUI TXT_Country;
     public TextMeshProUGUI TXT_Capital;
@@ -329,7 +332,9 @@ public class Game : MonoBehaviour
     public Transform TF_DeclareWar;
     public Transform TF_ProvinceHolder;
     public Transform TF_ArrowHolder;
-    public GameObject GO_ArrowPrefab;
+    public Transform TF_ArmyTextHolder;
+    public GameObject PFAB_Arrow;
+    public GameObject PFAB_ArmyText;
     public Camera CM_MainCamera;
     #endregion
     #region konstante
@@ -384,6 +389,7 @@ public class Game : MonoBehaviour
     /// </Summary>
     Dictionary<string, string> LowercaseProvinceNames;
     List<ProvinceData> SelectedProvinces;
+    List<ProvinceData> ProvincesToSendArmyTo;
     List<ProvinceData> SelectedNeighbouringProvinces;
     ProvinceData CurrentProvince;
     ProvinceData SelectedProvince;
@@ -573,6 +579,7 @@ public class Game : MonoBehaviour
 
 
             #region detekcija suseda
+            Dictionary<BAOC_Color, List<BAOC_Color>> __val = new Dictionary<BAOC_Color, List<BAOC_Color>>();
             foreach (dynamic province in drzava.podaci)
             {
                 List<BAOC_Color> __nei = new List<BAOC_Color>();
@@ -602,11 +609,10 @@ public class Game : MonoBehaviour
 
                 ProvinceNeighbours[__key_clr] = __nei;
 
-                Dictionary<BAOC_Color, List<BAOC_Color>> __val = new Dictionary<BAOC_Color, List<BAOC_Color>>();
                 __val[__key_clr] = __f_nei;
 
-                ProvinceNeighboursFiltered[drz] = __val;
             }
+            ProvinceNeighboursFiltered[drz] = __val;
             #endregion
             index++;
         }
@@ -616,12 +622,14 @@ public class Game : MonoBehaviour
         foreach (Transform child in children)
         {
             RawImage img = child.GetComponent<RawImage>();
+            BAOC.Log(img.texture.name);
             ProvinceHolderChildIndexesByProvinceName[LowercaseProvinceNames[img.texture.name]] = children.IndexOf(child);
         }
         #endregion
         SelectedProvince = Provinces[BAOC_Color.red];
 
         LightUpProvince(SelectedProvince.Color, BCLR_ProvinceSelectHighlight);
+
         LightUpProvinces(ProvinceNeighbours[SelectedProvince.Color], BCLR_ProvinceNeighbourHighlight);
 
         CurrentProvince = SelectedProvince;
@@ -664,7 +672,23 @@ public class Game : MonoBehaviour
 
             if (Provinces.ContainsKey(MouseTarget))
             {
-                ClearAllProvincesExcept(new BAOC_Color[] { SelectedProvince.Color, MouseTarget }.Concat(ProvinceNeighbours[SelectedProvince.Color]).ToArray());
+                BAOC_Color[] toConcat = new BAOC_Color[0];
+                
+                if (SelectedProvince.Army > 0)
+                {
+                    if (AtWar(GameData.Country, SelectedProvince.Country))
+                    {
+                        toConcat = ProvinceNeighbours[SelectedProvince.Color].ToArray();
+                    }
+                    else
+                    {
+                        Dictionary<BAOC_Color, List<BAOC_Color>> value = ProvinceNeighboursFiltered[GameData.Country];
+
+                        toConcat = value[SelectedProvince.Color].ToArray();
+                    }
+                }
+
+                ClearAllProvincesExcept(new BAOC_Color[] { SelectedProvince.Color, MouseTarget }.Concat(toConcat).ToArray());
 
                 #region nadi provinciju
                 CurrentProvince = Provinces[MouseTarget];
@@ -676,6 +700,11 @@ public class Game : MonoBehaviour
                 {
                     ClearAllProvinces();
 
+                    if (Provinces[LastProvinceSelected].Army > 0)
+                    {
+
+                    }
+
                     SelectedProvince = CurrentProvince;
 
 
@@ -683,41 +712,59 @@ public class Game : MonoBehaviour
 
                     SelectedProvinces.Add(SelectedProvince);
                     //SelectedNeighbouringProvinces = ProvincesByBAOCColorsToProvincesByProvinceData(ProvinceNeighbours[SelectedProvince.Color]);
-                    List<Transform> _children = GetChildren(TF_ArrowHolder);
-                    foreach (Transform c in _children)
+                    DestroyChildren(TF_ArrowHolder);
+                    DestroyChildren(TF_ArmyTextHolder);
+
+                    ProvincesToSendArmyTo = new List<ProvinceData>();
+
+                    //renderanje susjeda
+                    if (SelectedProvince.Army > 0)
                     {
-                        Destroy(c.gameObject);
-                    }
-
-                    foreach (BAOC_Color neighbourColor in ProvinceNeighbours[SelectedProvince.Color])
-                    {
-                        ProvinceData neighbour = Provinces[neighbourColor];
-
-                        //draw arrows if neighbour is a part of the current country OR the current country is at war with the neighbour
-
-                        if (SelectedProvince.Country != GameData.Country) continue;
-
-                        if (SelectedProvince.Army <= 0) continue;
-
-                        if (!AtWar(neighbour.Country, GameData.Country))
+                        foreach (BAOC_Color neighbourColor in ProvinceNeighbours[SelectedProvince.Color])
                         {
-                            if (neighbour.Country != GameData.Country) continue;
+                            ProvinceData neighbour = Provinces[neighbourColor];
+
+                            //draw arrows if neighbour is a part of the current country OR the current country is at war with the neighbour
+
+                            if (SelectedProvince.Country != GameData.Country) continue;
+
+                            if (SelectedProvince.Army <= 0) continue;
+
+                            if (!AtWar(neighbour.Country, GameData.Country))
+                            {
+                                if (neighbour.Country != GameData.Country) continue;
+                            }
+
+                            ProvincesToSendArmyTo.Add(neighbour);
+                            Vector2Int shit = ProvincePixels[neighbourColor];
+                            Vector2Int originShit = ProvincePixels[SelectedProvince.Color];
+                            Vector3 pos = TexturePointToWorld(originShit);
+                            pos.z = 90;
+                            
+                            float atangent = AngleBetweenVector2(originShit, shit);
+
+                            GameObject newArrowText = Instantiate(PFAB_Arrow, TF_ArrowHolder.transform);
+                            newArrowText.transform.position = pos;
+                            newArrowText.transform.rotation = Quaternion.Euler(new Vector3(0, 0, atangent));
+
+                            LightUpProvince(neighbour.Color, BCLR_ProvinceNeighbourHighlight);
+
                         }
-
-                        Vector2Int shit = ProvincePixels[neighbourColor];
-                        Vector2Int originShit = ProvincePixels[SelectedProvince.Color];
-                        float atangent = AngleBetweenVector2(originShit, shit);
-
-                        GameObject newArrowText = Instantiate(GO_ArrowPrefab, TF_ArrowHolder.transform);
-                        Vector3 pos = TexturePointToWorld(originShit/* - new Vector2Int((int)R.rect.width, (int)R.rect.height)*/);
-                        pos.z = 90;
-                        newArrowText.transform.position = pos;
-                        newArrowText.transform.rotation = Quaternion.Euler(new Vector3(0, 0, atangent));
-
-                        LightUpProvince(neighbour.Color, BCLR_ProvinceNeighbourHighlight);
-
                     }
 
+                    if (SelectedProvince.Country == GameData.Country)
+                    {
+                        foreach (ProvinceData province in ProvincesByCountry[GameData.Country])
+                        {
+                            Vector2Int pos = ProvincePixels[province.Color];
+                            Vector3 v3pos = TexturePointToWorld(pos);
+                            v3pos.z = 90;
+
+                            GameObject stored = Instantiate(PFAB_ArmyText, TF_ArmyTextHolder.transform);
+                            stored.transform.position = v3pos;
+                            stored.GetComponent<TextMeshProUGUI>().text = province.Army > 0 ? FormatNumber(province.Army) : "";
+                        }
+                    }
                     #region alpha promjene
                     SelectedProvinceIsPartOfCountry = SelectedProvince.Country == GameData.Country;
                     B_RecruitButton.interactable = SelectedProvinceIsPartOfCountry;
@@ -840,6 +887,10 @@ public class Game : MonoBehaviour
         float sign = (vec2.y < vec1.y) ? -1.0f : 1.0f;
         return Vector2.Angle(Vector2.right, diference) * sign;
     }
+    public bool CanAttack(ProvinceData province)
+    {
+        return (TF_ArrowHolder.childCount > 0) && (ProvincesToSendArmyTo.Contains(province));
+    }
     public static string ProvinceLowercase(string name)
     {
         string key__ = "";
@@ -857,6 +908,14 @@ public class Game : MonoBehaviour
         }
         return key__;
     }
+    ///<Summary>
+    ///?????????????????????????
+    ///?????????????????????????
+    ///?????????????????????????
+    ///?????????????????????????
+    ///?????????????????????????
+    ///?????????????????????????
+    ///</Summary>
     public static List<Transform> GetChildren(Transform parent)
     {
         List<Transform> children = new List<Transform>();
@@ -865,6 +924,22 @@ public class Game : MonoBehaviour
             children.Add(parent.GetChild(i));
         }
         return children;
+    }
+    public static void DestroyChildren(Transform parent)
+    ///<Summary>
+    ///?????????????????????????
+    ///?????????????????????????
+    ///?????????????????????????
+    ///?????????????????????????
+    ///?????????????????????????
+    ///?????????????????????????
+    ///</Summary>
+    {
+        List<Transform> tflist = GetChildren(parent);
+        foreach (Transform c in tflist)
+        {
+            Destroy(c.gameObject);
+        }
     }
     public static string ToJSON(object? val, bool format = true)
     {
@@ -918,6 +993,13 @@ public class Game : MonoBehaviour
             {
                 ClearProvince(p);
             }
+        }
+    }
+    public void LightUpProvinceNeighbours()
+    {
+        if (SelectedProvince.Army > 0)
+        {
+            LightUpProvinces(ProvinceNeighbours[SelectedProvince.Color], BCLR_ProvinceNeighbourHighlight);
         }
     }
     public string BAOCColorToRGBString(BAOC_Color c)
@@ -1023,6 +1105,7 @@ public class Game : MonoBehaviour
         TXT_ProvinceName.text = SelectedProvince.Name;
         TXT_SideBarProvincePopulation.text = $"{FormatNumber(SelectedProvince.Population)} ljudi";
         TXT_SideBarProvinceArmy.text = $"{FormatNumber(SelectedProvince.Army)} vojnika";
+        TXT_SideBarProvinceName.text = $"{SelectedProvince.Name}";
     }
     public void EraseLastProvince()
     {
@@ -1057,6 +1140,17 @@ public class Game : MonoBehaviour
     {
         SelectedProvince = Provinces[SelectedProvince.Color];
         CurrentProvince = Provinces[CurrentProvince.Color];
+    }
+    public void EndSendArmy()
+    {
+        S_SendArmySlider.gameObject.SetActive(false);
+        GameData.Army += (int)S_Slider.value;
+        Provinces[SelectedProvince.Color].Army += (int)S_Slider.value;
+        GameData.Balance -= Price;
+        Provinces[SelectedProvince.Color].HomogenousPeople -= (int)(S_Slider.value / CFloat_RecruitLossFactor);
+        UpdateProvinces();
+        UpdateProvinceUI();
+        UpdateMoveUI();
     }
     public void EndRecruit()
     {

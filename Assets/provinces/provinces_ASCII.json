@@ -2,7 +2,7 @@
     "podaci": [
         {
             "ime": "Hrvatska",
-            "prezident": "Franjo Tuđman",
+            "prezident": "Franjo Tudjman",
             "kapital": "Zagreb",
             "vojska": 108000,
             "demografija": {
@@ -10,8 +10,8 @@
                 "etnicka_struktura_velicina": 4,
                 "etnicka_struktura_str": [
                     "Hrvati",
-                    "Srbi",
-                    "Bošnjaci",
+                    "Srbčine",
+                    "Bosnjaci",
                     "Talijani"
                 ],
                 "etnicka_struktura_float": [
@@ -26,7 +26,7 @@
             },
             "podaci": [
                 {
-                    "ime": "Požeško-Slavonska",
+                    "ime": "Pozesko-Slavonska",
                     "boja": "#FF0000",
                     "demografija": {
                         "populacija": 64420,
@@ -35,7 +35,7 @@
                             "Hrvati",
                             "Srbi",
                             "Talijani",
-                            "Mađari",
+                            "Madjari",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -53,7 +53,7 @@
                             "velicina": 1
                         },
                         {
-                            "ime": "Požega",
+                            "ime": "Pozega",
                             "velicina": 3
                         },
                         {
@@ -62,11 +62,11 @@
                         }
                     ],
                     "susjedi": [
-                        "Osječko-Baranjska",
-                        "Virovitičko-Podravska",
+                        "Osjecko-Baranjska",
+                        "Viroviticko-Podravska",
                         "Brodsko-Posavska",
                         "Bjelovarsko-Bilogorska",
-                        "Sisačko-Moslavačka"
+                        "Sisacko-Moslavacka"
                     ]
                 },
                 {
@@ -80,7 +80,7 @@
                             "Hrvati",
                             "Srbi",
                             "Romi",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostalo"
                         ],
                         "etnicka_struktura_float": [
@@ -93,11 +93,11 @@
                     },
                     "gradovi": [
                         {
-                            "ime": "Okučani",
+                            "ime": "Okucani",
                             "velicina": 0
                         },
                         {
-                            "ime": "Nova Gradiška",
+                            "ime": "Nova Gradiska",
                             "velicina": 2
                         },
                         {
@@ -107,9 +107,9 @@
                     ],
                     "susjedi": [
                         "Vukovarsko-Srijemska",
-                        "Požeško-Slavonska",
-                        "Sisačko-Moslavačka",
-                        "Osječko-Baranjska"
+                        "Pozesko-Slavonska",
+                        "Sisacko-Moslavacka",
+                        "Osjecko-Baranjska"
                     ]
                 },
                 {
@@ -123,7 +123,7 @@
                             "Hrvati",
                             "Srbi",
                             "cesi",
-                            "Mađari",
+                            "Madjari",
                             "Ostalo"
                         ],
                         "etnicka_struktura_float": [
@@ -140,7 +140,7 @@
                             "velicina": 3
                         },
                         {
-                            "ime": "Čazma",
+                            "ime": "cazma",
                             "velicina": 1
                         },
                         {
@@ -149,15 +149,15 @@
                         }
                     ],
                     "susjedi": [
-                        "Virovitičko-Podravska",
-                        "Koprivničko-Križevačka",
-                        "Zagrebačka",
-                        "Sisačko-Moslavačka",
-                        "Požeško-Slavonska"
+                        "Viroviticko-Podravska",
+                        "Koprivnicko-krizevacka",
+                        "Zagrebacka",
+                        "Sisacko-Moslavacka",
+                        "Pozesko-Slavonska"
                     ]
                 },
                 {
-                    "ime": "Virovitičko-Podravska",
+                    "ime": "Viroviticko-Podravska",
                     "boja": "#FFFF00",
                     "kapital": 0,
                     "demografija": {
@@ -166,7 +166,7 @@
                         "etnicka_struktura_str": [
                             "Hrvati",
                             "Srbi",
-                            "Mađari",
+                            "Madjari",
                             "Ostalo"
                         ],
                         "etnicka_struktura_float": [
@@ -186,19 +186,19 @@
                             "velicina": 2
                         },
                         {
-                            "ime": "Voćin",
+                            "ime": "Vocin",
                             "velicina": 1
                         }
                     ],
                     "susjedi": [
-                        "Osječko-Baranjska",
+                        "Osjecko-Baranjska",
                         "Bjelovarsko-Bilogorska",
-                        "Koprivničko-Križevačka",
-                        "Požeško-Slavonska"
+                        "Koprivnicko-krizevacka",
+                        "Pozesko-Slavonska"
                     ]
                 },
                 {
-                    "ime": "Osječko-Baranjska",
+                    "ime": "Osjecko-Baranjska",
                     "boja": "#FFFFFF",
                     "kapital": 0,
                     "demografija": {
@@ -207,7 +207,7 @@
                         "etnicka_struktura_str": [
                             "Hrvati",
                             "Srbi",
-                            "Mađari",
+                            "Madjari",
                             "Ostalo"
                         ],
                         "etnicka_struktura_float": [
@@ -223,21 +223,21 @@
                             "velicina": 4
                         },
                         {
-                            "ime": "Đakovo",
+                            "ime": "djakovo",
                             "velicina": 3
                         },
                         {
-                            "ime": "Našice",
+                            "ime": "Nasice",
                             "velicina": 2
                         }
                     ],
                     "susjedi": [
-                        "Zapadnobački",
+                        "Zapadnobacki",
                         "Vukovarsko-Srijemska",
-                        "Požeško-Slavonska",
-                        "Virovitičko-Podravska",
+                        "Pozesko-Slavonska",
+                        "Viroviticko-Podravska",
                         "Brodsko-Posavska",
-                        "Južnobački"
+                        "Juznobacki"
                     ]
                 },
                 {
@@ -250,7 +250,7 @@
                         "etnicka_struktura_str": [
                             "Hrvati",
                             "Srbi",
-                            "Mađari",
+                            "Madjari",
                             "Rusini",
                             "Ostalo"
                         ],
@@ -272,18 +272,18 @@
                             "velicina": 3
                         },
                         {
-                            "ime": "Županja",
+                            "ime": "zupanja",
                             "velicina": 2
                         }
                     ],
                     "susjedi": [
-                        "Južnobački",
+                        "Juznobacki",
                         "Brodsko-Posavska",
-                        "Osječko-Baranjska"
+                        "Osjecko-Baranjska"
                     ]
                 },
                 {
-                    "ime": "Sisačko-Moslavačka",
+                    "ime": "Sisacko-Moslavacka",
                     "boja": "#FF00FF",
                     "kapital": 0,
                     "demografija": {
@@ -292,7 +292,7 @@
                         "etnicka_struktura_str": [
                             "Hrvati",
                             "Srbi",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostalo"
                         ],
                         "etnicka_struktura_float": [
@@ -318,14 +318,14 @@
                     ],
                     "susjedi": [
                         "Brodsko-Posavska",
-                        "Požeško-Slavonska",
+                        "Pozesko-Slavonska",
                         "Bjelovarsko-Bilogorska",
-                        "Karlovačka",
-                        "Zagrebačka"
+                        "Karlovacka",
+                        "Zagrebacka"
                     ]
                 },
                 {
-                    "ime": "Zagrebačka",
+                    "ime": "Zagrebacka",
                     "boja": "#AE0145",
                     "kapital": 0,
                     "demografija": {
@@ -334,7 +334,7 @@
                         "etnicka_struktura_str": [
                             "Hrvati",
                             "Srbi",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostalo"
                         ],
                         "etnicka_struktura_float": [
@@ -354,21 +354,21 @@
                             "velicina": 3
                         },
                         {
-                            "ime": "Zaprešić",
+                            "ime": "Zapresic",
                             "velicina": 2
                         }
                     ],
                     "susjedi": [
                         "Bjelovarsko-Bilogorska",
                         "Grad Zagreb",
-                        "Karlovačka",
-                        "Koprivničko-Križevačka",
+                        "Karlovacka",
+                        "Koprivnicko-krizevacka",
                         "Krapinsko-zagorska",
-                        "Sisačko-Moslavačka"
+                        "Sisacko-Moslavacka"
                     ]
                 },
                 {
-                    "ime": "Koprivničko-Križevačka",
+                    "ime": "Koprivnicko-krizevacka",
                     "boja": "#51FEBA",
                     "kapital": 0,
                     "demografija": {
@@ -395,24 +395,24 @@
                             "velicina": 3
                         },
                         {
-                            "ime": "Križevci",
+                            "ime": "Krizevci",
                             "velicina": 2
                         },
                         {
-                            "ime": "Đurđevac",
+                            "ime": "djurdjevac",
                             "velicina": 1
                         }
                     ],
                     "susjedi": [
                         "Bjelovarsko-Bilogorska",
-                        "Varaždinska",
-                        "Zagrebačka",
-                        "Međimurska",
-                        "Virovitičko-Podravska"
+                        "Varazdinska",
+                        "Zagrebacka",
+                        "Medjimurska",
+                        "Viroviticko-Podravska"
                     ]
                 },
                 {
-                    "ime": "Međimurska",
+                    "ime": "Medjimurska",
                     "boja": "#CCF51B",
                     "kapital": 0,
                     "demografija": {
@@ -420,7 +420,7 @@
                         "etnicka_struktura_velicina": 5,
                         "etnicka_struktura_str": [
                             "Hrvati",
-                            "Mađari",
+                            "Madjari",
                             "Slovenci",
                             "Romi",
                             "Albanci"
@@ -435,7 +435,7 @@
                     },
                     "gradovi": [
                         {
-                            "ime": "Čakovec",
+                            "ime": "cakovec",
                             "velicina": 3
                         },
                         {
@@ -443,13 +443,13 @@
                             "velicina": 1
                         },
                         {
-                            "ime": "Goričan",
+                            "ime": "Gorican",
                             "velicina": 1
                         }
                     ],
                     "susjedi": [
-                        "Varaždinska",
-                        "Koprivničko-Križevačka"
+                        "Varazdinska",
+                        "Koprivnicko-krizevacka"
                     ]
                 },
                 {
@@ -461,7 +461,7 @@
                         "etnicka_struktura_velicina": 4,
                         "etnicka_struktura_str": [
                             "Hrvati",
-                            "Mađari",
+                            "Madjari",
                             "Slovenci",
                             "Ostali"
                         ],
@@ -487,13 +487,13 @@
                         }
                     ],
                     "susjedi": [
-                        "Varaždinska",
-                        "Zagrebačka",
+                        "Varazdinska",
+                        "Zagrebacka",
                         "Grad Zagreb"
                     ]
                 },
                 {
-                    "ime": "Varaždinska",
+                    "ime": "Varazdinska",
                     "boja": "#330AE4",
                     "kapital": 0,
                     "demografija": {
@@ -516,13 +516,13 @@
                     },
                     "gradovi": [
                         {
-                            "ime": "Varaždin",
+                            "ime": "Varazdin",
                             "velicina": 3
                         }
                     ],
                     "susjedi": [
-                        "Koprivničko-Križevačka",
-                        "Međimurska",
+                        "Koprivnicko-krizevacka",
+                        "Medjimurska",
                         "Krapinsko-zagorska",
                         "Grad Zagreb"
                     ]
@@ -537,7 +537,7 @@
                         "etnicka_struktura_str": [
                             "Hrvati",
                             "Srbi",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Albanci",
                             "Ostali"
                         ],
@@ -556,12 +556,12 @@
                         }
                     ],
                     "susjedi": [
-                        "Zagrebačka",
+                        "Zagrebacka",
                         "Krapinsko-zagorska"
                     ]
                 },
                 {
-                    "ime": "Karlovačka",
+                    "ime": "Karlovacka",
                     "boja": "#C7AE39",
                     "kapital": 0,
                     "demografija": {
@@ -570,7 +570,7 @@
                         "etnicka_struktura_str": [
                             "Hrvati",
                             "Srbi",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -595,10 +595,10 @@
                         }
                     ],
                     "susjedi": [
-                        "Zagrebačka",
-                        "Sisačko-Moslavačka",
+                        "Zagrebacka",
+                        "Sisacko-Moslavacka",
                         "Primorsko-Goranska",
-                        "Ličko-Senjska"
+                        "Licko-Senjska"
                     ]
                 },
                 {
@@ -612,7 +612,7 @@
                             "Hrvati",
                             "Srbi",
                             "Talijani",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -638,8 +638,8 @@
                         }
                     ],
                     "susjedi": [
-                        "Karlovačka",
-                        "Ličko-Senjska",
+                        "Karlovacka",
+                        "Licko-Senjska",
                         "Istarska"
                     ]
                 },
@@ -654,7 +654,7 @@
                             "Hrvati",
                             "Srbi",
                             "Talijani",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -684,7 +684,7 @@
                     ]
                 },
                 {
-                    "ime": "Ličko-Senjska",
+                    "ime": "Licko-Senjska",
                     "boja": "#FF901E",
                     "kapital": 0,
                     "demografija": {
@@ -694,7 +694,7 @@
                             "Hrvati",
                             "Srbi",
                             "Talijani",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -721,7 +721,7 @@
                     ],
                     "susjedi": [
                         "Zadarska",
-                        "Karlovačka"
+                        "Karlovacka"
                     ]
                 },
                 {
@@ -735,7 +735,7 @@
                             "Hrvati",
                             "Srbi",
                             "Talijani",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -761,13 +761,13 @@
                         }
                     ],
                     "susjedi": [
-                        "Šibensko-Kninska",
-                        "Ličko-Senjska",
+                        "sibensko-Kninska",
+                        "Licko-Senjska",
                         "Primorsko-Goranska"
                     ]
                 },
                 {
-                    "ime": "Šibensko-Kninska",
+                    "ime": "sibensko-Kninska",
                     "boja": "#088F04",
                     "kapital": 0,
                     "demografija": {
@@ -777,7 +777,7 @@
                             "Hrvati",
                             "Srbi",
                             "Talijani",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -818,7 +818,7 @@
                             "Hrvati",
                             "Srbi",
                             "Talijani",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -844,12 +844,12 @@
                         }
                     ],
                     "susjedi": [
-                        "Šibensko-Kninska",
-                        "Dubrovačko-Neretvanska"
+                        "sibensko-Kninska",
+                        "Dubrovacko-Neretvanska"
                     ]
                 },
                 {
-                    "ime": "Dubrovačko-Neretvanska",
+                    "ime": "Dubrovacko-Neretvanska",
                     "boja": "#77FAAE",
                     "kapital": 0,
                     "demografija": {
@@ -859,7 +859,7 @@
                             "Hrvati",
                             "Srbi",
                             "Talijani",
-                            "Bošnjaci",
+                            "Bosnjaci",
                             "Ostali"
                         ],
                         "etnicka_struktura_float": [
@@ -900,8 +900,8 @@
                 "etnicka_struktura_velicina": 5,
                 "etnicka_struktura_str": [
                     "Srbi",
-                    "Mađari",
-                    "Bošnjaci",
+                    "Madjari",
+                    "Bosnjaci",
                     "Romi",
                     "Ostali"
                 ],
@@ -920,14 +920,14 @@
             ],
             "podaci": [
                 {
-                    "ime": "Zapadnobački",
+                    "ime": "Zapadnobacki",
                     "boja": "#123456",
                     "demografija": {
                         "populacija": 215916,
                         "etnicka_struktura_velicina": 5,
                         "etnicka_struktura_str": [
                             "Srbi",
-                            "Mađari",
+                            "Madjari",
                             "Hrvati",
                             "Crnogorci",
                             "Ostali"
@@ -948,19 +948,19 @@
                         }
                     ],
                     "susjedi": [
-                        "Severnobački",
-                        "Južnobački",
-                        "Osječko-Baranjska"
+                        "Severnobacki",
+                        "Juznobacki",
+                        "Osjecko-Baranjska"
                     ]
                 },
                 {
-                    "ime": "Severnobački",
+                    "ime": "Severnobacki",
                     "boja": "#EDCBA9",
                     "demografija": {
                         "populacija": 200140,
                         "etnicka_struktura_velicina": 5,
                         "etnicka_struktura_str": [
-                            "Mađari",
+                            "Madjari",
                             "Srbi",
                             "Jugoslaveni",
                             "Bunjevci",
@@ -983,8 +983,8 @@
                     ],
                     "susjedi": [
                         "Severnobanatski",
-                        "Južnobački",
-                        "Zapadnobački"
+                        "Juznobacki",
+                        "Zapadnobacki"
                     ]
                 },
                 {
@@ -994,7 +994,7 @@
                         "populacija": 165881,
                         "etnicka_struktura_velicina": 3,
                         "etnicka_struktura_str": [
-                            "Mađari",
+                            "Madjari",
                             "Srbi",
                             "Romi"
                         ],
@@ -1013,8 +1013,8 @@
                     ],
                     "susjedi": [
                         "Srednjobanatski",
-                        "Severnobački",
-                        "Južnobački"
+                        "Severnobacki",
+                        "Juznobacki"
                     ]
                 },
                 {
@@ -1025,7 +1025,7 @@
                         "etnicka_struktura_velicina": 5,
                         "etnicka_struktura_str": [
                             "Srbi",
-                            "Mađari",
+                            "Madjari",
                             "Romi",
                             "Rumunji",
                             "Ostali"
@@ -1047,18 +1047,18 @@
                     ],
                     "susjedi": [
                         "Severnobanatski",
-                        "Južnobački"
+                        "Juznobacki"
                     ]
                 },
                 {
-                    "ime": "Južnobački",
+                    "ime": "Juznobacki",
                     "boja": "#AABBCC",
                     "demografija": {
                         "populacija": 591752,
                         "etnicka_struktura_velicina": 5,
                         "etnicka_struktura_str": [
                             "Srbi",
-                            "Mađari",
+                            "Madjari",
                             "Slovaci",
                             "Rumunji",
                             "Ostali"
@@ -1081,9 +1081,9 @@
                     "susjedi": [
                         "Srednjobanatski",
                         "Vukovarsko-Srijemska",
-                        "Zapadnobački",
-                        "Osječko-Baranjska",
-                        "Severnobački",
+                        "Zapadnobacki",
+                        "Osjecko-Baranjska",
+                        "Severnobacki",
                         "Severnobanatski"
                     ]
                 }
